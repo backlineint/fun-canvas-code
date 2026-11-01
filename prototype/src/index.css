@@ -1,0 +1,17 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-sans: 'DM Sans', sans-serif;
+  --color-cream: #fff4dc;
+  --color-ink: #17163a;
+  --color-coral: #ff5c4d;
+  --color-fun-blue: #3b5bff;
+  --color-sun: #ffd84d;
+  --color-muted: #6b6a85;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+}
