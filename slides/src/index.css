@@ -1,0 +1,44 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-sans: 'DM Sans', sans-serif;
+  --color-cream: #fff4dc;
+  --color-ink: #17163a;
+  --color-coral: #ff5c4d;
+  --color-fun-blue: #3b5bff;
+  --color-sun: #ffd84d;
+}
+
+.reveal {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: none;
+  color: var(--color-ink);
+}
+
+.reveal h1 {
+  font-size: 88px;
+  line-height: 1.05;
+}
+
+.reveal h2 {
+  font-size: 64px;
+  line-height: 1.1;
+  margin-bottom: 32px;
+}
+
+.reveal p {
+  font-size: 32px;
+}
+
+.reveal-viewport {
+  background: var(--color-cream);
+}
