@@ -1,0 +1,159 @@
+{
+  "title": "Homepage",
+  "path": "/home",
+  "description": "",
+  "elements": {
+    "cf8abf57-3d3f-4624-bc2c-773a5c28391f": {
+      "type": "js.hero",
+      "props": {
+        "text": "This is a space to welcome visitors to the site. Grab their attention with copy that clearly states what the site is about.",
+        "layout": "left_aligned",
+        "heading": "This space deserves a hero.",
+        "textColor": "light",
+        "headingSize": "extra_large",
+        "headingElement": "h2",
+        "backgroundImage": {
+          "src": "https://images.unsplash.com/photo-1439923274069-a6f070db0c99?q=80&w=4327&auto=format&fit=crop&ixlib=rb-4.1.0"
+        }
+      }
+    },
+    "12d3886b-3d53-447d-914f-c4c0afe5aec8": {
+      "type": "js.spacer",
+      "props": {
+        "height": "medium"
+      }
+    },
+    "cc1b44a4-bd8e-4dae-8552-4bc34147b064": {
+      "type": "js.card_container",
+      "props": {
+        "layout": "33-33-33",
+        "heading": "What we offer.",
+        "textColor": "dark",
+        "preHeading": "Featured services",
+        "headingSize": "large",
+        "headingElement": "h2",
+        "headingPosition": "center_aligned"
+      },
+      "slots": {
+        "content": [
+          "6e6d696c-b0c5-46a7-b072-250ef5295fc1",
+          "d4f1ea7d-bbd1-44c6-b478-830c08f4a71d",
+          "81745bd6-6ed9-4647-b1fa-2ebcabd7ec31"
+        ]
+      }
+    },
+    "4d6690cb-7904-4d72-9909-f27adb412c29": {
+      "type": "js.spacer",
+      "props": {
+        "height": "medium"
+      }
+    },
+    "95911a16-a965-4358-ad68-a494d452b808": {
+      "type": "js.card_container",
+      "props": {
+        "layout": "25-25-25-25",
+        "heading": "Our customers",
+        "textColor": "dark",
+        "preHeading": "You're in good company",
+        "headingSize": "large",
+        "headingElement": "h2",
+        "headingPosition": "center_aligned"
+      },
+      "slots": {
+        "content": [
+          "b0a9685b-4eca-4b1f-ad0f-0865a228d915",
+          "28b9729f-a84c-4985-b20e-80d3c09e34b7",
+          "2ef9e7e1-9454-472b-8509-991be553e0bc",
+          "fd2ccfbc-bd43-4284-8e7d-36be02c1220d"
+        ]
+      }
+    },
+    "9caf48b9-f45c-45fb-bf9d-9a180c8f1a0f": {
+      "type": "js.spacer",
+      "props": {
+        "height": "extra_large"
+      }
+    },
+    "b0a9685b-4eca-4b1f-ad0f-0865a228d915": {
+      "type": "js.logo_card",
+      "props": {
+        "image": {
+          "src": "https://images.unsplash.com/vector-1773839348373-89bf0d14414b?q=80&w=600",
+          "alt": "Logo 1 placeholder"
+        }
+      }
+    },
+    "28b9729f-a84c-4985-b20e-80d3c09e34b7": {
+      "type": "js.logo_card",
+      "props": {
+        "image": {
+          "src": "https://images.unsplash.com/vector-1769600878556-890ba1bf6d04?q=80&w=600",
+          "alt": "Logo 2 placeholder"
+        }
+      }
+    },
+    "2ef9e7e1-9454-472b-8509-991be553e0bc": {
+      "type": "js.logo_card",
+      "props": {
+        "image": {
+          "src": "https://images.unsplash.com/vector-1739890611868-f9e38e16d2eb?q=80&w=600",
+          "alt": "Logo 3 placeholder"
+        }
+      }
+    },
+    "fd2ccfbc-bd43-4284-8e7d-36be02c1220d": {
+      "type": "js.logo_card",
+      "props": {
+        "image": {
+          "src": "https://images.unsplash.com/vector-1759843695424-bc3b3c5c88c9?q=80&w=600",
+          "alt": "Logo 4 placeholder"
+        }
+      }
+    },
+    "6e6d696c-b0c5-46a7-b072-250ef5295fc1": {
+      "type": "js.card",
+      "props": {
+        "variant": "default",
+        "link": "/",
+        "text": "Help people become familiar with the organization and its offerings, creating a sense of connection and trust.",
+        "image": {
+          "src": "https://images.unsplash.com/photo-1666706565326-3a782f69b54e?q=80&w=4374&auto=format&fit=crop&ixlib=rb-4.1.0"
+        },
+        "layout": "left_aligned",
+        "heading": "Feature or benefit",
+        "linkVariant": "link",
+        "headingElement": "h3"
+      }
+    },
+    "d4f1ea7d-bbd1-44c6-b478-830c08f4a71d": {
+      "type": "js.card",
+      "props": {
+        "variant": "default",
+        "link": "/",
+        "text": "Help people become familiar with the organization and its offerings, creating a sense of connection and trust.",
+        "image": {
+          "src": "https://images.unsplash.com/photo-1666706565326-3a782f69b54e?q=80&w=4374&auto=format&fit=crop&ixlib=rb-4.1.0"
+        },
+        "layout": "left_aligned",
+        "heading": "Feature or benefit",
+        "linkVariant": "link",
+        "headingElement": "h3"
+      }
+    },
+    "81745bd6-6ed9-4647-b1fa-2ebcabd7ec31": {
+      "type": "js.card",
+      "props": {
+        "variant": "default",
+        "link": "/",
+        "text": "Help people become familiar with the organization and its offerings, creating a sense of connection and trust.",
+        "image": {
+          "src": "https://images.unsplash.com/photo-1666706565326-3a782f69b54e?q=80&w=4374&auto=format&fit=crop&ixlib=rb-4.1.0"
+        },
+        "layout": "left_aligned",
+        "heading": "Feature or benefit",
+        "linkVariant": "link",
+        "headingElement": "h3"
+      }
+    }
+  }
+}

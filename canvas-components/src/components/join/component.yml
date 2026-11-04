@@ -1,0 +1,8 @@
+name: Join
+machineName: join
+status: true
+required: []
+props:
+  properties: {}
+slots: {}
+dataDependencies: {}

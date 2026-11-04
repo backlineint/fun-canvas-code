@@ -1,0 +1,62 @@
+{
+  "label": "Utility page content items — Full content view",
+  "entityType": "node",
+  "bundle": "page",
+  "viewMode": "full",
+  "elements": {
+    "92e68054-9f78-4420-8752-96ec693d2fa9": {
+      "type": "block.system_breadcrumb_block",
+      "props": {
+        "label": "Breadcrumbs",
+        "label_display": "0"
+      }
+    },
+    "b436211b-95ef-40ea-987a-e7b0f5782e33": {
+      "type": "sdc.mercury.section",
+      "props": {
+        "width": "75%",
+        "columns": "100",
+        "mobile_columns": "1",
+        "margin_block_start": "48",
+        "margin_block_end": "48",
+        "padding_block_start": "0",
+        "padding_block_end": "0",
+        "section_header": true,
+        "section_footer": true
+      },
+      "slots": {
+        "header_slot": [
+          "f08be9dc-e328-4cb7-9499-df6db9bd8900"
+        ],
+        "main_slot": [
+          "caa1e4b2-d58b-4140-b99b-ab3e1ce55ad5"
+        ]
+      }
+    },
+    "f08be9dc-e328-4cb7-9499-df6db9bd8900": {
+      "type": "sdc.mercury.heading",
+      "props": {
+        "heading_text": {
+          "sourceType": "entity-field",
+          "expression": "ℹ︎␜entity:node:page␝title␞␟value"
+        },
+        "level": 1,
+        "text_size": "default",
+        "text_color": "default",
+        "align": "left",
+        "url": ""
+      }
+    },
+    "caa1e4b2-d58b-4140-b99b-ab3e1ce55ad5": {
+      "type": "sdc.mercury.text",
+      "props": {
+        "text": {
+          "sourceType": "entity-field",
+          "expression": "ℹ︎␜entity:node:page␝field_content␞␟processed"
+        },
+        "text_size": "normal",
+        "text_color": "default"
+      }
+    }
+  }
+}

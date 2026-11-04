@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "skills": {
+    "agent-browser": {
+      "source": "vercel-labs/agent-browser",
+      "sourceType": "github",
+      "computedHash": "da901a619fa097fa5c70bedccfd728c03901e409bcbb375006cceba5aad535b9"
+    },
+    "canvas-component-composability": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-component-composability/SKILL.md",
+      "computedHash": "f83d98aee14351f1b71b54c233688b3d2dd4f9c25a2241d9d325e346b70e073a"
+    },
+    "canvas-component-definition": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-component-definition/SKILL.md",
+      "computedHash": "0187283d41f320b055f4b372a8adfcb0f0316f93e88aaca8f8d036f96ab0abfc"
+    },
+    "canvas-component-metadata": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-component-metadata/SKILL.md",
+      "computedHash": "57ceb25ef8c1eaed78308231aecb92528e820528beaa2605a6189620ac68a0b1"
+    },
+    "canvas-component-push": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-component-push/SKILL.md",
+      "computedHash": "f9431807ada88f1bf471d3cd79c167d606e8b970a829deef82f68b57d80e04a3"
+    },
+    "canvas-component-utils": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-component-utils/SKILL.md",
+      "computedHash": "265d4a821bbffccf625282d0e380c88a01486caee81ef8b3b7a611d0a9bf0549"
+    },
+    "canvas-content-templates": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-content-templates/SKILL.md",
+      "computedHash": "2d6864cbda607aa92bd14b90a97821a7492d52c6a8cc1d9d14d988fcd951f523"
+    },
+    "canvas-data-fetching": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-data-fetching/SKILL.md",
+      "computedHash": "985dd52ed3f4eeef7a881fcc20fafda2bab560853557f73458d13a42fbe2740a"
+    },
+    "canvas-design-decomposition": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-design-decomposition/SKILL.md",
+      "computedHash": "09e34d921c9161d9053eaeb2dca7ed7daf44c0f5269bb2e259c1851b62f9679e"
+    },
+    "canvas-headless": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-headless/SKILL.md",
+      "computedHash": "8483421c9aa1a894358520e06f34adf46a0d079cee6bb131e37c4f972a68874b"
+    },
+    "canvas-navigation-components": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-navigation-components/SKILL.md",
+      "computedHash": "0d325b73b1eb8d97fcca1660210f65848998ad7351fa0571e5b8fdc41217580d"
+    },
+    "canvas-page-definition": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-page-definition/SKILL.md",
+      "computedHash": "22c805d92702c185efd0ecb5cc5018e9f14cb25961c977c90cdeb981ef6690bb"
+    },
+    "canvas-regions": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-regions/SKILL.md",
+      "computedHash": "118b70d4ada996b55973ce819ae18d559081418bcbc827978692e0b7b9ebdc84"
+    },
+    "canvas-styling-conventions": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-styling-conventions/SKILL.md",
+      "computedHash": "451488817577ffedd1e8e8b27139b4b3ec2b64dc135a9af5efc450c817dcb786"
+    },
+    "canvas-workbench": {
+      "source": "drupal-canvas/skills",
+      "sourceType": "github",
+      "skillPath": "skills/canvas-workbench/SKILL.md",
+      "computedHash": "24bae1c92b1e6c0bd4d689a9ae5eef1c3681bbbb45072ef7e8b26aa6944d740d"
+    },
+    "dogfood": {
+      "source": "vercel-labs/agent-browser",
+      "sourceType": "github",
+      "computedHash": "055e73cddeec68e7eb75eab0c3f8490415384f72e98ac05405821427ed0e74b1"
+    }
+  }
+}
