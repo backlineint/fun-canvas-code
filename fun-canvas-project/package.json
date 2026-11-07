@@ -1,0 +1,55 @@
+{
+  "name": "fun-canvas-project",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Starter template for @drupal-canvas/create with tooling for AI-assisted development",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acquia/nebula.git"
+  },
+  "author": "Acquia Engineering (https://www.acquia.com)",
+  "bugs": "https://github.com/acquia/nebula/issues",
+  "homepage": "https://github.com/acquia/nebula#readme",
+  "type": "module",
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "drupal-canvas": "^0.7.1",
+    "drupal-jsonapi-params": "^3.0.1",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "swr": "^2.4.1",
+    "tailwind-merge": "^3.5.0"
+  },
+  "devDependencies": {
+    "@drupal-canvas/cli": "^0.26.2",
+    "@drupal-canvas/eslint-config": "^0.10.1",
+    "@drupal-canvas/workbench": "^0.13.2",
+    "@eslint/js": "^9.39.4",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
+    "eslint": "^9.39.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "npm-run-all": "^4.1.5",
+    "playwright": "^1.59.1",
+    "prettier": "^3.8.3",
+    "prettier-plugin-tailwindcss": "^0.7.2"
+  },
+  "lint-staged": {
+    "*.{css,js,jsx,json,html,md,mdx,yml}": "prettier --write",
+    "*.{js,jsx,yml,yaml}": "eslint --fix"
+  },
+  "scripts": {
+    "canvas": "canvas",
+    "dev": "canvas-workbench",
+    "code:check": "run-s -c -n code:check:**",
+    "code:check:prettier": "npm run s:prettier -- --check",
+    "code:check:eslint": "npm run s:eslint",
+    "code:fix": "run-s -c -n code:fix:**",
+    "code:fix:prettier": "npm run s:prettier -- --write",
+    "code:fix:eslint": "npm run s:eslint -- --fix",
+    "s:prettier": "prettier \"**/*.{css,js,jsx,json,html,md,mdx,yml}\"",
+    "s:eslint": "eslint \"**/*.{js,jsx,yml,yaml}\"",
+    "prepare": "husky"
+  }
+}
