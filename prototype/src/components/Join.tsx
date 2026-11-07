@@ -59,8 +59,37 @@ function Face({ avatar, size }: { avatar: Avatar; size: number }) {
   );
 }
 
+function Dots({ step, count }: { step: number; count: number }) {
+  return (
+    <>
+      {Array.from({ length: count }).map((_, i) => (
+        <span
+          key={i}
+          className="absolute size-[18px] rounded-full lg:size-6"
+          style={{
+            left: `${12 + ((i * 37 + step * 11) % 76)}%`,
+            top: `${12 + ((i * 53 + step * 7) % 50)}%`,
+            background: ['#17163A', '#FF5C4D', '#3B5BFF'][i % 3],
+          }}
+        />
+      ))}
+      {step === 1 && (
+        <>
+          <span className="absolute left-[10%] right-[10%] top-[78%] h-2 rounded bg-ink" />
+          <span className="absolute left-[62%] top-[78%] size-[30px] -translate-x-1/2 -translate-y-1/4 rounded-full border-[3px] border-ink bg-coral lg:size-10" />
+        </>
+      )}
+    </>
+  );
+}
+
 const primaryBtn = 'min-h-14 rounded-2xl text-lg font-bold text-white transition-colors';
 const textInput = 'box-border rounded-2xl border-4 border-ink bg-white px-4 text-ink';
+const heading = 'm-0 font-display text-[40px] font-extrabold leading-[1.05] lg:text-5xl';
+const lead = 'm-0 text-lg leading-snug lg:text-xl';
+// On large screens the form stacks under its heading instead of pinning the button to the bottom.
+const stack = 'flex flex-1 flex-col lg:flex-none';
+const spacer = 'flex-1 lg:hidden';
 
 export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, onJoined }: JoinProps) {
   const [step, setStep] = useState(0);
@@ -110,145 +139,154 @@ export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, o
   }
 
   const card = tour[Math.min(step, tour.length - 1)];
+  const asideBg = step < 3 ? card.bg : 'bg-sun';
 
   return (
-    <div className="mx-auto box-border flex min-h-dvh w-full max-w-[390px] flex-col gap-5 bg-cream px-6 py-7 font-sans text-ink">
-      <div className="text-[13px] font-bold uppercase tracking-[0.12em]">{STEP_LABELS[step]}</div>
-
-      {step < 3 && (
-        <div className="flex flex-1 flex-col gap-5">
-          <h1 className="m-0 font-display text-[40px] font-extrabold leading-[1.05]">{card.title}</h1>
-          <p className="m-0 text-lg leading-snug">{card.body}</p>
-          <div className={`relative min-h-40 flex-1 overflow-hidden rounded-3xl ${card.bg}`} aria-hidden="true">
-            {Array.from({ length: 6 + step * 2 }).map((_, i) => (
-              <span
-                key={i}
-                className="absolute size-[18px] rounded-full"
-                style={{
-                  left: `${12 + ((i * 37 + step * 11) % 76)}%`,
-                  top: `${12 + ((i * 53 + step * 7) % 50)}%`,
-                  background: ['#17163A', '#FF5C4D', '#3B5BFF'][i % 3],
-                }}
-              />
-            ))}
-            {step === 1 && (
-              <>
-                <span className="absolute left-[10%] right-[10%] top-[78%] h-2 rounded bg-ink" />
-                <span className="absolute left-[62%] top-[78%] size-[30px] -translate-x-1/2 -translate-y-1/4 rounded-full border-[3px] border-ink bg-coral" />
-              </>
-            )}
+    <div className="min-h-dvh bg-cream font-sans text-ink lg:grid lg:grid-cols-2">
+      {/* Large screens only: the illustration moves out of the form column into its own panel. */}
+      <aside aria-hidden="true" className={`relative hidden overflow-hidden lg:block ${asideBg}`}>
+        {step < 4 ? (
+          <Dots step={step === 3 ? 0 : step} count={(step === 3 ? 0 : step) * 3 + 14} />
+        ) : (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-8">
+            <Face avatar={avatars[avatar]} size={240} />
+            <p className="m-0 font-display text-5xl font-extrabold">{name.trim() || 'Your name'}</p>
           </div>
-          <div className="flex justify-center gap-2" aria-hidden="true">
-            {[0, 1, 2].map((i) => (
-              <span key={i} className={`h-2 rounded bg-ink ${i === step ? 'w-7' : 'w-2 opacity-35'}`} />
-            ))}
-          </div>
-          <button type="button" className={`${primaryBtn} bg-ink`} onClick={() => setStep(step + 1)}>
-            {step === 2 ? 'Got it. Join a room' : 'Next'}
-          </button>
-          <button type="button" className="min-h-11 text-[15px] font-bold underline" onClick={() => setStep(3)}>
-            Skip the tour
-          </button>
-        </div>
-      )}
+        )}
+        <div className="absolute bottom-10 left-12 font-display text-3xl font-extrabold">Fun-o-Meter</div>
+      </aside>
 
-      {step === 3 && (
-        <form
-          className="flex flex-1 flex-col gap-5"
-          onSubmit={(e) => {
-            e.preventDefault();
-            submitCode();
-          }}
-        >
-          <h1 className="m-0 font-display text-[40px] font-extrabold leading-[1.05]">Enter the room code</h1>
-          <p className="m-0 text-lg leading-snug">It's on the big screen at the front of the room.</p>
-          <label htmlFor="code" className="text-sm font-bold">
-            Room code
-          </label>
-          <input
-            id="code"
-            autoComplete="off"
-            placeholder="NED-0000"
-            value={code}
-            onChange={(e) => {
-              setCode(e.currentTarget.value.toUpperCase());
-              setError('');
+      <main className="mx-auto box-border flex min-h-dvh w-full max-w-[390px] flex-col gap-5 px-6 py-7 lg:max-w-[560px] lg:justify-center lg:gap-6 lg:px-12 lg:py-16">
+        <div className="text-[13px] font-bold uppercase tracking-[0.12em]">{STEP_LABELS[step]}</div>
+
+        {step < 3 && (
+          <div className={`${stack} gap-5 lg:gap-6`}>
+            <h1 className={heading}>{card.title}</h1>
+            <p className={lead}>{card.body}</p>
+            <div className={`relative min-h-40 flex-1 overflow-hidden rounded-3xl lg:hidden ${card.bg}`} aria-hidden="true">
+              <Dots step={step} count={6 + step * 2} />
+            </div>
+            <div className="flex justify-center gap-2 lg:justify-start" aria-hidden="true">
+              {[0, 1, 2].map((i) => (
+                <span key={i} className={`h-2 rounded bg-ink ${i === step ? 'w-7' : 'w-2 opacity-35'}`} />
+              ))}
+            </div>
+            <button type="button" className={`${primaryBtn} bg-ink`} onClick={() => setStep(step + 1)}>
+              {step === 2 ? 'Got it. Join a room' : 'Next'}
+            </button>
+            <button type="button" className="min-h-11 text-[15px] font-bold underline" onClick={() => setStep(3)}>
+              Skip the tour
+            </button>
+          </div>
+        )}
+
+        {step === 3 && (
+          <form
+            className={`${stack} gap-5 lg:gap-6`}
+            onSubmit={(e) => {
+              e.preventDefault();
+              submitCode();
             }}
-            aria-describedby={error ? 'code-error' : undefined}
-            className={`${textInput} min-h-[72px] text-[32px] font-extrabold uppercase tracking-[0.08em]`}
-          />
-          {error && (
-            <p id="code-error" role="alert" className="m-0 text-base font-bold">
-              {error}
-            </p>
-          )}
-          <div className="flex-1" />
-          <button type="submit" disabled={!codeReady || busy} className={`${primaryBtn} ${codeReady && !busy ? 'bg-ink' : 'bg-muted'}`}>
-            {busy ? 'Checking...' : 'Continue'}
-          </button>
-        </form>
-      )}
+          >
+            <h1 className={heading}>Enter the room code</h1>
+            <p className={lead}>It's on the big screen at the front of the room.</p>
+            <label htmlFor="code" className="text-sm font-bold">
+              Room code
+            </label>
+            <input
+              id="code"
+              autoComplete="off"
+              placeholder="NED-0000"
+              value={code}
+              onChange={(e) => {
+                setCode(e.currentTarget.value.toUpperCase());
+                setError('');
+              }}
+              aria-describedby={error ? 'code-error' : undefined}
+              className={`${textInput} min-h-[72px] text-[32px] font-extrabold uppercase tracking-[0.08em]`}
+            />
+            {error && (
+              <p id="code-error" role="alert" className="m-0 text-base font-bold">
+                {error}
+              </p>
+            )}
+            <div className={spacer} />
+            <button type="submit" disabled={!codeReady || busy} className={`${primaryBtn} ${codeReady && !busy ? 'bg-ink' : 'bg-muted'}`}>
+              {busy ? 'Checking...' : 'Continue'}
+            </button>
+          </form>
+        )}
 
-      {step === 4 && (
-        <form
-          className="flex flex-1 flex-col gap-3.5"
-          onSubmit={(e) => {
-            e.preventDefault();
-            submitProfile();
-          }}
-        >
-          <h1 className="m-0 font-display text-[40px] font-extrabold leading-[1.05]">Who are you?</h1>
-          <label htmlFor="nm" className="text-sm font-bold">
-            Your name (shown to the room)
-          </label>
-          <input
-            id="nm"
-            autoComplete="given-name"
-            placeholder="Sam"
-            maxLength={30}
-            value={name}
-            onChange={(e) => setName(e.currentTarget.value)}
-            className={`${textInput} min-h-14 text-[22px] font-bold`}
-          />
-          <div className="text-sm font-bold">Pick an avatar</div>
-          <div className="grid grid-cols-3 gap-3">
-            {avatars.map((a, i) => (
-              <button
-                key={i}
-                type="button"
-                aria-label={`Avatar ${i + 1}`}
-                aria-pressed={avatar === i}
-                onClick={() => setAvatar(i)}
-                className={`flex min-h-22 items-center justify-center rounded-[20px] border-4 bg-white ${avatar === i ? 'border-ink' : 'border-transparent'}`}
-              >
-                <Face avatar={a} size={56} />
-              </button>
-            ))}
+        {step === 4 && (
+          <form
+            className={`${stack} gap-3.5 lg:gap-5`}
+            onSubmit={(e) => {
+              e.preventDefault();
+              submitProfile();
+            }}
+          >
+            <h1 className={heading}>Who are you?</h1>
+            <label htmlFor="nm" className="text-sm font-bold">
+              Your name (shown to the room)
+            </label>
+            <input
+              id="nm"
+              autoComplete="given-name"
+              placeholder="Sam"
+              maxLength={30}
+              value={name}
+              onChange={(e) => setName(e.currentTarget.value)}
+              className={`${textInput} min-h-14 text-[22px] font-bold`}
+            />
+            <div className="text-sm font-bold">Pick an avatar</div>
+            <div className="grid grid-cols-3 gap-3">
+              {avatars.map((a, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  aria-label={`Avatar ${i + 1}`}
+                  aria-pressed={avatar === i}
+                  onClick={() => setAvatar(i)}
+                  className={`flex min-h-22 items-center justify-center rounded-[20px] border-4 bg-white ${avatar === i ? 'border-ink' : 'border-transparent'}`}
+                >
+                  <Face avatar={a} size={56} />
+                </button>
+              ))}
+            </div>
+            {error && (
+              <p role="alert" className="m-0 text-base font-bold">
+                {error}
+              </p>
+            )}
+            <div className={spacer} />
+            <button type="submit" disabled={!nameReady || busy} className={`${primaryBtn} ${nameReady && !busy ? 'bg-ink' : 'bg-muted'}`}>
+              {busy ? 'Joining...' : 'Join the room'}
+            </button>
+          </form>
+        )}
+
+        {step === 5 && (
+          <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center lg:flex-none lg:items-start lg:text-left">
+            <span className="lg:hidden">
+              <Face avatar={avatars[avatar]} size={140} />
+            </span>
+            <h1 className={heading}>You're in, {name.trim() || 'friend'}!</h1>
+            <p className={lead}>
+              Room {room?.code ?? code} · the talk is on slide {room?.currentSlide ?? '?'}. Your dot is on the swarm now.
+            </p>
+            <button
+              type="button"
+              className="min-h-11 text-[15px] font-bold underline"
+              onClick={() => {
+                setStep(0);
+                setError('');
+              }}
+            >
+              Start over
+            </button>
           </div>
-          {error && (
-            <p role="alert" className="m-0 text-base font-bold">
-              {error}
-            </p>
-          )}
-          <div className="flex-1" />
-          <button type="submit" disabled={!nameReady || busy} className={`${primaryBtn} ${nameReady && !busy ? 'bg-ink' : 'bg-muted'}`}>
-            {busy ? 'Joining...' : 'Join the room'}
-          </button>
-        </form>
-      )}
-
-      {step === 5 && (
-        <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center">
-          <Face avatar={avatars[avatar]} size={140} />
-          <h1 className="m-0 font-display text-[40px] font-extrabold leading-[1.05]">You're in, {name.trim() || 'friend'}!</h1>
-          <p className="m-0 text-lg leading-snug">
-            Room {room?.code ?? code} · the talk is on slide {room?.currentSlide ?? '?'}. Your dot is on the swarm now.
-          </p>
-          <button type="button" className="min-h-11 text-[15px] font-bold underline" onClick={() => { setStep(0); setError(''); }}>
-            Start over
-          </button>
-        </div>
-      )}
+        )}
+      </main>
     </div>
   );
 }

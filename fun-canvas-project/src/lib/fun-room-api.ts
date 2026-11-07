@@ -23,7 +23,8 @@ const STUB_ROOMS: Record<string, Room> = {
   'NED-4261': { code: 'NED-4261', status: 'open', currentSlide: 5 },
 };
 
-const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+const wait = (ms: number) =>
+  new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 export async function getRoom(code: string): Promise<Room> {
   await wait(350);
@@ -33,11 +34,17 @@ export async function getRoom(code: string): Promise<Room> {
   return room;
 }
 
-export async function join(code: string, profile: Profile): Promise<JoinResult> {
+export async function join(
+  code: string,
+  profile: Profile,
+): Promise<JoinResult> {
   await wait(450);
   const room = await getRoom(code);
   return {
     room,
-    participant: { ...profile, token: `stub-${Math.random().toString(36).slice(2)}` },
+    participant: {
+      ...profile,
+      token: `stub-${Math.random().toString(36).slice(2)}`,
+    },
   };
 }
