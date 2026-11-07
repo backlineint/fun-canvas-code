@@ -32,6 +32,7 @@
         "drupal/core-recommended": "^11.4",
         "drupal/core-vendor-hardening": "^11.4",
         "drupal/dashboard": "^2.2",
+        "drupal/drupal_cms_blank": "*",
         "drupal/drupal_cms_helper": "^2",
         "drupal/drupal_cms_installer": "^2",
         "drupal/drupical": "^1",
@@ -103,7 +104,7 @@
             "file-mapping": {
                 "[web-root]/example.gitignore": false
             },
-            "allowed-packages": ["drupal/drupal_cms_blank", "drupal/drupal_cms_site_template_base", "drupal/drupal_cms_starter"]
+            "allowed-packages": ["drupal/drupal_cms_blank", "drupal/drupal_cms_site_template_base", "drupal/drupal_cms_starter", "drupal/drupal_cms_blank"]
         },
         "installer-paths": {
             "web/core": ["type:drupal-core"],

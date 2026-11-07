@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "350b9c17e928f786c71b33a184a98ca5",
+    "content-hash": "4cb79a0279bca0250980bd37e3175014",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2543,6 +2543,58 @@
             "published-time": "2026-08-17T13:51:45+00:00"
         },
         {
+            "name": "drupal/drupal_cms_blank",
+            "version": "2.2.8",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/drupal_cms_blank.git",
+                "reference": "70712934c2f511c74ce4a36b8578d362a97c5be4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://git.drupalcode.org/api/v4/projects/project%2Fdrupal_cms_blank/repository/archive.zip?sha=70712934c2f511c74ce4a36b8578d362a97c5be4",
+                "reference": "70712934c2f511c74ce4a36b8578d362a97c5be4",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/drupal_cms_site_template_base": "^2.2",
+                "drupal/site_template_helper": "^1.0.4"
+            },
+            "require-dev": {
+                "drupal/drupal_cms_accessibility_tools": "^2",
+                "drupal/drupal_cms_ai": "^2",
+                "drupal/drupal_cms_forms": "^2",
+                "drupal/drupal_cms_google_analytics": "^2",
+                "drupal/drupal_cms_multilingual": "^2",
+                "drupal/drupal_cms_search": "^2"
+            },
+            "type": "drupal-recipe",
+            "extra": {
+                "drupal-scaffold": {
+                    "file-mapping": {
+                        "[web-root]/themes/custom/blank/blank.info.yml": {
+                            "path": "assets/blank.info.yml",
+                            "overwrite": false
+                        },
+                        "[web-root]/themes/custom/blank/blank.starterkit.yml": {
+                            "path": "assets/blank.starterkit.yml",
+                            "overwrite": false
+                        }
+                    }
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "A blank template with the foundational features of Drupal CMS, for those who truly want to start from scratch.",
+            "support": {
+                "source": "https://git.drupalcode.org/project/drupal_cms_blank/-/tree/2.2.8"
+            },
+            "time": "2026-11-01T21:08:44+00:00",
+            "published-time": "2026-11-02T02:25:21+00:00"
+        },
+        {
             "name": "drupal/drupal_cms_helper",
             "version": "2.2.7",
             "source": {
@@ -2623,6 +2675,82 @@
             },
             "time": "2026-10-23T12:39:09+00:00",
             "published-time": "2026-10-23T16:57:10+00:00"
+        },
+        {
+            "name": "drupal/drupal_cms_site_template_base",
+            "version": "2.2.8",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/drupal_cms_site_template_base.git",
+                "reference": "da649f5d24c56e83731efc884a6b28cd5444ffd4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://git.drupalcode.org/api/v4/projects/project%2Fdrupal_cms_site_template_base/repository/archive.zip?sha=da649f5d24c56e83731efc884a6b28cd5444ffd4",
+                "reference": "da649f5d24c56e83731efc884a6b28cd5444ffd4",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/automatic_updates": "^4.1",
+                "drupal/autosave_form": "^1.10",
+                "drupal/canvas": "^1.11",
+                "drupal/coffee": "^2",
+                "drupal/core": "^11.4",
+                "drupal/dashboard": "^2.2",
+                "drupal/drupal_cms_helper": "^2",
+                "drupal/drupical": "^1",
+                "drupal/easy_breadcrumb": "^2.0.9",
+                "drupal/easy_email_express": "^1",
+                "drupal/eca": "^3.1.2",
+                "drupal/field_group": "^3.6 || ^4",
+                "drupal/focal_point": "^2.1",
+                "drupal/gin": "^5",
+                "drupal/gin_login": "^2.1.4",
+                "drupal/klaro": "^3",
+                "drupal/linkit": "^7",
+                "drupal/login_emailusername": "^3",
+                "drupal/media_file_delete": "^1",
+                "drupal/media_library_bulk_upload": "^1",
+                "drupal/menu_link_attributes": "^1.5",
+                "drupal/metatag": "^2",
+                "drupal/modeler": "^1",
+                "drupal/navigation_extra_tools": "^1.3",
+                "drupal/pathauto": "^1.13",
+                "drupal/project_browser": "^2.1.5",
+                "drupal/recipe_locale": "^1",
+                "drupal/redirect": "^1.10",
+                "drupal/sam": "^1.2",
+                "drupal/scheduler": "^2.2",
+                "drupal/scheduler_content_moderation_integration": "^3.0.4",
+                "drupal/seo_checklist": "^5.2.1",
+                "drupal/simple_sitemap": "^4.2.2",
+                "drupal/svg_image": "^3.1",
+                "drupal/tagify": "^2.0.4",
+                "drupal/token_or": "^2.2",
+                "drupal/trash": "^3.0.13",
+                "drupal/view_password": "^6",
+                "drupal/yoast_seo": "^2.1"
+            },
+            "type": "drupal-recipe",
+            "extra": {
+                "drupal-scaffold": {
+                    "file-mapping": {
+                        "[web-root]/robots.txt": {
+                            "append": "robots.append.txt"
+                        }
+                    }
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Provides the foundational features of Drupal CMS.",
+            "support": {
+                "source": "https://git.drupalcode.org/project/drupal_cms_site_template_base/-/tree/2.2.8"
+            },
+            "time": "2026-11-01T21:08:44+00:00",
+            "published-time": "2026-11-02T02:25:30+00:00"
         },
         {
             "name": "drupal/drupical",
@@ -2846,6 +2974,115 @@
             "published-time": "2026-07-09T13:08:21+00:00"
         },
         {
+            "name": "drupal/easy_email_express",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/easy_email_express.git",
+                "reference": "aff24f73fe8b2e04cbb524a7887c035385ba8662"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://git.drupalcode.org/api/v4/projects/project%2Feasy_email_express/repository/archive.zip?sha=aff24f73fe8b2e04cbb524a7887c035385ba8662",
+                "reference": "aff24f73fe8b2e04cbb524a7887c035385ba8662",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/core": "^10.3 || ^11",
+                "drupal/easy_email_standard": "^1.0.2",
+                "drupal/easy_email_types_core": "^1.0.3",
+                "drupal/easy_email_types_default": "^1.0.1"
+            },
+            "type": "drupal-recipe",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Easy Email configuration that replaces all core emails with HTML formatted emails.",
+            "homepage": "https://www.drupal.org/project/easy_email_express",
+            "keywords": [
+                "drupal"
+            ],
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/easy_email_express",
+                "source": "https://git.drupalcode.org/project/easy_email_express"
+            },
+            "time": "2025-06-16T14:18:11+00:00",
+            "published-time": "2025-06-16T18:18:40+00:00"
+        },
+        {
+            "name": "drupal/easy_email_standard",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/easy_email_standard.git",
+                "reference": "e252ab7285864d7e3d63ee3e78d5c7a518f00a17"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://git.drupalcode.org/api/v4/projects/project%2Feasy_email_standard/repository/archive.zip?sha=e252ab7285864d7e3d63ee3e78d5c7a518f00a17",
+                "reference": "e252ab7285864d7e3d63ee3e78d5c7a518f00a17",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/core": "^10.3 || ^11",
+                "drupal/easy_email": "^3.0.2",
+                "drupal/easy_email_theme": "^1",
+                "drupal/mailsystem": "^4",
+                "drupal/symfony_mailer_lite": "^2.0.1"
+            },
+            "type": "drupal-recipe",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Easy Email module and theme for sending HTML emails from Drupal.",
+            "homepage": "https://www.drupal.org/project/easy_email_standard",
+            "keywords": [
+                "drupal"
+            ],
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/easy_email_standard",
+                "source": "https://git.drupalcode.org/project/easy_email_standard"
+            },
+            "time": "2025-06-16T14:15:30+00:00",
+            "published-time": "2025-06-16T18:15:59+00:00"
+        },
+        {
+            "name": "drupal/easy_email_text_format",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/easy_email_text_format.git",
+                "reference": "d7a98a051dfa418cd185cf5afe98e9347c819bc1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://git.drupalcode.org/api/v4/projects/project%2Feasy_email_text_format/repository/archive.zip?sha=d7a98a051dfa418cd185cf5afe98e9347c819bc1",
+                "reference": "d7a98a051dfa418cd185cf5afe98e9347c819bc1",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/core": "^11"
+            },
+            "type": "drupal-recipe",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Text format and editor config for editing HTML body of Easy Email templates.",
+            "homepage": "https://www.drupal.org/project/easy_email_text_format",
+            "keywords": [
+                "drupal"
+            ],
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/easy_email_text_format",
+                "source": "https://git.drupalcode.org/project/easy_email_text_format"
+            },
+            "time": "2026-03-31T10:51:36+00:00",
+            "published-time": "2026-03-31T14:55:26+00:00"
+        },
+        {
             "name": "drupal/easy_email_theme",
             "version": "1.1.0",
             "source": {
@@ -2889,6 +3126,78 @@
                 "source": "https://git.drupalcode.org/project/easy_email_theme"
             },
             "published-time": "2025-09-10T12:58:29+00:00"
+        },
+        {
+            "name": "drupal/easy_email_types_core",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/easy_email_types_core.git",
+                "reference": "d8e41ba370031d8978e4dc30efaed9d91be1a75c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://git.drupalcode.org/api/v4/projects/project%2Feasy_email_types_core/repository/archive.zip?sha=d8e41ba370031d8978e4dc30efaed9d91be1a75c",
+                "reference": "d8e41ba370031d8978e4dc30efaed9d91be1a75c",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/core": "^10.3 || ^11",
+                "drupal/easy_email": "^3.0.2",
+                "drupal/easy_email_text_format": "^1"
+            },
+            "type": "drupal-recipe",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Easy Email templates that replicate and override the content of emails sent by Drupal core with HTML-formatted versions.",
+            "homepage": "https://www.drupal.org/project/easy_email_types_core",
+            "keywords": [
+                "drupal"
+            ],
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/easy_email_types_core",
+                "source": "https://git.drupalcode.org/project/easy_email_types_core"
+            },
+            "time": "2025-06-16T14:13:31+00:00",
+            "published-time": "2025-06-16T18:14:01+00:00"
+        },
+        {
+            "name": "drupal/easy_email_types_default",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/easy_email_types_default.git",
+                "reference": "7f981984cd1d1d9e6eddf4a914210d7ae3d490e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://git.drupalcode.org/api/v4/projects/project%2Feasy_email_types_default/repository/archive.zip?sha=7f981984cd1d1d9e6eddf4a914210d7ae3d490e2",
+                "reference": "7f981984cd1d1d9e6eddf4a914210d7ae3d490e2",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/core": "^10.3 || ^11",
+                "drupal/easy_email": "^3.0.2",
+                "drupal/easy_email_text_format": "^1.0.2"
+            },
+            "type": "drupal-recipe",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "A default Easy Email template configured to override all emails sent from the site.",
+            "homepage": "https://www.drupal.org/project/easy_email_types_default",
+            "keywords": [
+                "drupal"
+            ],
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/easy_email_types_default",
+                "source": "https://git.drupalcode.org/project/easy_email_types_default"
+            },
+            "time": "2025-06-16T14:10:36+00:00",
+            "published-time": "2025-06-16T18:11:00+00:00"
         },
         {
             "name": "drupal/eca",
@@ -4592,17 +4901,17 @@
         },
         {
             "name": "drupal/scheduler",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/scheduler.git",
-                "reference": "2.3.0"
+                "reference": "2.3.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/scheduler-2.3.0.zip",
-                "reference": "2.3.0",
-                "shasum": "c79ff70ac5300d7e95f5da2e31d95eee52c152aa"
+                "url": "https://ftp.drupal.org/files/projects/scheduler-2.3.1.zip",
+                "reference": "2.3.1",
+                "shasum": "65a49574c8de1849257749f7ceb819cc61e0130c"
             },
             "require": {
                 "drupal/core": "^9 || ^10 || ^11"
@@ -4620,8 +4929,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.3.0",
-                    "datestamp": "1780654272",
+                    "version": "2.3.1",
+                    "datestamp": "1793820105",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4665,7 +4974,7 @@
                 "source": "https://git.drupalcode.org/project/scheduler",
                 "issues": "https://www.drupal.org/project/issues/scheduler"
             },
-            "published-time": "2026-06-05T10:10:14+00:00"
+            "published-time": "2026-11-03T20:01:07+00:00"
         },
         {
             "name": "drupal/scheduler_content_moderation_integration",
@@ -4943,6 +5252,45 @@
                 "issues": "https://drupal.org/project/issues/simple_sitemap"
             },
             "published-time": "2025-11-26T08:54:20+00:00"
+        },
+        {
+            "name": "drupal/site_template_helper",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/site_template_helper.git",
+                "reference": "df40651370a5a9833dd9ca10be9597d83bfb5e93"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://git.drupalcode.org/api/v4/projects/project%2Fsite_template_helper/repository/archive.zip?sha=df40651370a5a9833dd9ca10be9597d83bfb5e93",
+                "reference": "df40651370a5a9833dd9ca10be9597d83bfb5e93",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^2",
+                "drupal/core": ">=10.3",
+                "symfony/console": "^7"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Drupal\\site_template_helper\\Plugin"
+            },
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "description": "Provides tooling and scaffolding for setting up Drupal site templates.",
+            "support": {
+                "source": "https://git.drupalcode.org/project/site_template_helper/-/tree/1.0.4"
+            },
+            "time": "2026-06-26T20:44:48+00:00",
+            "published-time": "2026-06-26T20:45:51+00:00"
         },
         {
             "name": "drupal/svg_image",
@@ -8541,16 +8889,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v7.4.21",
+            "version": "v7.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "fd0e3462be6d32a0d130e8423e4940a7688162d8"
+                "reference": "53d609da66578dad5a39fe290e8f924ec8f05e93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/fd0e3462be6d32a0d130e8423e4940a7688162d8",
-                "reference": "fd0e3462be6d32a0d130e8423e4940a7688162d8",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/53d609da66578dad5a39fe290e8f924ec8f05e93",
+                "reference": "53d609da66578dad5a39fe290e8f924ec8f05e93",
                 "shasum": ""
             },
             "require": {
@@ -8587,7 +8935,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v7.4.21"
+                "source": "https://github.com/symfony/filesystem/tree/v7.4.23"
             },
             "funding": [
                 {
@@ -8607,8 +8955,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-06T20:05:19+00:00",
-            "published-time": "2026-10-14T06:45:33+00:00"
+            "time": "2026-11-04T08:27:22+00:00",
+            "published-time": "2026-11-04T11:28:00+00:00"
         },
         {
             "name": "symfony/finder",
@@ -8681,16 +9029,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v7.4.22",
+            "version": "v7.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "63eda1d0c4de229d6b3e825709e49dd5c149699a"
+                "reference": "7fb73cffa06e2bcc2cb523fcccb1e8174106b206"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/63eda1d0c4de229d6b3e825709e49dd5c149699a",
-                "reference": "63eda1d0c4de229d6b3e825709e49dd5c149699a",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/7fb73cffa06e2bcc2cb523fcccb1e8174106b206",
+                "reference": "7fb73cffa06e2bcc2cb523fcccb1e8174106b206",
                 "shasum": ""
             },
             "require": {
@@ -8739,7 +9087,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v7.4.22"
+                "source": "https://github.com/symfony/http-foundation/tree/v7.4.23"
             },
             "funding": [
                 {
@@ -8759,21 +9107,21 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-27T13:26:03+00:00",
-            "published-time": "2026-10-28T18:20:39+00:00"
+            "time": "2026-11-04T08:27:22+00:00",
+            "published-time": "2026-11-04T11:28:53+00:00"
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v7.4.22",
+            "version": "v7.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "87e727b33983238d3f2ea50f9f62265499ca1a6d"
+                "reference": "94c57f4c5c45a311d244a0aeadb72b14ee41d25d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/87e727b33983238d3f2ea50f9f62265499ca1a6d",
-                "reference": "87e727b33983238d3f2ea50f9f62265499ca1a6d",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/94c57f4c5c45a311d244a0aeadb72b14ee41d25d",
+                "reference": "94c57f4c5c45a311d244a0aeadb72b14ee41d25d",
                 "shasum": ""
             },
             "require": {
@@ -8859,7 +9207,7 @@
             "description": "Provides a structured process for converting a Request into a Response",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-kernel/tree/v7.4.22"
+                "source": "https://github.com/symfony/http-kernel/tree/v7.4.23"
             },
             "funding": [
                 {
@@ -8879,8 +9227,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-28T18:18:28+00:00",
-            "published-time": "2026-10-28T18:21:03+00:00"
+            "time": "2026-11-04T11:26:18+00:00",
+            "published-time": "2026-11-04T11:27:47+00:00"
         },
         {
             "name": "symfony/mailer",
@@ -10297,16 +10645,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v7.4.22",
+            "version": "v7.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "f79ed6fbf60d9e32d358054f1915295f3b8a6f7a"
+                "reference": "0000ade604b7bc798cb1e75edf6f17df48185f73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/f79ed6fbf60d9e32d358054f1915295f3b8a6f7a",
-                "reference": "f79ed6fbf60d9e32d358054f1915295f3b8a6f7a",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/0000ade604b7bc798cb1e75edf6f17df48185f73",
+                "reference": "0000ade604b7bc798cb1e75edf6f17df48185f73",
                 "shasum": ""
             },
             "require": {
@@ -10358,7 +10706,7 @@
                 "url"
             ],
             "support": {
-                "source": "https://github.com/symfony/routing/tree/v7.4.22"
+                "source": "https://github.com/symfony/routing/tree/v7.4.23"
             },
             "funding": [
                 {
@@ -10378,8 +10726,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-26T21:52:50+00:00",
-            "published-time": "2026-10-28T18:21:27+00:00"
+            "time": "2026-11-04T08:27:22+00:00",
+            "published-time": "2026-11-04T11:28:04+00:00"
         },
         {
             "name": "symfony/runtime",
@@ -10469,16 +10817,16 @@
         },
         {
             "name": "symfony/serializer",
-            "version": "v7.4.22",
+            "version": "v7.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "e6c6739e8eb764ea7b6d9bea044bda599ec51122"
+                "reference": "9df8eb88c4d067d7aef1f3940075521769f34086"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/e6c6739e8eb764ea7b6d9bea044bda599ec51122",
-                "reference": "e6c6739e8eb764ea7b6d9bea044bda599ec51122",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/9df8eb88c4d067d7aef1f3940075521769f34086",
+                "reference": "9df8eb88c4d067d7aef1f3940075521769f34086",
                 "shasum": ""
             },
             "require": {
@@ -10549,7 +10897,7 @@
             "description": "Handles serializing and deserializing data structures, including object graphs, into array structures or other formats like XML and JSON.",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/serializer/tree/v7.4.22"
+                "source": "https://github.com/symfony/serializer/tree/v7.4.23"
             },
             "funding": [
                 {
@@ -10569,8 +10917,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-25T14:40:16+00:00",
-            "published-time": "2026-10-28T18:20:33+00:00"
+            "time": "2026-11-04T08:27:22+00:00",
+            "published-time": "2026-11-04T11:28:28+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -10837,16 +11185,16 @@
         },
         {
             "name": "symfony/validator",
-            "version": "v7.4.22",
+            "version": "v7.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/validator.git",
-                "reference": "b12ac8a9b90160e1a1935748191c6aae4149b577"
+                "reference": "0208748881024578b32edb7fad3d2cb01a88c364"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/validator/zipball/b12ac8a9b90160e1a1935748191c6aae4149b577",
-                "reference": "b12ac8a9b90160e1a1935748191c6aae4149b577",
+                "url": "https://api.github.com/repos/symfony/validator/zipball/0208748881024578b32edb7fad3d2cb01a88c364",
+                "reference": "0208748881024578b32edb7fad3d2cb01a88c364",
                 "shasum": ""
             },
             "require": {
@@ -10917,7 +11265,7 @@
             "description": "Provides tools to validate values",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/validator/tree/v7.4.22"
+                "source": "https://github.com/symfony/validator/tree/v7.4.23"
             },
             "funding": [
                 {
@@ -10937,8 +11285,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-27T13:52:57+00:00",
-            "published-time": "2026-10-28T18:20:38+00:00"
+            "time": "2026-11-04T08:27:22+00:00",
+            "published-time": "2026-11-04T11:28:46+00:00"
         },
         {
             "name": "symfony/var-dumper",
@@ -11112,16 +11460,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v7.4.22",
+            "version": "v7.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "1ed6afa13d48c579c51cbf32e38f50686313497b"
+                "reference": "1e601207ffe627a2e621faa9d661f1d32dcf1cec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/1ed6afa13d48c579c51cbf32e38f50686313497b",
-                "reference": "1ed6afa13d48c579c51cbf32e38f50686313497b",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/1e601207ffe627a2e621faa9d661f1d32dcf1cec",
+                "reference": "1e601207ffe627a2e621faa9d661f1d32dcf1cec",
                 "shasum": ""
             },
             "require": {
@@ -11164,7 +11512,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v7.4.22"
+                "source": "https://github.com/symfony/yaml/tree/v7.4.23"
             },
             "funding": [
                 {
@@ -11184,8 +11532,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-18T14:39:27+00:00",
-            "published-time": "2026-10-28T18:20:33+00:00"
+            "time": "2026-11-04T08:27:22+00:00",
+            "published-time": "2026-11-04T11:28:41+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
