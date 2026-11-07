@@ -1,4 +1,5 @@
 node_modules
 slides/dist
+prototype/dist
 site/keys
 database.sql.gz

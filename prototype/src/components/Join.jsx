@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useState } from 'react';
 import { getRoom, join } from '../api.js';
 
 const DEFAULT_TOUR = [
@@ -152,7 +152,7 @@ export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, o
             autoComplete="off"
             placeholder="NED-0000"
             value={code}
-            onInput={(e) => {
+            onChange={(e) => {
               setCode(e.currentTarget.value.toUpperCase());
               setError('');
             }}
@@ -189,7 +189,7 @@ export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, o
             placeholder="Sam"
             maxLength={30}
             value={name}
-            onInput={(e) => setName(e.currentTarget.value)}
+            onChange={(e) => setName(e.currentTarget.value)}
             className={`${textInput} min-h-14 text-[22px] font-bold`}
           />
           <div className="text-sm font-bold">Pick an avatar</div>

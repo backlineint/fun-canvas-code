@@ -1,6 +1,6 @@
 # Fun-o-Meter prototype
 
-Standalone Preact + Tailwind prototype of the attendee join flow, to be ported to Drupal Canvas code components.
+Standalone React + Tailwind prototype of the attendee join flow, to be ported to Drupal Canvas code components.
 
 ```bash
 pnpm install
