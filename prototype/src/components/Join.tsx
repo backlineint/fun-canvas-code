@@ -1,5 +1,23 @@
 import { useState } from 'react';
-import { getRoom, join } from '../api.js';
+import { getRoom, join } from '../api';
+import type { JoinResult, Room } from '../api';
+
+type TourStep = {
+  title: string;
+  body: string;
+  bg: string;
+};
+
+type Avatar = {
+  bg: string;
+  mouth: string;
+};
+
+type JoinProps = {
+  tour?: TourStep[];
+  avatars?: Avatar[];
+  onJoined?: (result: JoinResult) => void;
+};
 
 const DEFAULT_TOUR = [
   {
@@ -30,7 +48,7 @@ const DEFAULT_AVATARS = [
 
 const STEP_LABELS = ['Quick tour · 1 of 3', 'Quick tour · 2 of 3', 'Quick tour · 3 of 3', 'Step 1 of 2', 'Step 2 of 2', 'Joined'];
 
-function Face({ avatar, size }) {
+function Face({ avatar, size }: { avatar: Avatar; size: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" aria-hidden="true">
       <circle cx="20" cy="20" r="20" fill={avatar.bg} />
@@ -44,14 +62,14 @@ function Face({ avatar, size }) {
 const primaryBtn = 'min-h-14 rounded-2xl text-lg font-bold text-white transition-colors';
 const textInput = 'box-border rounded-2xl border-4 border-ink bg-white px-4 text-ink';
 
-export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, onJoined }) {
+export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, onJoined }: JoinProps) {
   const [step, setStep] = useState(0);
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
   const [avatar, setAvatar] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  const [room, setRoom] = useState(null);
+  const [room, setRoom] = useState<Room | null>(null);
 
   const codeReady = code.trim().length >= 4;
   const nameReady = name.trim().length > 0;
@@ -64,7 +82,7 @@ export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, o
       setRoom(await getRoom(code));
       setStep(4);
     } catch (e) {
-      setError(e.message === 'closed' ? 'That room has closed.' : "We couldn't find that room. Check the big screen.");
+      setError(e instanceof Error && e.message === 'closed' ? 'That room has closed.' : "We couldn't find that room. Check the big screen.");
     } finally {
       setBusy(false);
     }
