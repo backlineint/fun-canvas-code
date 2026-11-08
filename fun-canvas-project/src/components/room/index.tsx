@@ -1,3 +1,4 @@
+import { Children } from 'react';
 import { fetchRoom } from '@/lib/fun-room-api';
 import { avatarAt, Face } from '@/lib/fun-room-avatars';
 import { useJoined } from '@/lib/fun-room-session';
@@ -62,14 +63,17 @@ export default function Room({
       ? joined.participant
       : null;
 
+  // On phones this is one column. From the lg breakpoint the header becomes a
+  // full-height panel that stays put on the left, and the feature slots fill a
+  // two-column grid on the right.
   return (
     <div
       className={cn(
-        'mx-auto flex min-h-dvh w-full max-w-[480px] flex-col gap-5 bg-cream px-6 py-7 font-sans text-ink',
+        'min-h-dvh bg-cream font-sans text-ink lg:grid lg:grid-cols-[5fr_7fr]',
         className,
       )}
     >
-      <header className="flex flex-col gap-3">
+      <header className="mx-auto flex w-full max-w-[480px] flex-col gap-3 px-6 pt-7 lg:sticky lg:top-0 lg:mx-0 lg:h-dvh lg:max-w-none lg:justify-center lg:gap-6 lg:bg-sun lg:px-12 lg:py-16">
         <div className="flex items-center justify-between gap-3">
           <div className="text-[13px] font-bold tracking-[0.12em] uppercase">
             Room
@@ -82,20 +86,22 @@ export default function Room({
             </div>
           ) : null}
         </div>
-        <div className="flex items-center justify-between gap-3">
-          <h1 className="m-0 font-display text-5xl leading-none font-extrabold">
+        <div className="flex items-center justify-between gap-3 lg:flex-col lg:items-start lg:gap-5">
+          <h1 className="m-0 font-display text-5xl leading-none font-extrabold [overflow-wrap:anywhere] lg:text-7xl">
             {view.code}
           </h1>
           <span
             className={cn(
-              'rounded-full px-4 py-2 text-sm font-bold',
-              isOpen ? 'bg-sun text-ink' : 'bg-ink text-white',
+              'rounded-full px-4 py-2 text-sm font-bold lg:px-5 lg:py-2.5 lg:text-base',
+              isOpen
+                ? 'bg-sun text-ink lg:bg-ink lg:text-sun'
+                : 'bg-ink text-white lg:bg-white lg:text-ink',
             )}
           >
             {isOpen ? 'Open' : 'Closed'}
           </span>
         </div>
-        <p className="m-0 text-lg">
+        <p className="m-0 text-lg lg:text-2xl">
           Now on slide{' '}
           <span className="font-bold">{view.currentSlide + 1}</span>
         </p>
@@ -106,19 +112,32 @@ export default function Room({
         ) : null}
       </header>
 
-      {joined !== undefined && !me ? (
-        <a
-          href={`/?code=${encodeURIComponent(view.code)}`}
-          className="rounded-2xl bg-ink px-5 py-4 text-center text-lg font-bold text-white no-underline"
-        >
-          Join this room
-        </a>
-      ) : null}
+      <div className="mx-auto flex w-full max-w-[480px] flex-col gap-5 px-6 pt-5 pb-7 lg:grid lg:max-w-3xl lg:grid-cols-2 lg:content-start lg:gap-6 lg:px-12 lg:py-16">
+        {joined !== undefined && !me ? (
+          <a
+            href={`/?code=${encodeURIComponent(view.code)}`}
+            className="rounded-2xl bg-ink px-5 py-4 text-center text-lg font-bold text-white no-underline lg:col-span-2"
+          >
+            Join this room
+          </a>
+        ) : null}
 
-      {swarm}
-      {slider}
-      {requests}
-      {comments}
+        <Slot wide>{swarm}</Slot>
+        <Slot>{slider}</Slot>
+        <Slot>{requests}</Slot>
+        <Slot wide>{comments}</Slot>
+      </div>
     </div>
+  );
+}
+
+// One cell of the wide layout's grid. Renders nothing for an empty slot, so an
+// unused slot leaves no gap. The cell is itself a grid so its content stretches
+// to the row's height (Canvas wraps slot content in display: contents elements,
+// so the content sits directly in this cell's grid).
+function Slot({ children, wide }: { children?: ReactNode; wide?: boolean }) {
+  if (Children.toArray(children).length === 0) return null;
+  return (
+    <div className={cn('lg:grid', wide && 'lg:col-span-2')}>{children}</div>
   );
 }
