@@ -1,0 +1,26 @@
+# Depends on every field storage, not only its own, so Drupal creates all of them
+# before any instance. Otherwise an instance created after a later storage fails
+# with "field storage does not exist" while this module installs.
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - fun_room
+  config:
+    - field.storage.node.field_current_slide
+    - field.storage.node.field_current_slide_id
+    - field.storage.node.field_status
+    - node.type.room
+id: node.room.field_current_slide_id
+field_name: field_current_slide_id
+entity_type: node
+bundle: room
+label: 'Current slide (id)'
+description: 'Stable id of the slide being shown, reported by the slide deck.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

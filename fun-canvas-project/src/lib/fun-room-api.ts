@@ -1,5 +1,7 @@
-// Room API over Drupal JSON:API (the `fun_room` module on the site):
-//   GET  /jsonapi/fun_room/fun_room?filter[code]=NED-4261
+// Room API over Drupal JSON:API (the `fun_room` module on the site). A room is a
+// node of type `room`: its title is the room code.
+//   GET  /jsonapi/node/room?filter[title]=NED-4261
+//   GET  /jsonapi/node/room/{uuid}
 //   POST /jsonapi/fun_participant/fun_participant
 // Keep every network call in this module. The caller passes in the client from
 // `useJsonApiClient()` because that is a hook and can only be used in a component.
@@ -11,6 +13,8 @@ export type Room = {
   status: 'open' | 'closed';
   /** Zero-based slide index, as reported by the deck. Show it as index + 1. */
   currentSlide: number;
+  /** The room page's path: its alias, such as /room/ned-4261, else /node/{nid}. */
+  path: string;
 };
 
 export type Profile = {
@@ -32,6 +36,11 @@ export type RoomClient = {
     type: string,
     options?: { queryString?: string; disableCache?: boolean },
   ) => Promise<unknown>;
+  getResource: (
+    type: string,
+    id: string,
+    options?: { disableCache?: boolean },
+  ) => Promise<unknown>;
   createResource: (
     type: string,
     body: object,
@@ -39,7 +48,7 @@ export type RoomClient = {
   ) => Promise<unknown>;
 };
 
-const ROOM_TYPE = 'fun_room--fun_room';
+const ROOM_TYPE = 'node--room';
 const PARTICIPANT_TYPE = 'fun_participant--fun_participant';
 
 type Resource = Record<string, unknown> & {
@@ -54,11 +63,14 @@ function field(resource: Resource, name: string): unknown {
 }
 
 function toRoom(resource: Resource): Room {
+  const alias = (field(resource, 'path') as { alias?: string } | null)?.alias;
   return {
     id: String(resource.id ?? ''),
-    code: String(field(resource, 'code') ?? ''),
-    status: field(resource, 'status') === 'closed' ? 'closed' : 'open',
-    currentSlide: Number(field(resource, 'current_slide') ?? 0),
+    code: String(field(resource, 'title') ?? ''),
+    status: field(resource, 'field_status') === 'closed' ? 'closed' : 'open',
+    currentSlide: Number(field(resource, 'field_current_slide') ?? 0),
+    path:
+      alias || `/node/${String(field(resource, 'drupal_internal__nid') ?? '')}`,
   };
 }
 
@@ -72,7 +84,7 @@ export async function getRoom(
   code: string,
 ): Promise<Room> {
   const query = new URLSearchParams({
-    'filter[code]': code.trim().toUpperCase(),
+    'filter[title]': code.trim().toUpperCase(),
   });
   const result = await requireClient(client).getCollection(ROOM_TYPE, {
     queryString: query.toString(),
@@ -88,6 +100,22 @@ export async function getRoom(
   const room = toRoom(resources[0] as Resource);
   if (room.status === 'closed') throw new Error('closed');
   return room;
+}
+
+/**
+ * Reads a room by its JSON:API id, for polling. Unlike `getRoom` this returns a
+ * closed room, since the room page needs to show that state.
+ */
+export async function fetchRoom(
+  client: RoomClient | null,
+  id: string,
+): Promise<Room> {
+  const result = await requireClient(client).getResource(ROOM_TYPE, id, {
+    disableCache: true,
+  });
+  const resource = (result as { data?: Resource } | null)?.data ?? result;
+  if (!resource) throw new Error('not_found');
+  return toRoom(resource as Resource);
 }
 
 // 24 random bytes as hex. `getRandomValues` works in insecure contexts, unlike

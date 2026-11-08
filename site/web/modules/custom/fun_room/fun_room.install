@@ -19,4 +19,17 @@ function fun_room_install(): void {
 
   user_role_grant_permissions('anonymous', ['join fun room']);
   user_role_grant_permissions('authenticated', ['join fun room']);
+
+  // Drupal CMS adds every new node type to its editorial workflow, which keeps
+  // new rooms as unpublished drafts (and so a 404 for attendees). A room is just
+  // open or closed, so take it out of moderation.
+  if (\Drupal::moduleHandler()->moduleExists('workflows')) {
+    foreach (\Drupal::entityTypeManager()->getStorage('workflow')->loadMultiple() as $workflow) {
+      $plugin = $workflow->getTypePlugin();
+      if (method_exists($plugin, 'appliesToEntityTypeAndBundle') && $plugin->appliesToEntityTypeAndBundle('node', 'room')) {
+        $plugin->removeEntityTypeAndBundle('node', 'room');
+        $workflow->save();
+      }
+    }
+  }
 }

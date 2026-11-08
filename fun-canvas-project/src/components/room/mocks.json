@@ -1,0 +1,56 @@
+{
+  "mocks": [
+    {
+      "name": "Open",
+      "props": {
+        "code": "NED-4261",
+        "status": "open",
+        "currentSlide": 4
+      },
+      "slots": {
+        "swarm": ["swarm-placeholder"],
+        "slider": ["slider-placeholder"],
+        "requests": ["requests-placeholder"],
+        "comments": ["comments-placeholder"]
+      },
+      "elements": {
+        "swarm-placeholder": {
+          "type": "placeholder",
+          "props": {
+            "title": "Swarm",
+            "description": "Everyone in the room as a dot on a fun scale."
+          }
+        },
+        "slider-placeholder": {
+          "type": "placeholder",
+          "props": {
+            "title": "Fun slider",
+            "description": "Move your dot to show how much fun you are having."
+          }
+        },
+        "requests-placeholder": {
+          "type": "placeholder",
+          "props": {
+            "title": "Requests",
+            "description": "Ask for a party hat, a noise maker or candy."
+          }
+        },
+        "comments-placeholder": {
+          "type": "placeholder",
+          "props": {
+            "title": "Comments",
+            "description": "Say something to the room."
+          }
+        }
+      }
+    },
+    {
+      "name": "Closed",
+      "props": {
+        "code": "DEMO-1",
+        "status": "closed",
+        "currentSlide": 0
+      }
+    }
+  ]
+}

@@ -1,9 +1,12 @@
 name: Fun room
 type: module
-description: Rooms and participants for the Fun-o-Meter, exposed through JSON:API.
+description: Rooms (a node type) and participants for the Fun-o-Meter, exposed through JSON:API.
 package: Custom
 core_version_requirement: ^11
 dependencies:
   - drupal:jsonapi
+  - drupal:node
   - drupal:options
+  - drupal:path
   - drupal:views
+  - pathauto:pathauto

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Drupal\Tests\fun_room\Functional;
 
 use Drupal\fun_room\Entity\FunParticipant;
-use Drupal\fun_room\Entity\FunRoom;
 use Drupal\fun_room\EventSubscriber\JoinFloodSubscriber;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 use Drupal\Tests\BrowserTestBase;
 use GuzzleHttp\RequestOptions;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -14,7 +15,7 @@ use PHPUnit\Framework\Attributes\Group;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Exercises the anonymous join flow through the JSON:API endpoints.
+ * Exercises rooms (nodes) and the anonymous join flow through JSON:API.
  */
 #[Group('fun_room')]
 final class JoinFlowTest extends BrowserTestBase {
@@ -31,15 +32,32 @@ final class JoinFlowTest extends BrowserTestBase {
    */
   protected $defaultTheme = 'stark';
 
-  private FunRoom $room;
+  private NodeInterface $room;
 
   /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->room = FunRoom::create(['code' => 'ned-4261']);
-    $this->room->save();
+    // A fresh test site gives anonymous users no permissions; the real site
+    // lets them see published content.
+    user_role_grant_permissions('anonymous', ['access content']);
+
+    $this->room = $this->createRoom('ned-4261');
+  }
+
+  /**
+   * Creates a published, open room node.
+   */
+  private function createRoom(string $code): NodeInterface {
+    $room = Node::create([
+      'type' => 'room',
+      'title' => $code,
+      'status' => 1,
+      'field_status' => 'open',
+    ]);
+    $room->save();
+    return $room;
   }
 
   /**
@@ -68,7 +86,7 @@ final class JoinFlowTest extends BrowserTestBase {
    * @return array<string, mixed>
    *   Guzzle options with the JSON body.
    */
-  private function joinBody(FunRoom $room, array $overrides = []): array {
+  private function joinBody(NodeInterface $room, array $overrides = []): array {
     return [
       RequestOptions::BODY => json_encode([
         'data' => [
@@ -79,7 +97,7 @@ final class JoinFlowTest extends BrowserTestBase {
             'token' => self::SECRET,
           ],
           'relationships' => [
-            'room' => ['data' => ['type' => 'fun_room--fun_room', 'id' => $room->uuid()]],
+            'room' => ['data' => ['type' => 'node--room', 'id' => $room->uuid()]],
           ],
         ],
       ], JSON_THROW_ON_ERROR),
@@ -87,19 +105,35 @@ final class JoinFlowTest extends BrowserTestBase {
   }
 
   /**
-   * Rooms are found by code, with the stored uppercase form.
+   * Rooms are found by code, stored uppercase, and served under /room/.
    */
   public function testRoomLookupByCode(): void {
-    $response = $this->request('GET', '/jsonapi/fun_room/fun_room', [RequestOptions::QUERY => ['filter[code]' => 'NED-4261']]);
+    $response = $this->request('GET', '/jsonapi/node/room', [RequestOptions::QUERY => ['filter[title]' => 'NED-4261']]);
     $this->assertSame(200, $response->getStatusCode(), substr((string) $response->getBody(), 0, 500));
     $found = json_decode((string) $response->getBody(), TRUE, 512, JSON_THROW_ON_ERROR);
     $this->assertCount(1, $found['data']);
-    $this->assertSame('open', $found['data'][0]['attributes']['status']);
+    $attributes = $found['data'][0]['attributes'];
+    $this->assertSame('NED-4261', $attributes['title']);
+    $this->assertSame('open', $attributes['field_status']);
+    $this->assertSame('/room/ned-4261', $attributes['path']['alias']);
 
-    $response = $this->request('GET', '/jsonapi/fun_room/fun_room', [RequestOptions::QUERY => ['filter[code]' => 'NOPE']]);
+    $response = $this->request('GET', '/jsonapi/node/room', [RequestOptions::QUERY => ['filter[title]' => 'NOPE']]);
     $this->assertSame(200, $response->getStatusCode(), substr((string) $response->getBody(), 0, 500));
     $missing = json_decode((string) $response->getBody(), TRUE, 512, JSON_THROW_ON_ERROR);
     $this->assertSame([], $missing['data']);
+  }
+
+  /**
+   * A room code must be unique among rooms, ignoring case.
+   */
+  public function testDuplicateRoomCodeIsRejected(): void {
+    $duplicate = Node::create(['type' => 'room', 'title' => 'Ned-4261', 'status' => 1, 'field_status' => 'open']);
+    $violations = $duplicate->validate();
+    $this->assertCount(1, $violations);
+    $this->assertSame('title', $violations[0]->getPropertyPath());
+
+    // Editing the existing room is not a duplicate of itself.
+    $this->assertCount(0, $this->room->validate());
   }
 
   /**
@@ -120,6 +154,7 @@ final class JoinFlowTest extends BrowserTestBase {
     $this->assertSame(hash('sha256', self::SECRET), $participant->get('token_hash')->value);
     $this->assertEmpty($participant->get('token')->value);
     $this->assertSame('Sam', $participant->get('name')->value);
+    $this->assertSame((int) $this->room->id(), (int) $participant->get('room')->target_id);
   }
 
   /**
@@ -157,7 +192,7 @@ final class JoinFlowTest extends BrowserTestBase {
    * Nobody can join a closed room.
    */
   public function testClosedRoomRejectsJoin(): void {
-    $this->room->set('status', 'closed')->save();
+    $this->room->set('field_status', 'closed')->save();
     $response = $this->request('POST', '/jsonapi/fun_participant/fun_participant', $this->joinBody($this->room));
     $this->assertSame(422, $response->getStatusCode());
     $errors = json_decode((string) $response->getBody(), TRUE, 512, JSON_THROW_ON_ERROR)['errors'];
@@ -183,10 +218,19 @@ final class JoinFlowTest extends BrowserTestBase {
       ]], JSON_THROW_ON_ERROR),
     ]);
     $this->assertSame(403, $patch->getStatusCode());
-    $this->assertSame(403, $this->request('POST', '/jsonapi/fun_room/fun_room', [
+
+    // Rooms are public to read but nobody anonymous can create or change one.
+    $this->assertSame(403, $this->request('POST', '/jsonapi/node/room', [
       RequestOptions::BODY => json_encode(['data' => [
-        'type' => 'fun_room--fun_room',
-        'attributes' => ['code' => 'EVIL-1'],
+        'type' => 'node--room',
+        'attributes' => ['title' => 'EVIL-1'],
+      ]], JSON_THROW_ON_ERROR),
+    ])->getStatusCode());
+    $this->assertSame(403, $this->request('PATCH', '/jsonapi/node/room/' . $this->room->uuid(), [
+      RequestOptions::BODY => json_encode(['data' => [
+        'type' => 'node--room',
+        'id' => $this->room->uuid(),
+        'attributes' => ['field_status' => 'closed'],
       ]], JSON_THROW_ON_ERROR),
     ])->getStatusCode());
 

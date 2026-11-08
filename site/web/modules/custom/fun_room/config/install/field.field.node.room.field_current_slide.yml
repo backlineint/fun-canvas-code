@@ -1,0 +1,32 @@
+# Depends on every field storage, not only its own, so Drupal creates all of them
+# before any instance. Otherwise an instance created after a later storage fails
+# with "field storage does not exist" while this module installs.
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - fun_room
+  config:
+    - field.storage.node.field_current_slide
+    - field.storage.node.field_current_slide_id
+    - field.storage.node.field_status
+    - node.type.room
+id: node.room.field_current_slide
+field_name: field_current_slide
+entity_type: node
+bundle: room
+label: 'Current slide (index)'
+description: 'Zero-based index reported by the slide deck.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

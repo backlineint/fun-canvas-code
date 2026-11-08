@@ -1,0 +1,42 @@
+name: Room
+machineName: room
+status: true
+required:
+  - code
+  - status
+props:
+  properties:
+    code:
+      title: Code
+      description: The room code, such as NED-4261.
+      type: string
+      examples:
+        - NED-4261
+    status:
+      title: Status
+      description: The room's status, open or closed.
+      type: string
+      examples:
+        - open
+    currentSlide:
+      title: Current slide
+      description: Zero-based index of the slide being shown.
+      type: integer
+      examples:
+        - 0
+    pollMs:
+      title: Poll ms
+      description:
+        How often to refresh the room, in milliseconds. 0 turns polling off.
+      type: integer
+      examples:
+        - 2000
+slots:
+  swarm:
+    title: Swarm
+  slider:
+    title: Slider
+  requests:
+    title: Requests
+  comments:
+    title: Comments

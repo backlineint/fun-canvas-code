@@ -18,8 +18,9 @@ local Drupal site instead, set `VITE_ROOM_API` to the site origin:
 VITE_ROOM_API=https://fun-canvas-code.ddev.site pnpm dev
 ```
 
-The site must have the module enabled, a room created, and CORS allowed for
-localhost. Those steps are in
+The prototype only covers the join flow, so unlike the Canvas component it does
+not redirect to a room page after joining. The site must have the module
+enabled, a room created, and CORS allowed for localhost. Those steps are in
 [`site/web/modules/custom/fun_room/README.md`](../site/web/modules/custom/fun_room/README.md).
 
 ## Port rules

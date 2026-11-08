@@ -12,6 +12,8 @@ export type Room = {
   status: 'open' | 'closed';
   /** Zero-based slide index, as reported by the deck. Show it as index + 1. */
   currentSlide: number;
+  /** The room page's path: its alias, such as /room/ned-4261, else /node/{nid}. */
+  path: string;
 };
 
 export type Profile = {
@@ -27,19 +29,31 @@ export type JoinResult = {
 const API = (import.meta.env.VITE_ROOM_API as string | undefined)?.replace(/\/+$/, '');
 
 const STUB_ROOMS: Record<string, Room> = {
-  'NED-4261': { id: 'stub-room', code: 'NED-4261', status: 'open', currentSlide: 4 },
+  'NED-4261': { id: 'stub-room', code: 'NED-4261', status: 'open', currentSlide: 4, path: '/room/ned-4261' },
 };
 
 const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
-const ROOM_TYPE = 'fun_room--fun_room';
+const ROOM_TYPE = 'node--room';
 const PARTICIPANT_TYPE = 'fun_participant--fun_participant';
 
 type Resource = { id: string; attributes: Record<string, unknown> };
 
+// A room is a node of type `room`; its title is the room code.
+function toRoom({ id, attributes }: Resource): Room {
+  const alias = (attributes.path as { alias?: string } | null)?.alias;
+  return {
+    id,
+    code: String(attributes.title),
+    status: attributes.field_status === 'closed' ? 'closed' : 'open',
+    currentSlide: Number(attributes.field_current_slide ?? 0),
+    path: alias || `/node/${String(attributes.drupal_internal__nid)}`,
+  };
+}
+
 async function getRoomFromSite(code: string): Promise<Room> {
-  const query = new URLSearchParams({ 'filter[code]': code.trim().toUpperCase() });
-  const response = await fetch(`${API}/jsonapi/fun_room/fun_room?${query}`, {
+  const query = new URLSearchParams({ 'filter[title]': code.trim().toUpperCase() });
+  const response = await fetch(`${API}/jsonapi/node/room?${query}`, {
     headers: { Accept: 'application/vnd.api+json' },
   });
   if (!response.ok) throw new Error('unavailable');
@@ -47,13 +61,7 @@ async function getRoomFromSite(code: string): Promise<Room> {
   const { data } = (await response.json()) as { data: Resource[] };
   if (data.length === 0) throw new Error('not_found');
 
-  const [resource] = data;
-  const room: Room = {
-    id: resource.id,
-    code: String(resource.attributes.code),
-    status: resource.attributes.status === 'closed' ? 'closed' : 'open',
-    currentSlide: Number(resource.attributes.current_slide ?? 0),
-  };
+  const room = toRoom(data[0]);
   if (room.status === 'closed') throw new Error('closed');
   return room;
 }

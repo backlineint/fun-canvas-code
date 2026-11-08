@@ -6,34 +6,48 @@ namespace Drupal\fun_room\Hook;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\node\NodeInterface;
 
 /**
- * Access rules for the JSON:API surface of rooms and participants.
+ * Hooks for rooms (a node type) and participants.
  */
 final class FunRoomHooks {
 
   /**
-   * Implements hook_jsonapi_ENTITY_TYPE_filter_access() for rooms.
+   * Implements hook_entity_type_alter().
    *
-   * JSON:API cannot check access after a filtered query runs, so without this
-   * a filtered request (such as filter[code]=...) returns nothing for anyone
-   * lacking admin access. Rooms are public. Participants declare nothing, so
-   * filtering them stays admin-only.
+   * Adds the unique room code check to nodes; it only applies to rooms.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeInterface[] $entity_types
+   *   The entity types.
    */
-  #[Hook('jsonapi_fun_room_filter_access')]
-  public function roomFilterAccess(EntityTypeInterface $entity_type, AccountInterface $account): array {
-    return [
-      JSONAPI_FILTER_AMONG_ALL => AccessResult::allowed(),
-    ];
+  #[Hook('entity_type_alter')]
+  public function entityTypeAlter(array &$entity_types): void {
+    if (isset($entity_types['node'])) {
+      $entity_types['node']->addConstraint('FunRoomUniqueCode');
+    }
+  }
+
+  /**
+   * Implements hook_ENTITY_TYPE_presave() for nodes.
+   *
+   * Room codes are stored trimmed and uppercase, like the codes attendees type.
+   */
+  #[Hook('node_presave')]
+  public function nodePresave(NodeInterface $node): void {
+    if ($node->bundle() === 'room') {
+      $node->setTitle(strtoupper(trim((string) $node->label())));
+    }
   }
 
   /**
    * Implements hook_entity_field_access().
+   *
+   * Hides participant token fields from API readers.
    */
   #[Hook('entity_field_access')]
   public function entityFieldAccess(string $operation, FieldDefinitionInterface $field_definition, AccountInterface $account, ?FieldItemListInterface $items = NULL): AccessResultInterface {

@@ -67,7 +67,9 @@ class FunParticipant extends ContentEntityBase {
     $fields['room'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(new TranslatableMarkup('Room'))
       ->setRequired(TRUE)
-      ->setSetting('target_type', 'fun_room');
+      ->setSetting('target_type', 'node')
+      ->setSetting('handler', 'default:node')
+      ->setSetting('handler_settings', ['target_bundles' => ['room' => 'room']]);
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Name'))

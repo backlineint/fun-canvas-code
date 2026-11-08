@@ -69,7 +69,7 @@ final class FunParticipantListBuilder extends EntityListBuilder {
       'name' => $entity->get('name')->value,
       // Avatars are indexes into the join UI's set of six, shown as 1 to 6.
       'avatar' => (int) $entity->get('avatar')->value + 1,
-      'room' => $room ? $room->get('code')->value : '',
+      'room' => $room ? $room->label() : '',
       'created' => $this->dateFormatter->format((int) $entity->get('created')->value, 'short'),
     ] + parent::buildRow($entity);
   }

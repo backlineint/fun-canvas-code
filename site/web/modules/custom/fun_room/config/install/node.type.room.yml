@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - fun_room
+name: Room
+type: room
+description: 'A Fun-o-Meter room. The title is the room code attendees enter to join.'
+help: ''
+new_revision: false
+preview_mode: 0
+display_submitted: false

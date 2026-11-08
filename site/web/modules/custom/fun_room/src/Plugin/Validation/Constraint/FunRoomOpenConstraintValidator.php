@@ -21,7 +21,7 @@ final class FunRoomOpenConstraintValidator extends ConstraintValidator {
       return;
     }
     $room = $entity->get('room')->entity;
-    if ($room !== NULL && $room->get('status')->value !== 'open') {
+    if ($room !== NULL && $room->hasField('field_status') && $room->get('field_status')->value !== 'open') {
       assert($constraint instanceof FunRoomOpenConstraint);
       // Point at the room relationship so clients can tell this apart from a
       // bad name or avatar.

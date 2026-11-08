@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getRoom, join } from '@/lib/fun-room-api';
+import { clearJoined, readJoined, saveJoined } from '@/lib/fun-room-session';
 import { useJsonApiClient } from 'drupal-canvas/react';
 import type { JoinResult, Room } from '@/lib/fun-room-api';
 
@@ -108,6 +109,18 @@ const lead = 'm-0 text-lg leading-snug lg:text-xl';
 const stack = 'flex flex-1 flex-col lg:flex-none';
 const spacer = 'flex-1 lg:hidden';
 
+// Only navigate when this is the page itself. Previews (Workbench, the Canvas
+// editor) render components in an iframe, where leaving would break the preview.
+const canNavigate = () =>
+  typeof window !== 'undefined' && window.self === window.top;
+
+// Room paths come from the server or from storage, so only follow same-site ones.
+const goTo = (path: string) => {
+  if (path.startsWith('/') && !path.startsWith('//')) {
+    window.location.assign(path);
+  }
+};
+
 export default function Join({
   tour = DEFAULT_TOUR,
   avatars = DEFAULT_AVATARS,
@@ -121,6 +134,36 @@ export default function Join({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [room, setRoom] = useState<Room | null>(null);
+  // A returning visitor goes straight to their room, so skip the tour flash.
+  const [redirecting, setRedirecting] = useState(
+    () => canNavigate() && readJoined() !== null,
+  );
+
+  useEffect(() => {
+    const joined = readJoined();
+    if (joined && canNavigate()) {
+      if (!client) {
+        goTo(joined.roomPath);
+        return;
+      }
+      getRoom(client, joined.roomCode)
+        .then(() => goTo(joined.roomPath))
+        .catch((e) => {
+          // A room that is gone or closed is no place to send them; start over.
+          const reason = e instanceof Error ? e.message : '';
+          if (reason === 'closed' || reason === 'not_found') clearJoined();
+          setRedirecting(false);
+        });
+      return;
+    }
+
+    // A link such as /?code=NED-4261 (from a room page) pre-fills the code.
+    const prefilled = new URLSearchParams(window.location.search).get('code');
+    if (prefilled) {
+      setCode(prefilled.toUpperCase());
+      setStep(3);
+    }
+  }, [client]);
 
   const codeReady = code.trim().length >= 4;
   const nameReady = name.trim().length > 0;
@@ -152,17 +195,18 @@ export default function Join({
     setError('');
     try {
       const result = await join(client, code, { name: name.trim(), avatar });
-      try {
-        localStorage.setItem(
-          'fun-o-meter:participant',
-          JSON.stringify(result.participant),
-        );
-      } catch {
-        // storage can be blocked; the session still works without it
-      }
+      saveJoined({
+        participant: result.participant,
+        roomCode: result.room.code,
+        roomPath: result.room.path,
+      });
       setRoom(result.room);
       setStep(5);
       if (onJoined) onJoined(result);
+      if (canNavigate()) {
+        setRedirecting(true);
+        goTo(result.room.path);
+      }
     } catch (e) {
       const reason = e instanceof Error ? e.message : '';
       setError(
@@ -175,6 +219,19 @@ export default function Join({
     } finally {
       setBusy(false);
     }
+  }
+
+  if (redirecting) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center bg-cream px-6 font-sans text-ink">
+        <p
+          role="status"
+          className="m-0 text-center font-display text-3xl font-extrabold"
+        >
+          Taking you to your room...
+        </p>
+      </div>
+    );
   }
 
   const card = tour[Math.min(step, tour.length - 1)];
@@ -374,6 +431,7 @@ export default function Join({
               type="button"
               className="min-h-11 text-[15px] font-bold underline"
               onClick={() => {
+                clearJoined();
                 setStep(0);
                 setError('');
               }}

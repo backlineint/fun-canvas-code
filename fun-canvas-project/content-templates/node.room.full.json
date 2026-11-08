@@ -1,0 +1,59 @@
+{
+  "label": "Room — Full content",
+  "entityType": "node",
+  "bundle": "room",
+  "viewMode": "full",
+  "elements": {
+    "room": {
+      "type": "js.room",
+      "props": {
+        "code": {
+          "sourceType": "entity-field",
+          "expression": "ℹ︎␜entity:node:room␝title␞␟value"
+        },
+        "status": {
+          "sourceType": "entity-field",
+          "expression": "ℹ︎␜entity:node:room␝field_status␞␟label"
+        },
+        "currentSlide": {
+          "sourceType": "entity-field",
+          "expression": "ℹ︎␜entity:node:room␝field_current_slide␞␟value"
+        }
+      },
+      "slots": {
+        "swarm": ["swarm"],
+        "slider": ["slider"],
+        "requests": ["requests"],
+        "comments": ["comments"]
+      }
+    },
+    "swarm": {
+      "type": "js.placeholder",
+      "props": {
+        "title": "Swarm",
+        "description": "Everyone in the room as a dot on a fun scale."
+      }
+    },
+    "slider": {
+      "type": "js.placeholder",
+      "props": {
+        "title": "Fun slider",
+        "description": "Move your dot to show how much fun you are having."
+      }
+    },
+    "requests": {
+      "type": "js.placeholder",
+      "props": {
+        "title": "Requests",
+        "description": "Ask for a party hat, a noise maker or candy."
+      }
+    },
+    "comments": {
+      "type": "js.placeholder",
+      "props": {
+        "title": "Comments",
+        "description": "Say something to the room."
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - fun_room
+  config:
+    - field.field.node.room.field_current_slide
+    - field.field.node.room.field_current_slide_id
+    - field.field.node.room.field_status
+    - node.type.room
+  module:
+    - path
+id: node.room.default
+targetEntityType: node
+bundle: room
+mode: default
+content:
+  field_current_slide:
+    type: number
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_current_slide_id:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_status:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 100
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  promote: true
+  sticky: true
+  uid: true

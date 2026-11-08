@@ -1,0 +1,10 @@
+{
+  "mocks": [
+    {
+      "name": "Without description",
+      "props": {
+        "title": "Comments"
+      }
+    }
+  ]
+}
