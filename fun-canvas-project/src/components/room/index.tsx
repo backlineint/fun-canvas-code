@@ -1,6 +1,6 @@
-import { useSyncExternalStore } from 'react';
 import { fetchRoom } from '@/lib/fun-room-api';
-import { readJoined } from '@/lib/fun-room-session';
+import { avatarAt, Face } from '@/lib/fun-room-avatars';
+import { useJoined } from '@/lib/fun-room-session';
 import { cn } from 'drupal-canvas';
 import { useJsonApiClient, usePageContext } from 'drupal-canvas/react';
 import useSWR from 'swr';
@@ -18,13 +18,6 @@ type RoomProps = {
   comments?: ReactNode;
   className?: string;
 };
-
-// Re-checks whether this browser joined the room when storage changes (for
-// example after joining in another tab).
-function subscribeToStorage(onChange: () => void) {
-  window.addEventListener('storage', onChange);
-  return () => window.removeEventListener('storage', onChange);
-}
 
 // The room page, used as the one Canvas template for every room node. The
 // template's entity-field props paint the first render; on a real room page the
@@ -59,18 +52,15 @@ export default function Room({
   };
   const isOpen = view.status.toLowerCase() !== 'closed';
 
-  // Someone who arrives by a shared link or QR code has not joined this room in
-  // this browser yet; point them at the join flow with the code filled in.
-  const joinedHere = useSyncExternalStore(
-    subscribeToStorage,
-    () => {
-      const joined = readJoined();
-      return (
-        joined !== null && joined.roomCode.toUpperCase() === code.toUpperCase()
-      );
-    },
-    () => true,
-  );
+  // Who this browser joined as. `joined` is undefined until the browser has been
+  // asked, so nothing flashes on the first paint. Someone who arrives by a shared
+  // link or QR code has not joined this room here yet; they get a link to the
+  // join flow with the code filled in instead of a name.
+  const joined = useJoined();
+  const me =
+    joined && joined.roomCode.toUpperCase() === code.toUpperCase()
+      ? joined.participant
+      : null;
 
   return (
     <div
@@ -80,8 +70,17 @@ export default function Room({
       )}
     >
       <header className="flex flex-col gap-3">
-        <div className="text-[13px] font-bold tracking-[0.12em] uppercase">
-          Room
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-[13px] font-bold tracking-[0.12em] uppercase">
+            Room
+          </div>
+          {me ? (
+            <div className="flex min-w-0 items-center gap-2 rounded-full bg-white py-1 pr-4 pl-1 text-sm font-bold">
+              <Face avatar={avatarAt(me.avatar)} size={32} />
+              <span className="sr-only">Joined as </span>
+              <span className="truncate">{me.name}</span>
+            </div>
+          ) : null}
         </div>
         <div className="flex items-center justify-between gap-3">
           <h1 className="m-0 font-display text-5xl leading-none font-extrabold">
@@ -107,14 +106,14 @@ export default function Room({
         ) : null}
       </header>
 
-      {joinedHere ? null : (
+      {joined !== undefined && !me ? (
         <a
           href={`/?code=${encodeURIComponent(view.code)}`}
           className="rounded-2xl bg-ink px-5 py-4 text-center text-lg font-bold text-white no-underline"
         >
           Join this room
         </a>
-      )}
+      ) : null}
 
       {swarm}
       {slider}

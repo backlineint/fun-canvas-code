@@ -1,8 +1,9 @@
 // What this browser remembers about the room it joined, so the home page can
-// send a returning visitor straight to their room. Storage can be blocked
-// (private windows, site settings), so every access is guarded and the app works
-// without it.
+// send a returning visitor straight to their room and the room page can show who
+// they are. Storage can be blocked (private windows, site settings), so every
+// access is guarded and the app works without it.
 
+import { useMemo, useSyncExternalStore } from 'react';
 import type { Profile } from '@/lib/fun-room-api';
 
 export type Joined = {
@@ -14,10 +15,9 @@ export type Joined = {
 
 const KEY = 'fun-o-meter:joined';
 
-export function readJoined(): Joined | null {
+function parse(raw: string | null): Joined | null {
+  if (!raw) return null;
   try {
-    const raw = localStorage.getItem(KEY);
-    if (!raw) return null;
     const value = JSON.parse(raw) as Partial<Joined> | null;
     return value &&
       value.participant &&
@@ -28,6 +28,18 @@ export function readJoined(): Joined | null {
   } catch {
     return null;
   }
+}
+
+function readRaw(): string | null {
+  try {
+    return localStorage.getItem(KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function readJoined(): Joined | null {
+  return parse(readRaw());
 }
 
 export function saveJoined(joined: Joined): void {
@@ -44,4 +56,26 @@ export function clearJoined(): void {
   } catch {
     // nothing to clear if storage is unavailable
   }
+}
+
+// Marks "not read yet" for the server render, which has no storage.
+const PENDING = 'pending';
+
+function subscribe(onChange: () => void) {
+  window.addEventListener('storage', onChange);
+  return () => window.removeEventListener('storage', onChange);
+}
+
+/**
+ * The stored join, kept current when storage changes in another tab.
+ * Returns `undefined` until the browser has been asked (the server render and
+ * the first paint), then the join or `null` when there is none.
+ */
+export function useJoined(): Joined | null | undefined {
+  const raw = useSyncExternalStore(
+    subscribe,
+    () => readRaw() ?? '',
+    () => PENDING,
+  );
+  return useMemo(() => (raw === PENDING ? undefined : parse(raw)), [raw]);
 }

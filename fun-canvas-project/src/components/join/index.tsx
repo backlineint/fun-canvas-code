@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react';
 import { getRoom, join } from '@/lib/fun-room-api';
+import { AVATARS, Face } from '@/lib/fun-room-avatars';
 import { clearJoined, readJoined, saveJoined } from '@/lib/fun-room-session';
 import { useJsonApiClient } from 'drupal-canvas/react';
 import type { JoinResult, Room } from '@/lib/fun-room-api';
+import type { Avatar } from '@/lib/fun-room-avatars';
 
 type TourStep = {
   title: string;
   body: string;
   bg: string;
-};
-
-type Avatar = {
-  bg: string;
-  mouth: string;
 };
 
 type JoinProps = {
@@ -39,15 +36,6 @@ const DEFAULT_TOUR = [
   },
 ];
 
-const DEFAULT_AVATARS = [
-  { bg: '#FF5C4D', mouth: 'M 12 26 Q 20 33 28 26' },
-  { bg: '#FFD84D', mouth: 'M 12 28 L 28 28' },
-  { bg: '#3B5BFF', mouth: 'M 11 25 Q 20 37 29 25 Z' },
-  { bg: '#7FD6A8', mouth: 'M 12 28 Q 20 24 28 28' },
-  { bg: '#C9B6FF', mouth: 'M 13 27 Q 20 32 27 27' },
-  { bg: '#FFB4A8', mouth: 'M 12 25 Q 20 35 28 25' },
-];
-
 const STEP_LABELS = [
   'Quick tour · 1 of 3',
   'Quick tour · 2 of 3',
@@ -56,23 +44,6 @@ const STEP_LABELS = [
   'Step 2 of 2',
   'Joined',
 ];
-
-function Face({ avatar, size }: { avatar: Avatar; size: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 40 40" aria-hidden="true">
-      <circle cx="20" cy="20" r="20" fill={avatar.bg} />
-      <circle cx="14" cy="16" r="2.5" fill="#17163A" />
-      <circle cx="26" cy="16" r="2.5" fill="#17163A" />
-      <path
-        d={avatar.mouth}
-        stroke="#17163A"
-        strokeWidth="2.5"
-        fill="none"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
 
 function Dots({ step, count }: { step: number; count: number }) {
   return (
@@ -123,7 +94,7 @@ const goTo = (path: string) => {
 
 export default function Join({
   tour = DEFAULT_TOUR,
-  avatars = DEFAULT_AVATARS,
+  avatars = AVATARS,
   onJoined,
 }: JoinProps) {
   const client = useJsonApiClient();
