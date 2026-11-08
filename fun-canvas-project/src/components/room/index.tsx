@@ -63,81 +63,94 @@ export default function Room({
       ? joined.participant
       : null;
 
-  // On phones this is one column. From the lg breakpoint the header becomes a
-  // full-height panel that stays put on the left, and the feature slots fill a
-  // two-column grid on the right.
+  // On phones this is one column: the header, then the slots in order. From the
+  // lg breakpoint it follows the presenter screen: a main column (the room
+  // header and slide bar, the swarm filling the height, the slider under it)
+  // beside a 360px sidebar (requests, then comments filling the rest). On
+  // phones the two column wrappers use `contents`, so their children flow as
+  // one column in the same order.
   return (
     <div
       className={cn(
-        'min-h-dvh bg-cream font-sans text-ink lg:grid lg:grid-cols-[5fr_7fr]',
+        'mx-auto flex min-h-dvh w-full max-w-[480px] flex-col gap-5 bg-cream px-6 py-7 font-sans text-ink lg:max-w-[1600px] lg:flex-row lg:gap-7 lg:p-8',
         className,
       )}
     >
-      <header className="mx-auto flex w-full max-w-[480px] flex-col gap-3 px-6 pt-7 lg:sticky lg:top-0 lg:mx-0 lg:h-dvh lg:max-w-none lg:justify-center lg:gap-6 lg:bg-sun lg:px-12 lg:py-16">
-        <div className="flex items-center justify-between gap-3">
-          <div className="text-[13px] font-bold tracking-[0.12em] uppercase">
-            Room
-          </div>
-          {me ? (
-            <div className="flex min-w-0 items-center gap-2 rounded-full bg-white py-1 pr-4 pl-1 text-sm font-bold">
-              <Face avatar={avatarAt(me.avatar)} size={32} />
-              <span className="sr-only">Joined as </span>
-              <span className="truncate">{me.name}</span>
+      <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:flex-col lg:gap-4">
+        <header className="flex flex-col gap-3 lg:grid lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-4">
+          <div className="flex items-center justify-between gap-3 lg:contents">
+            <div className="text-[13px] font-bold tracking-[0.12em] uppercase lg:col-start-1 lg:row-start-1">
+              Room
             </div>
-          ) : null}
-        </div>
-        <div className="flex items-center justify-between gap-3 lg:flex-col lg:items-start lg:gap-5">
-          <h1 className="m-0 font-display text-5xl leading-none font-extrabold [overflow-wrap:anywhere] lg:text-7xl">
-            {view.code}
-          </h1>
-          <span
-            className={cn(
-              'rounded-full px-4 py-2 text-sm font-bold lg:px-5 lg:py-2.5 lg:text-base',
-              isOpen
-                ? 'bg-sun text-ink lg:bg-ink lg:text-sun'
-                : 'bg-ink text-white lg:bg-white lg:text-ink',
-            )}
-          >
-            {isOpen ? 'Open' : 'Closed'}
-          </span>
-        </div>
-        <p className="m-0 text-lg lg:text-2xl">
-          Now on slide{' '}
-          <span className="font-bold">{view.currentSlide + 1}</span>
-        </p>
-        {error ? (
-          <p role="status" className="m-0 text-sm font-bold">
-            We can&apos;t reach the room right now. Retrying.
+            {me ? (
+              <div className="flex min-w-0 items-center gap-2 rounded-full bg-white py-1 pr-4 pl-1 text-sm font-bold lg:col-start-3 lg:row-start-1">
+                <Face avatar={avatarAt(me.avatar)} size={32} />
+                <span className="sr-only">Joined as </span>
+                <span className="truncate">{me.name}</span>
+              </div>
+            ) : null}
+          </div>
+          <div className="flex items-center justify-between gap-3 lg:col-start-2 lg:row-start-1 lg:justify-start lg:gap-4">
+            <h1 className="m-0 font-display text-5xl leading-none font-extrabold [overflow-wrap:anywhere] lg:text-4xl">
+              {view.code}
+            </h1>
+            <span
+              className={cn(
+                'rounded-full px-4 py-2 text-sm font-bold',
+                isOpen ? 'bg-sun text-ink' : 'bg-ink text-white',
+              )}
+            >
+              {isOpen ? 'Open' : 'Closed'}
+            </span>
+          </div>
+          <p className="m-0 text-lg lg:col-span-3 lg:rounded-3xl lg:bg-ink lg:px-6 lg:py-4 lg:text-white">
+            <span className="hidden text-[13px] font-bold tracking-[0.1em] uppercase lg:block">
+              Now showing
+            </span>
+            <span className="lg:font-display lg:text-3xl lg:font-extrabold">
+              <span className="lg:hidden">Now on </span>
+              <span className="lg:capitalize">slide</span>{' '}
+              <span className="font-bold">{view.currentSlide + 1}</span>
+            </span>
           </p>
-        ) : null}
-      </header>
+          {error ? (
+            <p role="status" className="m-0 text-sm font-bold lg:col-span-3">
+              We can&apos;t reach the room right now. Retrying.
+            </p>
+          ) : null}
+        </header>
 
-      <div className="mx-auto flex w-full max-w-[480px] flex-col gap-5 px-6 pt-5 pb-7 lg:grid lg:max-w-3xl lg:grid-cols-2 lg:content-start lg:gap-6 lg:px-12 lg:py-16">
         {joined !== undefined && !me ? (
           <a
             href={`/?code=${encodeURIComponent(view.code)}`}
-            className="rounded-2xl bg-ink px-5 py-4 text-center text-lg font-bold text-white no-underline lg:col-span-2"
+            className="rounded-2xl bg-ink px-5 py-4 text-center text-lg font-bold text-white no-underline"
           >
             Join this room
           </a>
         ) : null}
 
-        <Slot wide>{swarm}</Slot>
+        <Slot grow>{swarm}</Slot>
         <Slot>{slider}</Slot>
+      </div>
+
+      <div className="contents lg:flex lg:w-[360px] lg:shrink-0 lg:flex-col lg:gap-4">
         <Slot>{requests}</Slot>
-        <Slot wide>{comments}</Slot>
+        <Slot grow>{comments}</Slot>
       </div>
     </div>
   );
 }
 
-// One cell of the wide layout's grid. Renders nothing for an empty slot, so an
-// unused slot leaves no gap. The cell is itself a grid so its content stretches
-// to the row's height (Canvas wraps slot content in display: contents elements,
-// so the content sits directly in this cell's grid).
-function Slot({ children, wide }: { children?: ReactNode; wide?: boolean }) {
+// One cell of the wide layout. Renders nothing for an empty slot, so an unused
+// slot leaves no gap. `grow` makes it take the column's remaining height. The
+// cell is itself a grid so its content stretches to the cell's height (Canvas
+// wraps slot content in display: contents elements, so the content sits
+// directly in this cell's grid).
+function Slot({ children, grow }: { children?: ReactNode; grow?: boolean }) {
   if (Children.toArray(children).length === 0) return null;
   return (
-    <div className={cn('lg:grid', wide && 'lg:col-span-2')}>{children}</div>
+    <div className={cn('lg:grid', grow && 'lg:min-h-64 lg:flex-1')}>
+      {children}
+    </div>
   );
 }
