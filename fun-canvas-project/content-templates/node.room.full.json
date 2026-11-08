@@ -18,6 +18,10 @@
         "currentSlide": {
           "sourceType": "entity-field",
           "expression": "ℹ︎␜entity:node:room␝field_current_slide␞␟value"
+        },
+        "slideTitle": {
+          "sourceType": "entity-field",
+          "expression": "ℹ︎␜entity:node:room␝field_current_slide_title␞␟value"
         }
       },
       "slots": {

@@ -12,6 +12,7 @@ type RoomProps = {
   /** "open" or "closed". The template maps the field's label, so "Open" and "Closed" arrive too. */
   status: string;
   currentSlide?: number;
+  slideTitle?: string;
   pollMs?: number;
   swarm?: ReactNode;
   slider?: ReactNode;
@@ -29,6 +30,7 @@ export default function Room({
   code,
   status,
   currentSlide = 0,
+  slideTitle = '',
   pollMs = 2000,
   swarm,
   slider,
@@ -50,6 +52,8 @@ export default function Room({
     code: data?.code ?? code,
     status: data?.status ?? status,
     currentSlide: data?.currentSlide ?? currentSlide,
+    // Polled data is authoritative, so an empty polled title stays empty.
+    slideTitle: data?.slideTitle ?? slideTitle,
   };
   const isOpen = view.status.toLowerCase() !== 'closed';
 
@@ -111,6 +115,14 @@ export default function Room({
               <span className="lg:hidden">Now on </span>
               <span className="lg:capitalize">slide</span>{' '}
               <span className="font-bold">{view.currentSlide + 1}</span>
+              {view.slideTitle ? (
+                <>
+                  <span className="hidden lg:inline"> · </span>
+                  <span className="block font-bold [overflow-wrap:anywhere] lg:inline">
+                    {view.slideTitle}
+                  </span>
+                </>
+              ) : null}
             </span>
           </p>
           {error ? (

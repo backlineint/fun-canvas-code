@@ -5,7 +5,8 @@
       "props": {
         "code": "NED-4261",
         "status": "open",
-        "currentSlide": 4
+        "currentSlide": 4,
+        "slideTitle": "Live demo: the Swarm"
       },
       "slots": {
         "swarm": ["swarm-placeholder"],

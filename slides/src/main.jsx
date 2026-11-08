@@ -22,6 +22,19 @@ function report(slide, index) {
   });
 }
 
+// The room records activity against a slide id, so ids must be unique. Repeats
+// (a slide split into several sections, say) get a numeric suffix at runtime; the
+// slide index is always unique. Rename the ids in index.html to silence the warning.
+const seenIds = new Map();
+document.querySelectorAll('.slides > section[data-id]').forEach((section) => {
+  const id = section.dataset.id;
+  const count = (seenIds.get(id) ?? 0) + 1;
+  seenIds.set(id, count);
+  if (count > 1) section.dataset.id = `${id}-${count}`;
+});
+const repeated = [...seenIds].filter(([, count]) => count > 1).map(([id]) => id);
+if (repeated.length) console.warn('Repeated slide ids in index.html:', repeated.join(', '));
+
 const deck = new Reveal({ hash: true, width: 1280, height: 720, transition: 'fade' });
 
 deck.on('ready', (e) => report(e.currentSlide, e.indexh));

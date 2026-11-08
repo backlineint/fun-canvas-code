@@ -24,6 +24,12 @@ props:
       type: integer
       examples:
         - 0
+    slideTitle:
+      title: Slide title
+      description: The title of the slide being shown, as reported by the deck.
+      type: string
+      examples:
+        - 'Live demo: the Swarm'
     pollMs:
       title: Poll ms
       description:

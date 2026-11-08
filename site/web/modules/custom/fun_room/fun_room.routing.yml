@@ -1,0 +1,8 @@
+fun_room.presenter_slide:
+  path: '/api/fun/rooms/{code}/slide'
+  defaults:
+    _controller: 'Drupal\fun_room\Controller\PresenterController::slide'
+  methods: [POST]
+  requirements:
+    # Not session based: the controller checks the shared X-Presenter-Key.
+    _access: 'TRUE'

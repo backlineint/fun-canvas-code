@@ -7,6 +7,9 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+
 /**
  * Implements hook_install().
  */
@@ -31,5 +34,37 @@ function fun_room_install(): void {
         $workflow->save();
       }
     }
+  }
+}
+
+/**
+ * Adds the current slide title field to rooms.
+ *
+ * Config in config/install only applies when the module is first installed, so
+ * existing sites get the new field here.
+ */
+function fun_room_update_10001(): void {
+  $source = new FileStorage(\Drupal::service('extension.list.module')->getPath('fun_room') . '/config/install');
+  $config_manager = \Drupal::service('config.manager');
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  // The storage first, then the instance that uses it.
+  foreach (['field.storage.node.field_current_slide_title', 'field.field.node.room.field_current_slide_title'] as $name) {
+    if (!\Drupal::configFactory()->get($name)->isNew()) {
+      continue;
+    }
+    $entity_type_manager->getStorage($config_manager->getEntityTypeIdByName($name))
+      ->createFromStorageRecord($source->read($name))
+      ->save();
+  }
+
+  $display = EntityFormDisplay::load('node.room.default');
+  if ($display && !$display->getComponent('field_current_slide_title')) {
+    $display->setComponent('field_current_slide_title', [
+      'type' => 'string_textfield',
+      'weight' => 4,
+      'region' => 'content',
+      'settings' => ['size' => 60, 'placeholder' => ''],
+    ])->save();
   }
 }

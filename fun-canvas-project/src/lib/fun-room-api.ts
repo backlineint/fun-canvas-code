@@ -13,6 +13,8 @@ export type Room = {
   status: 'open' | 'closed';
   /** Zero-based slide index, as reported by the deck. Show it as index + 1. */
   currentSlide: number;
+  /** Title of the slide being shown, as reported by the deck (may be empty). */
+  slideTitle: string;
   /** The room page's path: its alias, such as /room/ned-4261, else /node/{nid}. */
   path: string;
 };
@@ -69,6 +71,7 @@ function toRoom(resource: Resource): Room {
     code: String(field(resource, 'title') ?? ''),
     status: field(resource, 'field_status') === 'closed' ? 'closed' : 'open',
     currentSlide: Number(field(resource, 'field_current_slide') ?? 0),
+    slideTitle: String(field(resource, 'field_current_slide_title') ?? ''),
     path:
       alias || `/node/${String(field(resource, 'drupal_internal__nid') ?? '')}`,
   };

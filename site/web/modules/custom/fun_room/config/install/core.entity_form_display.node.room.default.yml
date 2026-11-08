@@ -7,6 +7,7 @@ dependencies:
   config:
     - field.field.node.room.field_current_slide
     - field.field.node.room.field_current_slide_id
+    - field.field.node.room.field_current_slide_title
     - field.field.node.room.field_status
     - node.type.room
   module:
@@ -26,6 +27,14 @@ content:
   field_current_slide_id:
     type: string_textfield
     weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_current_slide_title:
+    type: string_textfield
+    weight: 4
     region: content
     settings:
       size: 60

@@ -9,8 +9,8 @@ Canvas template.
 
 - **Room** is a node of type `room`. The title is the room code (stored trimmed
   and uppercase, and unique among rooms). Fields: `field_status` (`open` or
-  `closed`), `field_current_slide` (zero-based index) and
-  `field_current_slide_id`. Pathauto serves each room at `/room/<code>`, for
+  `closed`), `field_current_slide` (zero-based index),
+  `field_current_slide_id` and `field_current_slide_title`. Pathauto serves each room at `/room/<code>`, for
   example `/room/ned-4261`. Rooms are not content-moderated; a room is just open
   or closed.
 - **Participant** (`fun_participant`, a custom entity): `room` (reference to a
@@ -51,7 +51,7 @@ Create `site/web/sites/default/services.yml` (it is gitignored by
 parameters:
   cors.config:
     enabled: true
-    allowedHeaders: ['Content-Type', 'Accept', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Presenter-Key']
     allowedMethods: ['GET', 'POST', 'OPTIONS']
     allowedOrigins: []
     allowedOriginsPatterns: ['#^http://localhost:\d+$#', '#^http://127\.0\.0\.1:\d+$#']
@@ -108,6 +108,56 @@ and `relationships.room` is the room's JSON:API `id` from the lookup above:
 | 422 | Invalid name, avatar or token, or the room is closed (pointer `/data/attributes/room`). |
 | 403 | Not allowed, for example reading or changing a participant anonymously, or creating a room. |
 | 429 | Too many joins from this IP. |
+
+## Presenter endpoint (live slide number)
+
+The slide deck tells a room which slide is showing, and the room page picks it up
+by polling. The deck runs in the presenter's browser, so there is no login; the
+request carries a shared secret instead.
+
+`POST /api/fun/rooms/{code}/slide` with `Content-Type: application/json` and the
+header `X-Presenter-Key: <key>`:
+
+```bash
+curl -sk -X POST https://fun-canvas-code.ddev.site/api/fun/rooms/NED-4261/slide \
+  -H 'Content-Type: application/json' -H "X-Presenter-Key: $KEY" \
+  -d '{"index": 4, "id": "swarm", "title": "Live demo: the Swarm"}'
+```
+
+`index` is the zero-based slide index (an integer, 0-999) and is required. `id` is
+the optional stable slide id (lowercase letters, digits, `-` and `_`, up to 64
+characters). `title` is the optional slide title shown in the room page's "Now
+showing" bar: plain text of at most 255 characters, with runs of whitespace
+collapsed to one space and no control characters. A report replaces all three, so
+leaving `id` or `title` out clears it. The code is matched case-insensitively, and
+a closed room can still be updated.
+
+| Result | Meaning |
+|---|---|
+| 200 | Updated; returns `{code, index, id, title}`. |
+| 400 | The body is not a JSON object. |
+| 403 | Missing or wrong key. |
+| 404 | No such room. |
+| 422 | Invalid `index`, `id` or `title`. |
+| 429 | Too many wrong keys from this IP (10 per 5 minutes). |
+| 503 | No presenter key is configured, so nothing can be changed. |
+
+### Setting the key
+
+The key is read from `$settings['fun_room_presenter_key']` if that is set (even to
+an empty string, which disables the endpoint), otherwise from the
+`FUN_ROOM_PRESENTER_KEY` environment variable. For local DDEV, add it to the
+git-ignored `site/.ddev/config.local.yaml` and `ddev restart`:
+
+```yaml
+web_environment:
+  - FUN_ROOM_PRESENTER_KEY=<a long random string, e.g. from `openssl rand -hex 16`>
+```
+
+Use the same value as `VITE_PRESENTER_KEY` in the deck's `slides/.env.local`. The
+deck is a different origin from the site, so its request needs a CORS preflight to
+pass: add `'X-Presenter-Key'` to `allowedHeaders` in `services.yml` (see "CORS for
+local clients" above).
 
 ## Managing rooms
 
