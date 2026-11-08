@@ -1,0 +1,8 @@
+administer fun_room:
+  title: 'Administer fun rooms'
+  description: 'Create, edit and close rooms, and view or remove participants.'
+  restrict access: true
+
+join fun room:
+  title: 'Join a fun room'
+  description: 'Create a participant (anonymous join) through JSON:API.'

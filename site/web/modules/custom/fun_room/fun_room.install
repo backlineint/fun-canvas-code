@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for the Fun room module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_install().
+ */
+function fun_room_install(): void {
+  // Core JSON:API is read-only by default; participants are created through it.
+  \Drupal::configFactory()
+    ->getEditable('jsonapi.settings')
+    ->set('read_only', FALSE)
+    ->save();
+
+  user_role_grant_permissions('anonymous', ['join fun room']);
+  user_role_grant_permissions('authenticated', ['join fun room']);
+}

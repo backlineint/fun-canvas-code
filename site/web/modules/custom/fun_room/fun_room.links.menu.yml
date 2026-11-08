@@ -1,0 +1,26 @@
+# Admin sidebar (Navigation module): its Content section is the `content` menu,
+# which core fills from a fixed list, so modules add themselves to it directly.
+# Participants are reached from the Rooms page through the tabs in
+# fun_room.links.task.yml rather than as a second top-level entry.
+fun_room.navigation.rooms:
+  title: 'Fun rooms'
+  route_name: entity.fun_room.collection
+  menu_name: content
+  weight: 5
+  options:
+    icon:
+      pack_id: navigation
+      icon_id: entity-user-collection
+
+# Classic admin menu (Drupal's `admin` menu, outside the Navigation sidebar).
+entity.fun_room.collection:
+  title: 'Fun rooms'
+  description: 'Create, close and review Fun-o-Meter rooms.'
+  route_name: entity.fun_room.collection
+  parent: system.admin_content
+
+entity.fun_participant.collection:
+  title: 'Fun participants'
+  description: 'See who joined each Fun-o-Meter room.'
+  route_name: entity.fun_participant.collection
+  parent: system.admin_content

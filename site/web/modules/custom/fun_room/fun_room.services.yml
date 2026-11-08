@@ -1,0 +1,6 @@
+services:
+  fun_room.join_flood_subscriber:
+    class: Drupal\fun_room\EventSubscriber\JoinFloodSubscriber
+    arguments: ['@flood']
+    tags:
+      - { name: event_subscriber }
