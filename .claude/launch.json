@@ -8,6 +8,20 @@
       "port": 5173
     },
     {
+      "name": "prototype-live",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "VITE_ROOM_API=https://fun-canvas-code.ddev.site",
+        "pnpm",
+        "--dir",
+        "prototype",
+        "dev",
+        "--port",
+        "5176"
+      ],
+      "port": 5176
+    },
+    {
       "name": "slides",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["--dir", "slides", "dev"],

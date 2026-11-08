@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { getRoom, join } from '@/lib/fun-room-api';
+import { useJsonApiClient } from 'drupal-canvas/react';
 import type { JoinResult, Room } from '@/lib/fun-room-api';
 
 type TourStep = {
@@ -112,6 +113,7 @@ export default function Join({
   avatars = DEFAULT_AVATARS,
   onJoined,
 }: JoinProps) {
+  const client = useJsonApiClient();
   const [step, setStep] = useState(0);
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
@@ -128,13 +130,16 @@ export default function Join({
     setBusy(true);
     setError('');
     try {
-      setRoom(await getRoom(code));
+      setRoom(await getRoom(client, code));
       setStep(4);
     } catch (e) {
+      const reason = e instanceof Error ? e.message : '';
       setError(
-        e instanceof Error && e.message === 'closed'
+        reason === 'closed'
           ? 'That room has closed.'
-          : "We couldn't find that room. Check the big screen.",
+          : reason === 'not_found'
+            ? "We couldn't find that room. Check the big screen."
+            : "We couldn't reach the room. Check your connection and try again.",
       );
     } finally {
       setBusy(false);
@@ -146,7 +151,7 @@ export default function Join({
     setBusy(true);
     setError('');
     try {
-      const result = await join(code, { name: name.trim(), avatar });
+      const result = await join(client, code, { name: name.trim(), avatar });
       try {
         localStorage.setItem(
           'fun-o-meter:participant',
@@ -158,8 +163,15 @@ export default function Join({
       setRoom(result.room);
       setStep(5);
       if (onJoined) onJoined(result);
-    } catch {
-      setError('Something went wrong joining. Try again.');
+    } catch (e) {
+      const reason = e instanceof Error ? e.message : '';
+      setError(
+        reason === 'closed'
+          ? 'That room has closed.'
+          : reason === 'rate_limited'
+            ? 'Too many people are joining from this network. Try again in a few minutes.'
+            : 'Something went wrong joining. Try again.',
+      );
     } finally {
       setBusy(false);
     }
@@ -239,14 +251,13 @@ export default function Join({
         {step === 3 && (
           <form
             className={`${stack} gap-5 lg:gap-6`}
-            onSubmit={(e) => {
-              e.preventDefault();
-              submitCode();
-            }}
+            // Native submission is blocked in sandboxed previews (no
+            // allow-forms), so Enter and the button call the handler directly.
+            onSubmit={(e) => e.preventDefault()}
           >
             <h1 className={heading}>Enter the room code</h1>
             <p className={lead}>
-              It's on the big screen at the front of the room.
+              It&apos;s on the big screen at the front of the room.
             </p>
             <label htmlFor="code" className="text-sm font-bold">
               Room code
@@ -259,6 +270,12 @@ export default function Join({
               onChange={(e) => {
                 setCode(e.currentTarget.value.toUpperCase());
                 setError('');
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  submitCode();
+                }
               }}
               aria-describedby={error ? 'code-error' : undefined}
               className={`${textInput} min-h-[72px] text-[32px] font-extrabold tracking-[0.08em] uppercase`}
@@ -274,7 +291,8 @@ export default function Join({
             )}
             <div className={spacer} />
             <button
-              type="submit"
+              type="button"
+              onClick={submitCode}
               disabled={!codeReady || busy}
               className={`${primaryBtn} ${codeReady && !busy ? 'bg-ink' : 'bg-muted'}`}
             >
@@ -286,10 +304,7 @@ export default function Join({
         {step === 4 && (
           <form
             className={`${stack} gap-3.5 lg:gap-5`}
-            onSubmit={(e) => {
-              e.preventDefault();
-              submitProfile();
-            }}
+            onSubmit={(e) => e.preventDefault()}
           >
             <h1 className={heading}>Who are you?</h1>
             <label htmlFor="nm" className="text-sm font-bold">
@@ -302,6 +317,12 @@ export default function Join({
               maxLength={30}
               value={name}
               onChange={(e) => setName(e.currentTarget.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  submitProfile();
+                }
+              }}
               className={`${textInput} min-h-14 text-[22px] font-bold`}
             />
             <div className="text-sm font-bold">Pick an avatar</div>
@@ -326,7 +347,8 @@ export default function Join({
             )}
             <div className={spacer} />
             <button
-              type="submit"
+              type="button"
+              onClick={submitProfile}
               disabled={!nameReady || busy}
               className={`${primaryBtn} ${nameReady && !busy ? 'bg-ink' : 'bg-muted'}`}
             >
@@ -340,10 +362,13 @@ export default function Join({
             <span className="lg:hidden">
               <Face avatar={avatars[avatar]} size={140} />
             </span>
-            <h1 className={heading}>You're in, {name.trim() || 'friend'}!</h1>
+            <h1 className={heading}>
+              You&apos;re in, {name.trim() || 'friend'}!
+            </h1>
             <p className={lead}>
               Room {room?.code ?? code} · the talk is on slide{' '}
-              {room?.currentSlide ?? '?'}. Your dot is on the swarm now.
+              {room ? room.currentSlide + 1 : '?'}. Your dot is on the swarm
+              now.
             </p>
             <button
               type="button"

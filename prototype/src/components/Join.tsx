@@ -111,7 +111,14 @@ export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, o
       setRoom(await getRoom(code));
       setStep(4);
     } catch (e) {
-      setError(e instanceof Error && e.message === 'closed' ? 'That room has closed.' : "We couldn't find that room. Check the big screen.");
+      const reason = e instanceof Error ? e.message : '';
+      setError(
+        reason === 'closed'
+          ? 'That room has closed.'
+          : reason === 'not_found'
+            ? "We couldn't find that room. Check the big screen."
+            : "We couldn't reach the room. Check your connection and try again.",
+      );
     } finally {
       setBusy(false);
     }
@@ -131,8 +138,15 @@ export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, o
       setRoom(result.room);
       setStep(5);
       if (onJoined) onJoined(result);
-    } catch {
-      setError('Something went wrong joining. Try again.');
+    } catch (e) {
+      const reason = e instanceof Error ? e.message : '';
+      setError(
+        reason === 'closed'
+          ? 'That room has closed.'
+          : reason === 'rate_limited'
+            ? 'Too many people are joining from this network. Try again in a few minutes.'
+            : 'Something went wrong joining. Try again.',
+      );
     } finally {
       setBusy(false);
     }
@@ -183,13 +197,12 @@ export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, o
         {step === 3 && (
           <form
             className={`${stack} gap-5 lg:gap-6`}
-            onSubmit={(e) => {
-              e.preventDefault();
-              submitCode();
-            }}
+            // Native submission is blocked in sandboxed previews (no
+            // allow-forms), so Enter and the button call the handler directly.
+            onSubmit={(e) => e.preventDefault()}
           >
             <h1 className={heading}>Enter the room code</h1>
-            <p className={lead}>It's on the big screen at the front of the room.</p>
+            <p className={lead}>It&apos;s on the big screen at the front of the room.</p>
             <label htmlFor="code" className="text-sm font-bold">
               Room code
             </label>
@@ -202,7 +215,13 @@ export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, o
                 setCode(e.currentTarget.value.toUpperCase());
                 setError('');
               }}
-              aria-describedby={error ? 'code-error' : undefined}
+              onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                submitCode();
+              }
+            }}
+            aria-describedby={error ? 'code-error' : undefined}
               className={`${textInput} min-h-[72px] text-[32px] font-extrabold uppercase tracking-[0.08em]`}
             />
             {error && (
@@ -211,7 +230,7 @@ export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, o
               </p>
             )}
             <div className={spacer} />
-            <button type="submit" disabled={!codeReady || busy} className={`${primaryBtn} ${codeReady && !busy ? 'bg-ink' : 'bg-muted'}`}>
+            <button type="button" onClick={submitCode} disabled={!codeReady || busy} className={`${primaryBtn} ${codeReady && !busy ? 'bg-ink' : 'bg-muted'}`}>
               {busy ? 'Checking...' : 'Continue'}
             </button>
           </form>
@@ -220,10 +239,7 @@ export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, o
         {step === 4 && (
           <form
             className={`${stack} gap-3.5 lg:gap-5`}
-            onSubmit={(e) => {
-              e.preventDefault();
-              submitProfile();
-            }}
+            onSubmit={(e) => e.preventDefault()}
           >
             <h1 className={heading}>Who are you?</h1>
             <label htmlFor="nm" className="text-sm font-bold">
@@ -236,6 +252,12 @@ export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, o
               maxLength={30}
               value={name}
               onChange={(e) => setName(e.currentTarget.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                submitProfile();
+              }
+            }}
               className={`${textInput} min-h-14 text-[22px] font-bold`}
             />
             <div className="text-sm font-bold">Pick an avatar</div>
@@ -259,7 +281,7 @@ export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, o
               </p>
             )}
             <div className={spacer} />
-            <button type="submit" disabled={!nameReady || busy} className={`${primaryBtn} ${nameReady && !busy ? 'bg-ink' : 'bg-muted'}`}>
+            <button type="button" onClick={submitProfile} disabled={!nameReady || busy} className={`${primaryBtn} ${nameReady && !busy ? 'bg-ink' : 'bg-muted'}`}>
               {busy ? 'Joining...' : 'Join the room'}
             </button>
           </form>
@@ -270,9 +292,9 @@ export default function Join({ tour = DEFAULT_TOUR, avatars = DEFAULT_AVATARS, o
             <span className="lg:hidden">
               <Face avatar={avatars[avatar]} size={140} />
             </span>
-            <h1 className={heading}>You're in, {name.trim() || 'friend'}!</h1>
+            <h1 className={heading}>You&apos;re in, {name.trim() || 'friend'}!</h1>
             <p className={lead}>
-              Room {room?.code ?? code} · the talk is on slide {room?.currentSlide ?? '?'}. Your dot is on the swarm now.
+              Room {room?.code ?? code} · the talk is on slide {room ? room.currentSlide + 1 : '?'}. Your dot is on the swarm now.
             </p>
             <button
               type="button"
