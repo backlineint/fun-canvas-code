@@ -64,6 +64,16 @@ final class FunRoomHooks {
         $is_new = $items === NULL || $items->getEntity()->isNew();
         return $is_new ? AccessResult::neutral() : AccessResult::forbidden();
 
+      case 'fun':
+      case 'fun_at':
+        // Only the vote endpoint sets these; nobody may write them through
+        // JSON:API, and only admins may read them.
+        if ($operation === 'view') {
+          return AccessResult::forbiddenIf(!$account->hasPermission('administer fun_room'))
+            ->addCacheContexts(['user.permissions']);
+        }
+        return AccessResult::forbidden();
+
       case 'token_hash':
         // Set by the server; only admins may read it.
         if ($operation === 'view') {

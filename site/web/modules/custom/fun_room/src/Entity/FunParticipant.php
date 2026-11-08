@@ -103,6 +103,17 @@ class FunParticipant extends ContentEntityBase {
       ->setLabel(new TranslatableMarkup('Token hash'))
       ->setSetting('max_length', 64);
 
+    // The attendee's current fun level, empty until they first move the slider.
+    // Set only by the vote endpoint (see FunRoomHooks for the field access).
+    $fields['fun'] = BaseFieldDefinition::create('integer')
+      ->setLabel(new TranslatableMarkup('Fun (0-100)'))
+      ->addPropertyConstraints('value', [
+        'Range' => ['min' => 0, 'max' => FunVote::MAX_VALUE],
+      ]);
+
+    $fields['fun_at'] = BaseFieldDefinition::create('timestamp')
+      ->setLabel(new TranslatableMarkup('Fun updated'));
+
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(new TranslatableMarkup('Created'));
 

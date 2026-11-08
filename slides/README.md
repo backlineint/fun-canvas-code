@@ -44,6 +44,13 @@ deck locally and never deploy that bundle publicly.**
   slide), the deck writes a warning to the console and stops retrying that slide.
 - If `VITE_PRESENTER_KEY` is empty, it warns once and sends nothing.
 
+## The swarm slide
+
+With `VITE_ROOM_API` set, the swarm slide shows the room's real dots, median and mood
+from `GET /api/fun/rooms/{code}/state`, with each dot colored like its owner's avatar.
+Without it you get the simulated crowd. If the site can't be reached the slide says
+"No connection to the room".
+
 ## Slide ids
 
 Give every `<section>` a unique `data-id` in `index.html`; the room records

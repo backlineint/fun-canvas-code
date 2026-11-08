@@ -4,3 +4,11 @@ services:
     arguments: ['@flood']
     tags:
       - { name: event_subscriber }
+
+  fun_room.vote_recorder:
+    class: Drupal\fun_room\VoteRecorder
+    arguments: ['@entity_type.manager', '@database', '@lock', '@datetime.time']
+
+  fun_room.swarm_state:
+    class: Drupal\fun_room\SwarmState
+    arguments: ['@database', '@cache.default', '@datetime.time']

@@ -22,6 +22,19 @@
   --color-fun-blue: #3b5bff;
   --color-sun: #ffd84d;
   --color-muted: #6b6a85;
+
+  /* A small bounce for the swarm's dots when the room is having a great time. */
+  --animate-wiggle: wiggle 0.7s ease-in-out infinite;
+
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
 }
 
 body {

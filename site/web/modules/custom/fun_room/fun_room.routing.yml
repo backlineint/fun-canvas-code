@@ -6,3 +6,21 @@ fun_room.presenter_slide:
   requirements:
     # Not session based: the controller checks the shared X-Presenter-Key.
     _access: 'TRUE'
+
+fun_room.state:
+  path: '/api/fun/rooms/{code}/state'
+  defaults:
+    _controller: 'Drupal\fun_room\Controller\LiveController::state'
+  methods: [GET]
+  requirements:
+    # Public and read-only: nothing in it identifies a person.
+    _access: 'TRUE'
+
+fun_room.vote:
+  path: '/api/fun/rooms/{code}/vote'
+  defaults:
+    _controller: 'Drupal\fun_room\Controller\LiveController::vote'
+  methods: [POST]
+  requirements:
+    # Not session based: the controller checks the attendee's X-Participant-Token.
+    _access: 'TRUE'

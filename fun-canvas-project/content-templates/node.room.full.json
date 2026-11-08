@@ -32,17 +32,21 @@
       }
     },
     "swarm": {
-      "type": "js.placeholder",
+      "type": "js.swarm",
       "props": {
-        "title": "Swarm",
-        "description": "Everyone in the room as a dot on a fun scale."
+        "code": {
+          "sourceType": "entity-field",
+          "expression": "ℹ︎␜entity:node:room␝title␞␟value"
+        }
       }
     },
     "slider": {
-      "type": "js.placeholder",
+      "type": "js.fun-slider",
       "props": {
-        "title": "Fun slider",
-        "description": "Move your dot to show how much fun you are having."
+        "code": {
+          "sourceType": "entity-field",
+          "expression": "ℹ︎␜entity:node:room␝title␞␟value"
+        }
       }
     },
     "requests": {

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\fun_room\Entity\FunParticipant;
 
 /**
  * Implements hook_install().
@@ -66,5 +67,27 @@ function fun_room_update_10001(): void {
       'region' => 'content',
       'settings' => ['size' => 60, 'placeholder' => ''],
     ])->save();
+  }
+}
+
+/**
+ * Adds votes and the participant fun fields for the slider and swarm.
+ *
+ * Fresh installs get these from the entity definitions; existing sites need the
+ * new entity type and fields installed.
+ */
+function fun_room_update_10002(): void {
+  $manager = \Drupal::entityDefinitionUpdateManager();
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  $participant_fields = FunParticipant::baseFieldDefinitions($entity_type_manager->getDefinition('fun_participant'));
+  foreach (['fun', 'fun_at'] as $name) {
+    if (!$manager->getFieldStorageDefinition($name, 'fun_participant')) {
+      $manager->installFieldStorageDefinition($name, 'fun_participant', 'fun_room', $participant_fields[$name]);
+    }
+  }
+
+  if (!$manager->getEntityType('fun_vote')) {
+    $manager->installEntityType($entity_type_manager->getDefinition('fun_vote'));
   }
 }

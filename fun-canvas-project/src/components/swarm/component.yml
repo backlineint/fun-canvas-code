@@ -1,0 +1,21 @@
+name: Swarm
+machineName: swarm
+status: true
+required:
+  - code
+props:
+  properties:
+    code:
+      title: Code
+      description: The room code, such as NED-4261.
+      type: string
+      examples:
+        - NED-4261
+    pollMs:
+      title: Poll ms
+      description:
+        How often to refresh the swarm, in milliseconds. 2000 is a good default.
+      type: integer
+      examples:
+        - 2000
+slots: {}

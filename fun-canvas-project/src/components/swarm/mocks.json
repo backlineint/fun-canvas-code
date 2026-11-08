@@ -1,0 +1,11 @@
+{
+  "mocks": [
+    {
+      "name": "NED-4261",
+      "props": {
+        "code": "NED-4261",
+        "pollMs": 2000
+      }
+    }
+  ]
+}

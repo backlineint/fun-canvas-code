@@ -1,0 +1,14 @@
+name: Fun slider
+machineName: fun-slider
+status: true
+required:
+  - code
+props:
+  properties:
+    code:
+      title: Code
+      description: The room code, such as NED-4261.
+      type: string
+      examples:
+        - NED-4261
+slots: {}
