@@ -214,6 +214,43 @@ placed in the room template. For Canvas Workbench (a different origin from the s
 add `'X-Participant-Token'` to `allowedHeaders` in `services.yml`, as in the CORS
 snippet above.
 
+### Comments
+
+Attendees post short comments from the room page; they show there and in the deck's
+activity stream, tagged with the slide that was showing. Comments are `fun_comment`
+entities (`participant`, `room`, `slide`, `slide_title`, `body`, `created`), admin-only
+and written only by the endpoint below (never through JSON:API).
+
+`GET /api/fun/rooms/{code}/comments?after={id}&limit={n}` is public and read-only, works
+for closed rooms, and returns `{comments: [{id, name, avatar, slide, slideTitle, text,
+at}]}` oldest first. Without `after` it returns the newest `limit` (default 30, at most
+50); with `after` only comments with a higher id, so a poller asks for just what is new.
+It is cached for a second. Names and avatars are the ones attendees chose when joining,
+so they are public to anyone who loads the room. No token, uuid or participant id is returned.
+
+`POST /api/fun/rooms/{code}/comments` with `{"text": "..."}` and `X-Participant-Token`:
+
+| Status | Meaning |
+|---|---|
+| 201 | Saved; the body is the comment as the feed shows it. |
+| 400 | The body wasn't valid JSON (this includes text that isn't valid UTF-8). |
+| 403 | Missing or unknown token, or a token from another room. |
+| 404 | Unknown room. |
+| 409 | The room is closed. |
+| 422 | `empty` (nothing left after cleaning), `too_long` (over 280 characters) or `invalid_text` (not a string). |
+| 429 | Too many comments (5 per participant per minute, or 600 per IP per minute). |
+
+The text is cleaned before it is stored: control characters become spaces, invisible
+format characters (zero-width, right-to-left overrides) are dropped, whitespace is
+collapsed. It is plain text, so clients must render it as text. An identical comment from
+the same attendee within 30 seconds returns the original instead of adding a copy.
+
+There is no moderation UI. To remove a comment, find its id (it is in the feed) and run
+`ddev drush entity:delete fun_comment <id>`; it disappears from the room page and the deck
+within a couple of seconds. The room page's `comments` component and the deck's
+`ActivityStream` both poll this endpoint (about every 3 and 2 seconds), served mostly from
+the one-second cache.
+
 ### Mood theming
 
 The server's `tier` (`low` below 35, `mid` below 65, else `high`, none with no votes)

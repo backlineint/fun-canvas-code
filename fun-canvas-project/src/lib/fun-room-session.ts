@@ -105,6 +105,28 @@ export function clearFun(code: string): void {
   writeRaw(funKey(code), null);
 }
 
+const commentsKey = (code: string) =>
+  `fun-o-meter:comments:${code.toUpperCase()}`;
+
+/** Ids of the comments this browser posted in a room, so they can be marked as its own. */
+export function readMyComments(code: string): number[] {
+  try {
+    const parsed: unknown = JSON.parse(readRaw(commentsKey(code)) ?? '[]');
+    return Array.isArray(parsed)
+      ? parsed.filter((id): id is number => Number.isInteger(id))
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+export function rememberComment(code: string, id: number): void {
+  const ids = readMyComments(code);
+  if (!ids.includes(id)) {
+    writeRaw(commentsKey(code), JSON.stringify([...ids, id].slice(-200)));
+  }
+}
+
 // Marks "not read yet" for the server render, which has no storage.
 const PENDING = 'pending';
 

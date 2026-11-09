@@ -57,10 +57,12 @@
       }
     },
     "comments": {
-      "type": "js.placeholder",
+      "type": "js.comments",
       "props": {
-        "title": "Comments",
-        "description": "Say something to the room."
+        "code": {
+          "sourceType": "entity-field",
+          "expression": "ℹ︎␜entity:node:room␝title␞␟value"
+        }
       }
     }
   }

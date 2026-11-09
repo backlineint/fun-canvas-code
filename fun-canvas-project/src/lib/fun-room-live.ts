@@ -1,6 +1,9 @@
-// The live half of a room: reading the swarm and sending the attendee's fun level.
+// The live half of a room: reading the swarm, sending the attendee's fun level, and
+// the room's comments.
 //   GET  {base}/api/fun/rooms/{code}/state
 //   POST {base}/api/fun/rooms/{code}/vote   { value }   header X-Participant-Token
+//   GET  {base}/api/fun/rooms/{code}/comments?after={id}&limit={n}
+//   POST {base}/api/fun/rooms/{code}/comments   { text }   header X-Participant-Token
 // These are plain fetch calls (not JSON:API). `base` is the site's address from
 // `useSiteContext().baseUrl`, which is the site itself on a Drupal page and the
 // connected site in Workbench. Keep every call to these endpoints in this module.
@@ -93,4 +96,74 @@ export async function sendVote(
     throw new VoteError(response.status, body.error ?? 'error');
   }
   return (await response.json()) as VoteResult;
+}
+
+export type Comment = {
+  /** Rises with every comment, so a poller can ask for "after" the last one it has. */
+  id: number;
+  name: string;
+  /** Index into the avatar list. */
+  avatar: number;
+  /** Zero-based index of the slide showing when it was posted. */
+  slide: number;
+  slideTitle: string;
+  /** Plain text. Always render it as text, never as HTML. */
+  text: string;
+  /** ISO 8601 UTC time. */
+  at: string;
+};
+
+/** A failed comment. `reason` is the server's error code, or "network". */
+export class CommentError extends Error {
+  readonly status: number;
+  readonly reason: string;
+
+  constructor(status: number, reason: string) {
+    super(`comment failed: ${reason}`);
+    this.status = status;
+    this.reason = reason;
+  }
+}
+
+/** The room's comments, oldest first. With `after`, only those newer than that id. */
+export async function fetchComments(
+  base: string,
+  code: string,
+  after = 0,
+): Promise<Comment[]> {
+  const query = after > 0 ? `?after=${after}` : '';
+  const response = await fetch(`${endpoint(base, code, 'comments')}${query}`, {
+    headers: { Accept: 'application/json' },
+  });
+  if (!response.ok) throw new Error(`comments failed: ${response.status}`);
+  return ((await response.json()) as { comments: Comment[] }).comments;
+}
+
+export async function sendComment(
+  base: string,
+  code: string,
+  token: string,
+  text: string,
+): Promise<Comment> {
+  let response: Response;
+  try {
+    response = await fetch(endpoint(base, code, 'comments'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'X-Participant-Token': token,
+      },
+      body: JSON.stringify({ text }),
+    });
+  } catch {
+    throw new CommentError(0, 'network');
+  }
+  if (!response.ok) {
+    const body = (await response.json().catch(() => ({}))) as {
+      error?: string;
+    };
+    throw new CommentError(response.status, body.error ?? 'error');
+  }
+  return (await response.json()) as Comment;
 }

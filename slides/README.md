@@ -66,15 +66,19 @@ pulse and confetti. The steadying and confetti are copies of the room page's
 
 A sidebar stays on screen for the whole talk (about 22% of the width, 300-440px). Its top
 third is `RoomPulse`, a compact swarm with the room code, count, median and mood; its
-bottom two thirds is `ActivityStream`, a placeholder ("Coming soon") for comments,
-requests and joins. Both read the deck's one poll (`src/mood.js` via `src/useRoomState.js`),
-so the sidebar adds no requests. The dots come from `SwarmField`, shared with the swarm slide.
+bottom two thirds is `ActivityStream`, the room's comments, newest first, each with the
+poster's name, avatar color and the slide it was posted on (long ones are cut at four
+lines, and the oldest fall off the bottom). `RoomPulse` reads the deck's mood poll
+(`src/mood.js` via `src/useRoomState.js`); `ActivityStream` reads a second poll,
+`src/activity.js` via `src/useActivity.js`, which asks `GET /api/fun/rooms/{code}/comments`
+every 2 seconds for just the comments after the newest one it has. The dots come from
+`SwarmField`, shared with the swarm slide. Without `VITE_ROOM_API` a few simulated
+comments appear. To delete an unwanted comment see the Drupal module's README.
 
 The deck runs in Reveal's embedded mode beside the sidebar (`.deck-layout` in `index.html`);
 slides keep their 1280x720 design and scale to fit what's left. Add `?sidebar=off` to the
-address to hide it (the sidebar is also hidden when printing). When the activity feed
-exists, put its items in the `role="log"` region of `ActivityStream.jsx`; the item shape is
-documented there.
+address to hide it (the sidebar is also hidden when printing). Requests and joins can use the
+same list: `activity.js` items are `{ kind, id, who, avatar, slide, text, at }`.
 
 ## Slide ids
 

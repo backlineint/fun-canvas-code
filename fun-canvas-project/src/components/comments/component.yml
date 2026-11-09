@@ -1,0 +1,22 @@
+name: Comments
+machineName: comments
+status: true
+required:
+  - code
+props:
+  properties:
+    code:
+      title: Code
+      description: The room code, such as NED-4261.
+      type: string
+      examples:
+        - NED-4261
+    pollMs:
+      title: Poll ms
+      description:
+        How often to look for new comments, in milliseconds. 3000 is a good
+        default.
+      type: integer
+      examples:
+        - 3000
+slots: {}

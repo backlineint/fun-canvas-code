@@ -8,6 +8,7 @@ import RoomPulse from './components/RoomPulse.jsx';
 import ActivityStream from './components/ActivityStream.jsx';
 import { reportSlide } from './room.js';
 import { startMood } from './mood.js';
+import { startActivity } from './activity.js';
 
 const components = {
   swarm: Swarm,
@@ -46,6 +47,7 @@ if (repeated.length) console.warn('Repeated slide ids in index.html:', repeated.
 // One poll of the room themes every slide and feeds the swarm slide.
 if (new URLSearchParams(window.location.search).get('sidebar') === 'off') document.documentElement.classList.add('no-sidebar');
 startMood();
+startActivity();
 
 // Embedded so the deck sizes to its cell beside the room sidebar instead of the whole
 // window. `keyboardCondition: null` keeps the arrow keys working without a click.

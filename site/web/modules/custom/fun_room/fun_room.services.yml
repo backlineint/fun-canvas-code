@@ -12,3 +12,11 @@ services:
   fun_room.swarm_state:
     class: Drupal\fun_room\SwarmState
     arguments: ['@database', '@cache.default', '@datetime.time']
+
+  fun_room.comment_recorder:
+    class: Drupal\fun_room\CommentRecorder
+    arguments: ['@entity_type.manager', '@datetime.time']
+
+  fun_room.comment_feed:
+    class: Drupal\fun_room\CommentFeed
+    arguments: ['@entity_type.manager', '@cache.default', '@datetime.time']

@@ -4,6 +4,7 @@
 //
 //   POST {API}/api/fun/rooms/{code}/slide   { id, title, index }   (presenter key)
 //   GET  {API}/api/fun/rooms/{code}/state   -> { count, median, tier, dots }
+//   GET  {API}/api/fun/rooms/{code}/comments?after={id}   -> { comments: [...] }
 //
 // VITE_ROOM_API is the Drupal site's origin, for example
 // https://fun-canvas-code.ddev.site. Set the variables in .env.local (see
@@ -141,4 +142,35 @@ export async function getRoomState() {
   if (res.status === 404) stateRetryAt = Date.now() + 60000;
   if (!res.ok) throw new Error(`state failed: ${res.status}`);
   return res.json();
+}
+
+// Simulated comments for stub mode, one new one every few polls.
+const STUB_COMMENTS = [
+  ['Dana', 0, 'Wait, that runs in the browser?'],
+  ['Priya', 2, 'Please show the prompt again'],
+  ['Marcus', 4, 'More candy at the back!'],
+  ['Sam', 1, 'This is the most fun I have had at a code talk'],
+  ['Lee', 3, 'Can we get the slides afterwards?'],
+];
+let stubCommentId = 0;
+let stubTicks = 0;
+
+// The room's comments, oldest first, newer than `after`. After a 404 it waits a
+// minute before asking again, like getRoomState.
+let commentsRetryAt = 0;
+
+export async function getComments(after = 0) {
+  if (isStub) {
+    stubTicks += 1;
+    if (stubTicks % 3 !== 1 || stubCommentId >= STUB_COMMENTS.length) return [];
+    const [name, avatar, text] = STUB_COMMENTS[stubCommentId];
+    stubCommentId += 1;
+    return [{ id: stubCommentId, name, avatar, slide: stubCommentId, slideTitle: '', text, at: new Date().toISOString() }];
+  }
+  if (Date.now() < commentsRetryAt) throw new Error('comments endpoint unavailable');
+  const query = after > 0 ? `?after=${after}` : '';
+  const res = await fetch(`${API}/api/fun/rooms/${encodeURIComponent(ROOM_CODE)}/comments${query}`);
+  if (res.status === 404) commentsRetryAt = Date.now() + 60000;
+  if (!res.ok) throw new Error(`comments failed: ${res.status}`);
+  return (await res.json()).comments;
 }
