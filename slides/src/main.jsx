@@ -5,6 +5,7 @@ import './index.css';
 import Swarm from './components/Swarm.jsx';
 import RoomCode from './components/RoomCode.jsx';
 import { reportSlide } from './room.js';
+import { startMood } from './mood.js';
 
 const components = { swarm: Swarm, 'room-code': RoomCode };
 
@@ -34,6 +35,9 @@ document.querySelectorAll('.slides > section[data-id]').forEach((section) => {
 });
 const repeated = [...seenIds].filter(([, count]) => count > 1).map(([id]) => id);
 if (repeated.length) console.warn('Repeated slide ids in index.html:', repeated.join(', '));
+
+// One poll of the room themes every slide and feeds the swarm slide.
+startMood();
 
 const deck = new Reveal({ hash: true, width: 1280, height: 720, transition: 'fade' });
 

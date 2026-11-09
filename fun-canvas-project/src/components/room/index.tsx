@@ -76,7 +76,7 @@ export default function Room({
   return (
     <div
       className={cn(
-        'mx-auto flex min-h-dvh w-full max-w-[480px] flex-col gap-5 bg-cream px-6 py-7 font-sans text-ink lg:max-w-[1600px] lg:flex-row lg:gap-7 lg:p-8',
+        'mx-auto flex min-h-dvh w-full max-w-[480px] flex-col gap-5 bg-mood-bg px-6 py-7 font-sans text-ink motion-safe:transition-colors motion-safe:duration-[1500ms] lg:max-w-[1600px] lg:flex-row lg:gap-7 lg:p-8',
         className,
       )}
     >

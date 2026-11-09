@@ -51,6 +51,17 @@ from `GET /api/fun/rooms/{code}/state`, with each dot colored like its owner's a
 Without it you get the simulated crowd. If the site can't be reached the slide says
 "No connection to the room".
 
+### Mood theming
+
+`src/mood.js` polls the room's state once a second for the whole deck (the swarm slide
+reads the same poll) and writes the room's mood to `<html data-mood>`. `src/index.css`
+turns that into the background and an edge glow on every slide, and confetti goes off
+when the room climbs into "high". A new mood needs two polls in a row, so a median on
+a threshold doesn't flicker. Add `?mood=low|mid|high|waiting` to the deck's address to
+rehearse a mood (`#/17` is the swarm slide). Reduced motion turns off the fade, glow
+pulse and confetti. The steadying and confetti are copies of the room page's
+(`fun-canvas-project/src/lib/fun-room-mood.ts`, `fun-room-confetti.ts`); keep them in step.
+
 ## Slide ids
 
 Give every `<section>` a unique `data-id` in `index.html`; the room records

@@ -1,10 +1,20 @@
-import { avatarAt } from '@/lib/fun-room-avatars';
+import { useEffect, useRef, useState } from 'react';
+import { avatarAt, AVATARS } from '@/lib/fun-room-avatars';
+import { fireConfetti } from '@/lib/fun-room-confetti';
 import { fetchSwarm } from '@/lib/fun-room-live';
-import { moodFor } from '@/lib/fun-room-mood';
+import {
+  applyMood,
+  clearMood,
+  createSteadier,
+  moodFor,
+  moodOverride,
+  shouldCelebrate,
+} from '@/lib/fun-room-mood';
 import { useMyFun } from '@/lib/fun-room-session';
 import { cn } from 'drupal-canvas';
 import { useSiteContext } from 'drupal-canvas/react';
 import useSWR from 'swr';
+import type { Tier } from '@/lib/fun-room-live';
 
 type SwarmProps = {
   code: string;
@@ -15,17 +25,50 @@ type SwarmProps = {
 // Everyone in the room as a dot on a 0-100 fun scale, with the room's median.
 // It polls the swarm endpoint, so dots slide to their new places as people move
 // their sliders. This browser's own dot is drawn larger so it is easy to find.
+// It also themes the whole page: the room's steadied mood goes onto <html data-mood>
+// (global.css does the colors), and confetti goes off when the room climbs into
+// "high". Add ?mood=low|mid|high|waiting to the address to preview a mood.
 export default function Swarm({ code, pollMs = 2000, className }: SwarmProps) {
   const base = useSiteContext()?.baseUrl ?? '';
   const mine = useMyFun(code);
 
+  // The tier the page shows, smoothed so a median on a threshold doesn't flicker.
+  // Counted per poll in onSuccess: SWR hands back the same data object when a poll
+  // returns nothing new, so an effect on `data` would miss those polls.
+  const [shown, setShown] = useState<Tier | null>(null);
+  const steady = useRef(createSteadier());
+  const previous = useRef<Tier | null | undefined>(undefined);
+  const lastBurst = useRef(0);
+  const forced = useRef(moodOverride());
+
   const { data, error } = useSWR(
     code ? ['fun-swarm', base, code] : null,
     () => fetchSwarm(base, code),
-    { refreshInterval: pollMs, dedupingInterval: 0 },
+    {
+      refreshInterval: pollMs,
+      dedupingInterval: 0,
+      onSuccess: (state) => {
+        const next =
+          forced.current !== undefined
+            ? forced.current
+            : steady.current(state.tier);
+        const now = Date.now();
+        if (shouldCelebrate(previous.current, next, lastBurst.current, now)) {
+          lastBurst.current = now;
+          fireConfetti(AVATARS.map((avatar) => avatar.bg));
+        }
+        previous.current = next;
+        setShown(next);
+      },
+    },
   );
 
-  const mood = moodFor(data?.tier);
+  useEffect(() => {
+    applyMood(forced.current !== undefined ? forced.current : shown);
+  }, [shown]);
+  useEffect(() => clearMood, []);
+
+  const mood = moodFor(shown);
   const median = data?.median ?? null;
   const summary = data?.voters
     ? `Swarm of ${data.voters} ${data.voters === 1 ? 'attendee' : 'attendees'}, median fun ${median} out of 100`
@@ -61,7 +104,7 @@ export default function Swarm({ code, pollMs = 2000, className }: SwarmProps) {
       <div
         role="img"
         aria-label={summary}
-        className="relative mt-4 min-h-48 flex-1 overflow-hidden rounded-2xl bg-cream"
+        className="relative mt-4 min-h-48 flex-1 overflow-hidden rounded-2xl bg-mood-field motion-safe:transition-colors motion-safe:duration-[1500ms]"
       >
         {median !== null ? (
           <span

@@ -214,6 +214,20 @@ placed in the room template. For Canvas Workbench (a different origin from the s
 add `'X-Participant-Token'` to `allowedHeaders` in `services.yml`, as in the CORS
 snippet above.
 
+### Mood theming
+
+The server's `tier` (`low` below 35, `mid` below 65, else `high`, none with no votes)
+themes the whole room page. The `swarm` component writes the tier to
+`<html data-mood="waiting|low|mid|high">` and `src/global.css` turns it into colors
+(`--mood-bg`, `--mood-field`, `--mood-accent`, used as `bg-mood-bg` and so on). To
+stop a median sitting on a threshold from flickering, a new tier is shown only after
+two polls in a row report it (`createSteadier` in `fun-room-mood.ts`). When the room
+climbs into `high` from `low` or `mid`, confetti goes off once (not on a reload into
+`high`, and at most once a minute). Both the fade and the confetti are off for people
+who ask for reduced motion. Add `?mood=low|mid|high|waiting` to the room page's address
+to preview a mood without votes. The deck does the same from its own poll (`slides/src/mood.js`).
+Thresholds live only in `SwarmState`; the colors must keep dark ink readable (4.5:1).
+
 ## Managing rooms
 
 Rooms are ordinary content. In the admin sidebar use **Create > Room** to add

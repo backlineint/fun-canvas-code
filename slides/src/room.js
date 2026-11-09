@@ -3,7 +3,7 @@
 // so the deck always works offline.
 //
 //   POST {API}/api/fun/rooms/{code}/slide   { id, title, index }   (presenter key)
-//   GET  {API}/api/fun/rooms/{code}/state   -> { count, median, dots }   (not built yet)
+//   GET  {API}/api/fun/rooms/{code}/state   -> { count, median, tier, dots }
 //
 // VITE_ROOM_API is the Drupal site's origin, for example
 // https://fun-canvas-code.ddev.site. Set the variables in .env.local (see
@@ -126,11 +126,12 @@ function stepStub() {
     y: Math.max(8, Math.min(92, d.y + (Math.random() - 0.5) * 5)),
   }));
   const xs = dots.map((d) => d.x).sort((a, b) => a - b);
-  return { count: dots.length, median: Math.round(xs[Math.floor(xs.length / 2)]), dots };
+  const median = Math.round(xs[Math.floor(xs.length / 2)]);
+  return { count: dots.length, median, tier: median < 35 ? 'low' : median < 65 ? 'mid' : 'high', dots };
 }
 
-// The state endpoint is not built yet. After a 404, wait a minute before asking
-// again instead of polling a missing page every second for the whole talk.
+// After a 404 (a wrong room code), wait a minute before asking again instead of
+// polling a missing page every second for the whole talk.
 let stateRetryAt = 0;
 
 export async function getRoomState() {

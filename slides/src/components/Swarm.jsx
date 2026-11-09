@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'preact/hooks';
-import { getRoomState } from '../room.js';
+import { getSnapshot, subscribe } from '../mood.js';
+
+function useMood() {
+  const [snapshot, setSnapshot] = useState(getSnapshot());
+  useEffect(() => subscribe(() => setSnapshot(getSnapshot())), []);
+  return snapshot;
+}
 
 // The same six colors as the attendee avatars (fun-canvas-project/src/lib/fun-room-avatars.tsx),
 // so a dot matches the face its owner picked.
@@ -12,30 +18,9 @@ const MOODS = {
   high: 'Boatloads: BOATLOADS OF FUN!',
 };
 
-export default function Swarm({ pollMs = 1000 }) {
-  const [state, setState] = useState(null);
-  const [offline, setOffline] = useState(false);
-
-  useEffect(() => {
-    let alive = true;
-    const tick = async () => {
-      try {
-        const next = await getRoomState();
-        if (alive) {
-          setState(next);
-          setOffline(false);
-        }
-      } catch {
-        if (alive) setOffline(true);
-      }
-    };
-    tick();
-    const id = setInterval(tick, pollMs);
-    return () => {
-      alive = false;
-      clearInterval(id);
-    };
-  }, [pollMs]);
+export default function Swarm() {
+  // The deck's one poll (mood.js) feeds this slide, so it never asks for itself.
+  const { state, offline } = useMood();
 
   // The median is null until somebody has moved their slider.
   const median = state?.median ?? null;
@@ -54,7 +39,7 @@ export default function Swarm({ pollMs = 1000 }) {
         </span>
       </div>
       <div
-        className="relative h-64 overflow-hidden rounded-3xl border-4 border-ink bg-white"
+        className="relative h-64 overflow-hidden rounded-3xl border-4 border-ink bg-mood-field"
         role="img"
         aria-label={median === null ? 'Swarm of attendees: nobody has moved their dot yet' : `Swarm of attendees, median fun ${median} out of 100`}
       >

@@ -51,6 +51,68 @@
   margin-top: 24px;
 }
 
+/*
+ * The room's mood (see src/mood.js, which writes data-mood on <html>) themes every
+ * slide at full strength. "waiting" is the plain cream deck. Text stays dark ink on
+ * every background; check contrast when changing a color.
+ */
+:root {
+  --mood-bg: #fff4dc;
+  --mood-field: #ffffff;
+  --mood-glow: transparent;
+}
+
+html[data-mood='low'] {
+  --mood-bg: #cdd7f0;
+  --mood-field: #e6ecfa;
+  --mood-glow: rgb(59 91 255 / 0.3);
+}
+
+html[data-mood='mid'] {
+  --mood-bg: #ffe2a0;
+  --mood-field: #fff4dc;
+  --mood-glow: rgb(255 92 77 / 0.35);
+}
+
+html[data-mood='high'] {
+  --mood-bg: #ff9a72;
+  --mood-field: #ffe27a;
+  --mood-glow: rgb(214 0 111 / 0.5);
+}
+
+@theme inline {
+  --color-mood-field: var(--mood-field);
+}
+
 .reveal-viewport {
-  background: var(--color-cream);
+  background-color: var(--mood-bg);
+}
+
+/* A glow around the edge of the screen, so the mood reads from the back of the room. */
+.reveal-viewport::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 140px 30px var(--mood-glow);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-viewport {
+    transition: background-color 1.5s ease;
+  }
+
+  .reveal-viewport::after {
+    transition: box-shadow 1.5s ease;
+  }
+
+  html[data-mood='high'] .reveal-viewport::after {
+    animation: mood-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes mood-pulse {
+    50% {
+      box-shadow: inset 0 0 180px 50px var(--mood-glow);
+    }
+  }
 }

@@ -41,3 +41,50 @@ body {
   margin: 0;
   font-family: var(--font-sans);
 }
+
+/*
+ * The room's mood. The swarm component writes the room's steadied tier onto <html>
+ * as data-mood="waiting|low|mid|high"; these tokens turn it into colors, and the
+ * room page's components read them (bg-mood-bg, bg-mood-field, bg-mood-accent).
+ * Text stays dark ink on every background; check contrast when changing a color.
+ */
+:root {
+  --mood-bg: #fff4dc;
+  --mood-field: #fff4dc;
+  --mood-accent: #3b5bff;
+}
+
+html[data-mood='low'] {
+  --mood-bg: #cdd7f0;
+  --mood-field: #e6ecfa;
+  --mood-accent: #3b5bff;
+}
+
+html[data-mood='mid'] {
+  --mood-bg: #ffe2a0;
+  --mood-field: #fff4dc;
+  --mood-accent: #e5412f;
+}
+
+html[data-mood='high'] {
+  --mood-bg: #ff9a72;
+  --mood-field: #ffe27a;
+  --mood-accent: #d6006f;
+}
+
+/* Cover the whole window, not just the room's box, and fade between moods. */
+html[data-mood] body {
+  background-color: var(--mood-bg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-mood] body {
+    transition: background-color 1.5s ease;
+  }
+}
+
+@theme inline {
+  --color-mood-bg: var(--mood-bg);
+  --color-mood-field: var(--mood-field);
+  --color-mood-accent: var(--mood-accent);
+}

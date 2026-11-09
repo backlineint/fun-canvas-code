@@ -142,7 +142,7 @@ export default function FunSlider({ code, className }: FunSliderProps) {
         <div className="relative h-14 rounded-full has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-fun-blue/40">
           <div className="absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 rounded-full bg-ink/15" />
           <div
-            className="absolute top-1/2 left-0 h-3 -translate-y-1/2 rounded-full bg-fun-blue"
+            className="absolute top-1/2 left-0 h-3 -translate-y-1/2 rounded-full bg-mood-accent motion-safe:transition-colors motion-safe:duration-[1500ms]"
             style={{ width: `${position}%` }}
           />
           <div
