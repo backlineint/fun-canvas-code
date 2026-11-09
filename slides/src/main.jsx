@@ -64,3 +64,32 @@ deck.on('ready', (e) => report(e.currentSlide, e.indexh));
 deck.on('slidechanged', (e) => report(e.currentSlide, e.indexh));
 
 deck.initialize();
+
+// The sidebar can be hidden with the button or the S key, for example when a comment
+// shouldn't be on the screen. It stays hidden across reloads until shown again, and
+// Reveal is told to re-fit the slide to the width it now has.
+const toggle = document.querySelector('.sidebar-toggle');
+const root = document.documentElement;
+const STORE = 'fun-o-meter:deck-sidebar';
+function setCollapsed(collapsed) {
+  root.classList.toggle('sidebar-collapsed', collapsed);
+  toggle.setAttribute('aria-expanded', String(!collapsed));
+  toggle.setAttribute('aria-label', collapsed ? 'Show the room sidebar' : 'Hide the room sidebar');
+  try {
+    localStorage.setItem(STORE, collapsed ? 'collapsed' : 'open');
+  } catch {
+    // storage blocked: it just won't be remembered
+  }
+  deck.layout();
+}
+let remembered = false;
+try {
+  remembered = localStorage.getItem(STORE) === 'collapsed';
+} catch {
+  // storage blocked
+}
+if (remembered) setCollapsed(true);
+toggle.addEventListener('click', () => setCollapsed(!root.classList.contains('sidebar-collapsed')));
+deck.addKeyBinding({ keyCode: 83, key: 'S', description: 'Hide or show the room sidebar' }, () =>
+  setCollapsed(!root.classList.contains('sidebar-collapsed')),
+);

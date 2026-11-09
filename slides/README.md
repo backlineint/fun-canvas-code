@@ -77,7 +77,7 @@ comments appear. To delete an unwanted comment see the Drupal module's README.
 
 The deck runs in Reveal's embedded mode beside the sidebar (`.deck-layout` in `index.html`);
 slides keep their 1280x720 design and scale to fit what's left. Add `?sidebar=off` to the
-address to hide it (the sidebar is also hidden when printing). Requests and joins can use the
+address to hide it for the whole session (the sidebar is also hidden when printing). During the talk, the round button in the top corner of the slide area (faint until you hover it) or the `S` key hides and shows it: the slide re-fits to the full width at once, and the choice is remembered across reloads. It is the escape hatch if a comment shouldn't be on screen. Requests and joins can use the
 same list: `activity.js` items are `{ kind, id, who, avatar, slide, text, at }`.
 
 ## Slide ids
