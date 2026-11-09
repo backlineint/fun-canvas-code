@@ -163,7 +163,7 @@ final class PresenterSlideTest extends BrowserTestBase {
   }
 
   /**
-   * Repeated wrong keys from one IP are rate-limited.
+   * Repeated wrong keys from one IP are rate-limited, but the right key never is.
    */
   public function testWrongKeysAreRateLimited(): void {
     $this->useKey(self::KEY);
@@ -171,6 +171,9 @@ final class PresenterSlideTest extends BrowserTestBase {
       $this->assertSame(403, $this->report(['index' => 3], 'nope')->getStatusCode());
     }
     $this->assertSame(429, $this->report(['index' => 3], 'nope')->getStatusCode());
+    // The presenter, on the same IP, still gets through.
+    $this->assertSame(200, $this->report(['index' => 3])->getStatusCode());
+    $this->assertSame(3, (int) $this->readRoom()['field_current_slide']);
   }
 
   /**

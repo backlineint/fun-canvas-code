@@ -23,9 +23,11 @@ use Symfony\Component\HttpFoundation\Request;
 final class PresenterController implements ContainerInjectionInterface {
 
   /**
-   * Wrong keys allowed per IP in the window before further tries get a 429.
+   * Wrong keys allowed per IP in the window before further wrong tries get a
+   * 429. The right key is never limited, so a presenter on a shared venue IP
+   * can't be locked out by other people's bad guesses.
    */
-  public const FLOOD_LIMIT = 10;
+  public const FLOOD_LIMIT = 30;
 
   public const FLOOD_WINDOW = 300;
 
@@ -56,11 +58,12 @@ final class PresenterController implements ContainerInjectionInterface {
       return $this->error('presenter_key_not_configured', 503);
     }
 
-    $ip = $request->getClientIp() ?? 'unknown';
-    if (!$this->flood->isAllowed(self::FLOOD_EVENT, self::FLOOD_LIMIT, self::FLOOD_WINDOW, $ip)) {
-      return $this->error('too_many_attempts', 429);
-    }
+    // A correct key always gets through; only wrong keys are counted and limited.
     if (!hash_equals($expected, (string) $request->headers->get('X-Presenter-Key', ''))) {
+      $ip = $request->getClientIp() ?? 'unknown';
+      if (!$this->flood->isAllowed(self::FLOOD_EVENT, self::FLOOD_LIMIT, self::FLOOD_WINDOW, $ip)) {
+        return $this->error('too_many_attempts', 429);
+      }
       $this->flood->register(self::FLOOD_EVENT, self::FLOOD_WINDOW, $ip);
       return $this->error('forbidden', 403);
     }

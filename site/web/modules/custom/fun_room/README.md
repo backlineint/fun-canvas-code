@@ -146,7 +146,7 @@ a closed room can still be updated.
 | 403 | Missing or wrong key. |
 | 404 | No such room. |
 | 422 | Invalid `index`, `id` or `title`. |
-| 429 | Too many wrong keys from this IP (10 per 5 minutes). |
+| 429 | Too many wrong keys from this IP (30 per 5 minutes). The correct key is never rate-limited. |
 | 503 | No presenter key is configured, so nothing can be changed. |
 
 ### Setting the key
@@ -158,7 +158,7 @@ git-ignored `site/.ddev/config.local.yaml` and `ddev restart`:
 
 ```yaml
 web_environment:
-  - FUN_ROOM_PRESENTER_KEY=<a long random string, e.g. from `openssl rand -hex 16`>
+  - FUN_ROOM_PRESENTER_KEY=<a long random string, e.g. from `openssl rand -hex 32`>
 ```
 
 Use the same value as `VITE_PRESENTER_KEY` in the deck's `slides/.env.local`. The
