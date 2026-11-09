@@ -251,6 +251,23 @@ within a couple of seconds. The room page's `comments` component and the deck's
 `ActivityStream` both poll this endpoint (about every 3 and 2 seconds), served mostly from
 the one-second cache.
 
+### Rating events
+
+The deck's activity stream also shows each attendee's slide ratings (their `fun_vote` rows).
+`GET /api/fun/rooms/{code}/ratings?since={unix time}&limit={n}` is public and read-only,
+works for closed rooms, is cached for a second, and returns `{ratings: [{id, name, avatar,
+slide, value, tier, at, changed}]}` oldest change first. There is one entry per attendee
+per slide (`id` is the vote's id, `slide` is zero-based, `tier` is `low`/`mid`/`high` from
+the same thresholds as the swarm). Because a vote keeps its id when its value changes, the
+cursor is the change time: `since` returns votes changed at or after that second, and the
+client updates by `id`. Without `since` you get the newest `limit` (default 30, at most 50);
+if more than `limit` changed, the newest `limit` are returned.
+
+A vote is listed only once it has been unchanged for 3 seconds, so someone dragging their
+slider appears once with the value where they stopped. Names go with values here: ratings
+are public by name on the deck and in this feed (the swarm itself stays anonymous). No
+token, uuid or participant id is returned.
+
 ### Mood theming
 
 The server's `tier` (`low` below 35, `mid` below 65, else `high`, none with no votes)

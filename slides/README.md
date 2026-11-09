@@ -66,19 +66,24 @@ pulse and confetti. The steadying and confetti are copies of the room page's
 
 A sidebar stays on screen for the whole talk (about 22% of the width, 300-440px). Its top
 third is `RoomPulse`, a compact swarm with the room code, count, median and mood; its
-bottom two thirds is `ActivityStream`, the room's comments, newest first, each with the
-poster's name, avatar color and the slide it was posted on (long ones are cut at four
-lines, and the oldest fall off the bottom). `RoomPulse` reads the deck's mood poll
+bottom two thirds is `ActivityStream`, the room's activity, newest first: comments (name,
+avatar color, slide, text; long ones are cut at four lines) and slide ratings ("Alice rated
+slide 4" with the value in a pill colored by mood tier). Each person has one rating row per
+slide that updates in place and moves to the top when they change it, shown a few seconds
+after they stop moving the slider; at most 15 rating rows are kept so they can't crowd out
+comments. The oldest items fall off the bottom. `RoomPulse` reads the deck's mood poll
 (`src/mood.js` via `src/useRoomState.js`); `ActivityStream` reads a second poll,
-`src/activity.js` via `src/useActivity.js`, which asks `GET /api/fun/rooms/{code}/comments`
-every 2 seconds for just the comments after the newest one it has. The dots come from
+`src/activity.js` via `src/useActivity.js`, which every 2 seconds asks
+`GET /api/fun/rooms/{code}/comments` for the comments after the newest one it has and
+`GET /api/fun/rooms/{code}/ratings` for the ratings changed since the newest change it has. The dots come from
 `SwarmField`, shared with the swarm slide. Without `VITE_ROOM_API` a few simulated
-comments appear. To delete an unwanted comment see the Drupal module's README.
+comments and ratings appear. To delete an unwanted comment see the Drupal module's README.
 
 The deck runs in Reveal's embedded mode beside the sidebar (`.deck-layout` in `index.html`);
 slides keep their 1280x720 design and scale to fit what's left. Add `?sidebar=off` to the
 address to hide it for the whole session (the sidebar is also hidden when printing). During the talk, the round button in the top corner of the slide area (faint until you hover it) or the `S` key hides and shows it: the slide re-fits to the full width at once, and the choice is remembered across reloads. It is the escape hatch if a comment shouldn't be on screen. Requests and joins can use the
-same list: `activity.js` items are `{ kind, id, who, avatar, slide, text, at }`.
+same list: `activity.js` items are `{ kind, key, who, avatar, slide, ts, ... }` with a `key` unique
+across kinds.
 
 ## Slide ids
 

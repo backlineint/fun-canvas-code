@@ -5,6 +5,7 @@
 //   POST {API}/api/fun/rooms/{code}/slide   { id, title, index }   (presenter key)
 //   GET  {API}/api/fun/rooms/{code}/state   -> { count, median, tier, dots }
 //   GET  {API}/api/fun/rooms/{code}/comments?after={id}   -> { comments: [...] }
+//   GET  {API}/api/fun/rooms/{code}/ratings?since={unix}  -> { ratings: [...] }
 //
 // VITE_ROOM_API is the Drupal site's origin, for example
 // https://fun-canvas-code.ddev.site. Set the variables in .env.local (see
@@ -173,4 +174,35 @@ export async function getComments(after = 0) {
   if (res.status === 404) commentsRetryAt = Date.now() + 60000;
   if (!res.ok) throw new Error(`comments failed: ${res.status}`);
   return (await res.json()).comments;
+}
+
+// Simulated ratings for stub mode: a few people rate, and one keeps changing her mind.
+const STUB_RATERS = [['Dana', 0], ['Priya', 2], ['Marcus', 4], ['Sam', 1]];
+let stubRatings = [];
+let stubRatingTicks = 0;
+
+// The room's slide ratings changed at or after `since` (a unix time), settled for a few
+// seconds on the server. After a 404 it waits a minute before asking again.
+let ratingsRetryAt = 0;
+
+export async function getRatings(since = 0) {
+  if (isStub) {
+    stubRatingTicks += 1;
+    const now = Math.floor(Date.now() / 1000);
+    if (stubRatingTicks % 2 === 0) {
+      const i = Math.floor(stubRatingTicks / 2);
+      const [name, avatar] = STUB_RATERS[i % STUB_RATERS.length];
+      const value = (i * 37 + 12) % 101;
+      const existing = stubRatings.find((r) => r.name === name);
+      if (existing) Object.assign(existing, { value, tier: value < 35 ? 'low' : value < 65 ? 'mid' : 'high', changed: now });
+      else stubRatings.push({ id: stubRatings.length + 1, name, avatar, slide: i % 6, value, tier: value < 35 ? 'low' : value < 65 ? 'mid' : 'high', at: new Date().toISOString(), changed: now });
+    }
+    return stubRatings.filter((r) => r.changed >= since).map((r) => ({ ...r }));
+  }
+  if (Date.now() < ratingsRetryAt) throw new Error('ratings endpoint unavailable');
+  const query = since > 0 ? `?since=${since}` : '';
+  const res = await fetch(`${API}/api/fun/rooms/${encodeURIComponent(ROOM_CODE)}/ratings${query}`);
+  if (res.status === 404) ratingsRetryAt = Date.now() + 60000;
+  if (!res.ok) throw new Error(`ratings failed: ${res.status}`);
+  return (await res.json()).ratings;
 }

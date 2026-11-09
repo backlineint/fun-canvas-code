@@ -42,3 +42,12 @@ fun_room.comments_post:
   requirements:
     # Authorised by the participant's token inside the controller.
     _access: 'TRUE'
+
+fun_room.ratings_list:
+  path: '/api/fun/rooms/{code}/ratings'
+  defaults:
+    _controller: 'Drupal\fun_room\Controller\RatingController::list'
+  methods: [GET]
+  requirements:
+    # Public and read-only: ratings show only the name and avatar the attendee chose.
+    _access: 'TRUE'

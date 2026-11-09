@@ -20,3 +20,7 @@ services:
   fun_room.comment_feed:
     class: Drupal\fun_room\CommentFeed
     arguments: ['@entity_type.manager', '@cache.default', '@datetime.time']
+
+  fun_room.rating_feed:
+    class: Drupal\fun_room\RatingFeed
+    arguments: ['@entity_type.manager', '@cache.default', '@datetime.time']
