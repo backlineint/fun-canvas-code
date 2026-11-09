@@ -88,6 +88,55 @@ html[data-mood='high'] {
   background-color: var(--mood-bg);
 }
 
+/*
+ * The deck beside the room sidebar. The layout is also Reveal's viewport, so the mood
+ * color and glow cover both. Rows are a third and two thirds at any size.
+ * ?sidebar=off (class set in main.jsx) and print hide the sidebar.
+ */
+.deck-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(300px, 22vw, 440px);
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.deck-layout > .reveal {
+  width: 100%;
+  height: 100%;
+}
+
+.deck-sidebar {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 14px;
+  box-sizing: border-box;
+  min-height: 0;
+  padding: 16px 16px 16px 0;
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+}
+
+.deck-sidebar > * {
+  min-height: 0;
+}
+
+.no-sidebar .deck-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.no-sidebar .deck-sidebar {
+  display: none;
+}
+
+@media print {
+  .deck-sidebar {
+    display: none;
+  }
+}
+
 /* A glow around the edge of the screen, so the mood reads from the back of the room. */
 .reveal-viewport::after {
   content: '';

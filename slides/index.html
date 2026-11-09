@@ -11,6 +11,7 @@
         />
     </head>
     <body>
+        <div class="deck-layout reveal-viewport">
         <div class="reveal">
             <div class="slides">
                 <!-- Every slide needs a stable data-id: the room records activity against it,
@@ -168,6 +169,11 @@
                     <p>Your stats are on the way.</p>
                 </section>
             </div>
+        </div>
+        <aside class="deck-sidebar" aria-label="The room">
+            <div data-component="room-pulse"></div>
+            <div data-component="activity-stream"></div>
+        </aside>
         </div>
         <script type="module" src="/src/main.jsx"></script>
     </body>

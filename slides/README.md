@@ -62,6 +62,20 @@ rehearse a mood (`#/17` is the swarm slide). Reduced motion turns off the fade, 
 pulse and confetti. The steadying and confetti are copies of the room page's
 (`fun-canvas-project/src/lib/fun-room-mood.ts`, `fun-room-confetti.ts`); keep them in step.
 
+## The room sidebar
+
+A sidebar stays on screen for the whole talk (about 22% of the width, 300-440px). Its top
+third is `RoomPulse`, a compact swarm with the room code, count, median and mood; its
+bottom two thirds is `ActivityStream`, a placeholder ("Coming soon") for comments,
+requests and joins. Both read the deck's one poll (`src/mood.js` via `src/useRoomState.js`),
+so the sidebar adds no requests. The dots come from `SwarmField`, shared with the swarm slide.
+
+The deck runs in Reveal's embedded mode beside the sidebar (`.deck-layout` in `index.html`);
+slides keep their 1280x720 design and scale to fit what's left. Add `?sidebar=off` to the
+address to hide it (the sidebar is also hidden when printing). When the activity feed
+exists, put its items in the `role="log"` region of `ActivityStream.jsx`; the item shape is
+documented there.
+
 ## Slide ids
 
 Give every `<section>` a unique `data-id` in `index.html`; the room records

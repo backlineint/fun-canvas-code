@@ -4,10 +4,17 @@ import { render } from 'preact';
 import './index.css';
 import Swarm from './components/Swarm.jsx';
 import RoomCode from './components/RoomCode.jsx';
+import RoomPulse from './components/RoomPulse.jsx';
+import ActivityStream from './components/ActivityStream.jsx';
 import { reportSlide } from './room.js';
 import { startMood } from './mood.js';
 
-const components = { swarm: Swarm, 'room-code': RoomCode };
+const components = {
+  swarm: Swarm,
+  'room-code': RoomCode,
+  'room-pulse': RoomPulse,
+  'activity-stream': ActivityStream,
+};
 
 document.querySelectorAll('[data-component]').forEach((el) => {
   const Component = components[el.dataset.component];
@@ -37,9 +44,19 @@ const repeated = [...seenIds].filter(([, count]) => count > 1).map(([id]) => id)
 if (repeated.length) console.warn('Repeated slide ids in index.html:', repeated.join(', '));
 
 // One poll of the room themes every slide and feeds the swarm slide.
+if (new URLSearchParams(window.location.search).get('sidebar') === 'off') document.documentElement.classList.add('no-sidebar');
 startMood();
 
-const deck = new Reveal({ hash: true, width: 1280, height: 720, transition: 'fade' });
+// Embedded so the deck sizes to its cell beside the room sidebar instead of the whole
+// window. `keyboardCondition: null` keeps the arrow keys working without a click.
+const deck = new Reveal({
+  hash: true,
+  width: 1280,
+  height: 720,
+  transition: 'fade',
+  embedded: true,
+  keyboardCondition: null,
+});
 
 deck.on('ready', (e) => report(e.currentSlide, e.indexh));
 deck.on('slidechanged', (e) => report(e.currentSlide, e.indexh));
