@@ -135,6 +135,30 @@ html[data-mood='high'] {
 }
 
 /*
+ * The room and activity views (src/deckView.js sets <html data-view>): the slide is
+ * hidden and that one card fills the screen.
+ */
+html[data-view='room'] .deck-layout,
+html[data-view='activity'] .deck-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+html[data-view='room'] .deck-layout > .reveal,
+html[data-view='activity'] .deck-layout > .reveal,
+html[data-view='room'] .sidebar-toggle,
+html[data-view='activity'] .sidebar-toggle,
+html[data-view='room'] [data-component='activity-stream'],
+html[data-view='activity'] [data-component='room-pulse'] {
+  display: none;
+}
+
+html[data-view='room'] .deck-sidebar,
+html[data-view='activity'] .deck-sidebar {
+  grid-template-rows: minmax(0, 1fr);
+  padding: 24px;
+}
+
+/*
  * The button that hides the sidebar (an escape hatch for an unwanted comment; also
  * the S key). It sits in the top corner of the stage, faint until hovered or focused,
  * and is gone with ?sidebar=off and when printing.

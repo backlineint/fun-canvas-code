@@ -81,7 +81,15 @@ comments and ratings appear. To delete an unwanted comment see the Drupal module
 
 The deck runs in Reveal's embedded mode beside the sidebar (`.deck-layout` in `index.html`);
 slides keep their 1280x720 design and scale to fit what's left. Add `?sidebar=off` to the
-address to hide it for the whole session (the sidebar is also hidden when printing). During the talk, the round button in the top corner of the slide area (faint until you hover it) or the `S` key hides and shows it: the slide re-fits to the full width at once, and the choice is remembered across reloads. It is the escape hatch if a comment shouldn't be on screen. Requests and joins can use the
+address to hide it for the whole session (the sidebar is also hidden when printing). During the talk each of the three areas can be shown full screen, with its own control and key:
+the **slide** (the round button in the top corner of the slide area, or `S`) hides the sidebar so the
+slide takes the whole width, and is remembered across reloads (it is also the escape hatch if a
+comment shouldn't be on screen); the **room** (the button on the room card, or `R`) fills the screen
+with a big median and swarm; the **activity stream** (the button on its card, or `C`) fills the screen
+with larger text. Press the same key or button again, or `Esc`, to go back to the split view. Room and
+activity views are not remembered across a reload. The arrow keys keep changing slides in any view.
+The current view is `<html data-view>` (`src/deckView.js`); `index.css` lays it out and the cards read
+it with `useDeckView` to draw their bigger versions. Requests and joins can use the
 same list: `activity.js` items are `{ kind, key, who, avatar, slide, ts, ... }` with a `key` unique
 across kinds.
 
