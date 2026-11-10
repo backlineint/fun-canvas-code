@@ -71,11 +71,11 @@
         "drupal/token_or": "^2.2",
         "drupal/trash": "^3.0.13",
         "drupal/view_password": "^6",
-        "drupal/yoast_seo": "^2.1"
+        "drupal/yoast_seo": "^2.1",
+        "drush/drush": "^13.7"
     },
     "require-dev": {
-        "drupal/core-dev": "*",
-        "drush/drush": "^13.7"
+        "drupal/core-dev": "*"
     },
     "conflict": {
         "drupal/drupal": "*"
