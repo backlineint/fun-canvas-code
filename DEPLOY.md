@@ -54,26 +54,27 @@ What is set up in the repo:
    If the import complains about the site UUID, set it to the local one:
    `vendor/bin/drush config:set system.site uuid ea632d1e-b2a8-4fee-9262-5f02678f9e73 -y`.
 
-5. Push the Canvas components (this also pushes the room template). Create an OAuth client in
-   the site's Canvas settings, then in `fun-canvas-project/.env.local` set `CANVAS_SITE_URL`,
-   `CANVAS_CLIENT_ID` and `CANVAS_CLIENT_SECRET` and run:
-
-   ```bash
-   cd fun-canvas-project
-   npm run canvas -- push -y
-   ```
-
-   If the OAuth keys are missing, generate them on the server with
-   `vendor/bin/drush simple-oauth:generate-keys ../keys`, and set the key paths in the
-   Simple OAuth settings.
-
-6. Create a room (as you do locally) and open it on a phone.
+5. Create a room (as you do locally) and open it on a phone.
 
 ## Every later deploy
 
 `git push upsun main` builds and runs `drush deploy`: database updates, config import, cache
 rebuild. After changing configuration in the admin UI, run `drush config:export` locally and commit
 `site/config/sync`, otherwise the next deploy overwrites the change.
+
+### Changing a Canvas component
+
+The components and the room template are part of the exported config (each component's source and
+compiled code are in `site/config/sync/canvas.js_component.*.yml`), so the install in step 4 already
+brings them over. Do not `canvas push` to the live site as part of the normal flow: the next
+`drush deploy` would overwrite what you pushed with the committed config.
+
+1. Edit the component and run `npm run canvas -- push -y` in `fun-canvas-project` against the local site.
+2. Run `ddev drush cex -y` and commit the changed files in `site/config/sync`.
+3. `git push upsun main`.
+
+Pushing straight to the live site (a Canvas OAuth client, its `CANVAS_*` values in
+`.env.local`, and the server's OAuth keys) is only a fallback if a component fails to import.
 
 ## The slide deck
 
