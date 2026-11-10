@@ -72,15 +72,17 @@ export default function Room({
   // header and slide bar, the swarm filling the height, the slider under it)
   // beside a 360px sidebar (requests, then comments filling the rest). On
   // phones the two column wrappers use `contents`, so their children flow as
-  // one column in the same order.
+  // one column in the same order. On wide screens the page is exactly one screen
+  // tall, so a long comment list scrolls inside its card instead of stretching the
+  // page (the grid row is `minmax(0, 1fr)` so a slot's content can't outgrow it).
   return (
     <div
       className={cn(
-        'mx-auto flex min-h-dvh w-full max-w-[480px] flex-col gap-5 bg-mood-bg px-6 py-7 font-sans text-ink motion-safe:transition-colors motion-safe:duration-[1500ms] lg:max-w-[1600px] lg:flex-row lg:gap-7 lg:p-8',
+        'mx-auto flex min-h-dvh w-full max-w-[480px] flex-col gap-5 bg-mood-bg px-6 py-7 font-sans text-ink motion-safe:transition-colors motion-safe:duration-[1500ms] lg:h-dvh lg:max-w-[1600px] lg:flex-row lg:gap-7 lg:p-8',
         className,
       )}
     >
-      <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:flex-col lg:gap-4">
+      <div className="contents lg:flex lg:min-h-0 lg:min-w-0 lg:flex-1 lg:flex-col lg:gap-4 lg:overflow-y-auto">
         <header className="flex flex-col gap-3 lg:grid lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-4">
           <div className="flex items-center justify-between gap-3 lg:contents">
             <div className="text-[13px] font-bold tracking-[0.12em] uppercase lg:col-start-1 lg:row-start-1">
@@ -145,7 +147,7 @@ export default function Room({
         <Slot>{slider}</Slot>
       </div>
 
-      <div className="contents lg:flex lg:w-[360px] lg:shrink-0 lg:flex-col lg:gap-4">
+      <div className="contents lg:flex lg:min-h-0 lg:w-[360px] lg:shrink-0 lg:flex-col lg:gap-4">
         <Slot>{requests}</Slot>
         <Slot grow>{comments}</Slot>
       </div>
@@ -161,7 +163,12 @@ export default function Room({
 function Slot({ children, grow }: { children?: ReactNode; grow?: boolean }) {
   if (Children.toArray(children).length === 0) return null;
   return (
-    <div className={cn('lg:grid', grow && 'lg:min-h-64 lg:flex-1')}>
+    <div
+      className={cn(
+        'lg:grid',
+        grow && 'lg:min-h-64 lg:flex-1 lg:grid-rows-[minmax(0,1fr)]',
+      )}
+    >
       {children}
     </div>
   );
