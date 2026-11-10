@@ -10,7 +10,7 @@ _core:
 name: Room
 type: room
 description: 'A Fun-o-Meter room. The title is the room code attendees enter to join.'
-help: ''
+help: 'Rooms are created for each talk. The title is the room code attendees enter to join.'
 new_revision: false
 preview_mode: 0
 display_submitted: false
