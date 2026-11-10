@@ -101,3 +101,13 @@ function fun_room_update_10003(): void {
     $manager->installEntityType(\Drupal::entityTypeManager()->getDefinition('fun_comment'));
   }
 }
+
+/**
+ * Installs the fun_request entity type.
+ */
+function fun_room_update_10004(): void {
+  $manager = \Drupal::entityDefinitionUpdateManager();
+  if (!$manager->getEntityType('fun_request')) {
+    $manager->installEntityType(\Drupal::entityTypeManager()->getDefinition('fun_request'));
+  }
+}

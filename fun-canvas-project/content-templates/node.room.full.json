@@ -50,10 +50,12 @@
       }
     },
     "requests": {
-      "type": "js.placeholder",
+      "type": "js.requests",
       "props": {
-        "title": "Requests",
-        "description": "Ask for a party hat, a noise maker or candy."
+        "code": {
+          "sourceType": "entity-field",
+          "expression": "ℹ︎␜entity:node:room␝title␞␟value"
+        }
       }
     },
     "comments": {

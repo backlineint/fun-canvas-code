@@ -127,6 +127,39 @@ export function rememberComment(code: string, id: number): void {
   }
 }
 
+const requestsKey = (code: string) =>
+  `fun-o-meter:requests:${code.toUpperCase()}`;
+const requestNoteKey = (code: string) =>
+  `fun-o-meter:request-note:${code.toUpperCase()}`;
+
+/** Ids of the requests this browser made in a room, so it can follow them. */
+export function readMyRequests(code: string): number[] {
+  try {
+    const parsed: unknown = JSON.parse(readRaw(requestsKey(code)) ?? '[]');
+    return Array.isArray(parsed)
+      ? parsed.filter((id): id is number => Number.isInteger(id))
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+export function rememberRequest(code: string, id: number): void {
+  const ids = readMyRequests(code);
+  if (!ids.includes(id)) {
+    writeRaw(requestsKey(code), JSON.stringify([...ids, id].slice(-100)));
+  }
+}
+
+/** The "where are you sitting" note last used in a room. */
+export function readRequestNote(code: string): string {
+  return readRaw(requestNoteKey(code)) ?? '';
+}
+
+export function saveRequestNote(code: string, note: string): void {
+  writeRaw(requestNoteKey(code), note === '' ? null : note);
+}
+
 // Marks "not read yet" for the server render, which has no storage.
 const PENDING = 'pending';
 

@@ -51,3 +51,40 @@ fun_room.ratings_list:
   requirements:
     # Public and read-only: ratings show only the name and avatar the attendee chose.
     _access: 'TRUE'
+
+fun_room.requests_list:
+  path: '/api/fun/rooms/{code}/requests'
+  defaults:
+    _controller: 'Drupal\fun_room\Controller\RequestController::list'
+  methods: [GET]
+  requirements:
+    # Public and read-only: requests show only the name, avatar and note the attendee gave.
+    _access: 'TRUE'
+
+fun_room.requests_make:
+  path: '/api/fun/rooms/{code}/requests'
+  defaults:
+    _controller: 'Drupal\fun_room\Controller\RequestController::make'
+  methods: [POST]
+  requirements:
+    # Authorised by the participant's token inside the controller.
+    _access: 'TRUE'
+
+fun_room.requests_cancel:
+  path: '/api/fun/rooms/{code}/requests/{id}/cancel'
+  defaults:
+    _controller: 'Drupal\fun_room\Controller\RequestController::cancel'
+  methods: [POST]
+  requirements:
+    _access: 'TRUE'
+    id: '\d+'
+
+fun_room.requests_deliver:
+  path: '/api/fun/rooms/{code}/requests/{id}/deliver'
+  defaults:
+    _controller: 'Drupal\fun_room\Controller\RequestController::deliver'
+  methods: [POST]
+  requirements:
+    # Authorised by the presenter key inside the controller.
+    _access: 'TRUE'
+    id: '\d+'

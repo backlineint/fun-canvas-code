@@ -4,6 +4,9 @@
 //   POST {base}/api/fun/rooms/{code}/vote   { value }   header X-Participant-Token
 //   GET  {base}/api/fun/rooms/{code}/comments?after={id}&limit={n}
 //   POST {base}/api/fun/rooms/{code}/comments   { text }   header X-Participant-Token
+//   GET  {base}/api/fun/rooms/{code}/requests?ids={a,b,c}
+//   POST {base}/api/fun/rooms/{code}/requests   { kind, note? }   header X-Participant-Token
+//   POST {base}/api/fun/rooms/{code}/requests/{id}/cancel   header X-Participant-Token
 // These are plain fetch calls (not JSON:API). `base` is the site's address from
 // `useSiteContext().baseUrl`, which is the site itself on a Drupal page and the
 // connected site in Workbench. Keep every call to these endpoints in this module.
@@ -166,4 +169,115 @@ export async function sendComment(
     throw new CommentError(response.status, body.error ?? 'error');
   }
   return (await response.json()) as Comment;
+}
+
+export type RequestKind = 'hat' | 'noise' | 'candy';
+
+export type RequestStatus = 'open' | 'delivered' | 'cancelled';
+
+export type RoomRequest = {
+  id: number;
+  name: string;
+  avatar: number;
+  kind: RequestKind;
+  /** Where the attendee is sitting, as they typed it. Plain text. */
+  note: string;
+  slide: number;
+  status: RequestStatus;
+  at: string;
+  /** Unix time of the last change (a delivery or cancel). */
+  changed: number;
+};
+
+/** What each kind is called, and how to say it in a sentence. */
+export const REQUEST_KINDS: {
+  kind: RequestKind;
+  label: string;
+  what: string;
+}[] = [
+  { kind: 'hat', label: 'Party hat', what: 'a party hat' },
+  { kind: 'noise', label: 'Noise maker', what: 'a noise maker' },
+  { kind: 'candy', label: 'Candy', what: 'candy' },
+];
+
+/** A failed request call. `reason` is the server's error code, or "network". */
+export class RequestError extends Error {
+  readonly status: number;
+  readonly reason: string;
+
+  constructor(status: number, reason: string) {
+    super(`request failed: ${reason}`);
+    this.status = status;
+    this.reason = reason;
+  }
+}
+
+/** These requests (by id), whatever their status. */
+export async function fetchRequests(
+  base: string,
+  code: string,
+  ids: number[],
+): Promise<RoomRequest[]> {
+  const response = await fetch(
+    `${endpoint(base, code, 'requests')}?ids=${ids.slice(-20).join(',')}`,
+    { headers: { Accept: 'application/json' } },
+  );
+  if (!response.ok) throw new Error(`requests failed: ${response.status}`);
+  return ((await response.json()) as { requests: RoomRequest[] }).requests;
+}
+
+async function post(
+  url: string,
+  token: string,
+  body?: unknown,
+): Promise<Response> {
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'X-Participant-Token': token,
+      },
+      body: body === undefined ? undefined : JSON.stringify(body),
+    });
+  } catch {
+    throw new RequestError(0, 'network');
+  }
+  if (!response.ok) {
+    const failed = (await response.json().catch(() => ({}))) as {
+      error?: string;
+    };
+    throw new RequestError(response.status, failed.error ?? 'error');
+  }
+  return response;
+}
+
+/** Asks for something. An attendee's open request of that kind is returned as it is. */
+export async function sendRequest(
+  base: string,
+  code: string,
+  token: string,
+  kind: RequestKind,
+  note: string,
+): Promise<RoomRequest> {
+  const response = await post(endpoint(base, code, 'requests'), token, {
+    kind,
+    note,
+  });
+  return (await response.json()) as RoomRequest;
+}
+
+export async function cancelRequest(
+  base: string,
+  code: string,
+  token: string,
+  id: number,
+): Promise<RoomRequest> {
+  const response = await post(
+    endpoint(base, code, `requests/${id}/cancel`),
+    token,
+  );
+  return (await response.json()) as RoomRequest;
 }

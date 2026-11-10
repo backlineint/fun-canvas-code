@@ -6,8 +6,7 @@ namespace Drupal\fun_room\Controller;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Flood\FloodInterface;
-use Drupal\Core\Site\Settings;
+use Drupal\fun_room\PresenterKeyChecker;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,19 +22,17 @@ use Symfony\Component\HttpFoundation\Request;
 final class PresenterController implements ContainerInjectionInterface {
 
   /**
-   * Wrong keys allowed per IP in the window before further wrong tries get a
-   * 429. The right key is never limited, so a presenter on a shared venue IP
-   * can't be locked out by other people's bad guesses.
+   * Wrong keys allowed per IP in the window (see PresenterKeyChecker).
    */
-  public const FLOOD_LIMIT = 30;
+  public const FLOOD_LIMIT = PresenterKeyChecker::FLOOD_LIMIT;
 
-  public const FLOOD_WINDOW = 300;
+  public const FLOOD_WINDOW = PresenterKeyChecker::FLOOD_WINDOW;
 
-  public const FLOOD_EVENT = 'fun_room.presenter_key';
+  public const FLOOD_EVENT = PresenterKeyChecker::FLOOD_EVENT;
 
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
-    private readonly FloodInterface $flood,
+    private readonly PresenterKeyChecker $keyChecker,
   ) {}
 
   /**
@@ -44,7 +41,7 @@ final class PresenterController implements ContainerInjectionInterface {
   public static function create(ContainerInterface $container): static {
     return new static(
       $container->get('entity_type.manager'),
-      $container->get('flood'),
+      $container->get('fun_room.presenter_key'),
     );
   }
 
@@ -52,20 +49,9 @@ final class PresenterController implements ContainerInjectionInterface {
    * Sets a room's current slide: POST {index, id?, title?} with the presenter key.
    */
   public function slide(Request $request, string $code): JsonResponse {
-    $expected = $this->expectedKey();
-    if ($expected === '') {
-      // Fail closed: with no key configured nobody may change a room.
-      return $this->error('presenter_key_not_configured', 503);
-    }
-
     // A correct key always gets through; only wrong keys are counted and limited.
-    if (!hash_equals($expected, (string) $request->headers->get('X-Presenter-Key', ''))) {
-      $ip = $request->getClientIp() ?? 'unknown';
-      if (!$this->flood->isAllowed(self::FLOOD_EVENT, self::FLOOD_LIMIT, self::FLOOD_WINDOW, $ip)) {
-        return $this->error('too_many_attempts', 429);
-      }
-      $this->flood->register(self::FLOOD_EVENT, self::FLOOD_WINDOW, $ip);
-      return $this->error('forbidden', 403);
+    if ($denied = $this->keyChecker->check($request)) {
+      return $denied;
     }
 
     $data = json_decode($request->getContent(), TRUE);
@@ -112,14 +98,6 @@ final class PresenterController implements ContainerInjectionInterface {
     $response = new JsonResponse(['code' => $room->label(), 'index' => $index, 'id' => $id, 'title' => $title]);
     $response->headers->set('Cache-Control', 'no-store');
     return $response;
-  }
-
-  /**
-   * The configured key: the setting if present (even empty), else the env var.
-   */
-  private function expectedKey(): string {
-    $setting = Settings::get('fun_room_presenter_key');
-    return trim((string) ($setting ?? getenv('FUN_ROOM_PRESENTER_KEY')));
   }
 
   private function loadRoom(string $code): ?NodeInterface {

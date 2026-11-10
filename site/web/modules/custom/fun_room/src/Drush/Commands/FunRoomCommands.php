@@ -7,6 +7,7 @@ namespace Drupal\fun_room\Drush\Commands;
 use Consolidation\AnnotatedCommand\Attributes\Argument;
 use Consolidation\AnnotatedCommand\Attributes\Command;
 use Consolidation\AnnotatedCommand\Attributes\Usage;
+use Drupal\fun_room\Entity\FunRequest;
 use Drupal\node\NodeInterface;
 use Drush\Commands\DrushCommands;
 
@@ -49,6 +50,21 @@ final class FunRoomCommands extends DrushCommands {
     }
     $room->set('field_status', 'closed')->save();
     $this->logger()->success(dt('Room @code is closed.', ['@code' => $room->label()]));
+  }
+
+  /**
+   * Marks a request delivered (the same as the Delivered button on the deck).
+   */
+  #[Command(name: 'fun-room:deliver')]
+  #[Argument(name: 'id', description: 'The request id, as shown in the activity feed.')]
+  #[Usage(name: 'fun-room:deliver 12', description: 'Mark request 12 delivered.')]
+  public function deliver(string $id): void {
+    $request = \Drupal::entityTypeManager()->getStorage('fun_request')->load((int) $id);
+    if (!$request instanceof FunRequest) {
+      throw new \InvalidArgumentException(dt('No request with id @id.', ['@id' => $id]));
+    }
+    \Drupal::service('fun_room.request_recorder')->deliver($request);
+    $this->logger()->success(dt('Request @id is @status.', ['@id' => $id, '@status' => $request->get('status')->value]));
   }
 
   private function load(string $code): ?NodeInterface {

@@ -24,3 +24,15 @@ services:
   fun_room.rating_feed:
     class: Drupal\fun_room\RatingFeed
     arguments: ['@entity_type.manager', '@cache.default', '@datetime.time']
+
+  fun_room.presenter_key:
+    class: Drupal\fun_room\PresenterKeyChecker
+    arguments: ['@flood']
+
+  fun_room.request_recorder:
+    class: Drupal\fun_room\RequestRecorder
+    arguments: ['@entity_type.manager', '@datetime.time', '@lock']
+
+  fun_room.request_feed:
+    class: Drupal\fun_room\RequestFeed
+    arguments: ['@entity_type.manager', '@cache.default', '@datetime.time']

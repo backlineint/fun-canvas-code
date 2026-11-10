@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
+import { markDelivered } from '../activity.js';
+import { canDeliver } from '../room.js';
 import { useActivity } from '../useActivity.js';
 import { useDeckView } from '../useDeckView.js';
 import ViewButton from './ViewButton.jsx';
@@ -15,16 +17,20 @@ const TIER_STYLES = {
 };
 
 // What changed about an item, so a new or updated one is highlighted and an unchanged one isn't.
-const signature = (item) => `${item.key}:${item.value ?? ''}`;
+const signature = (item) => `${item.key}:${item.value ?? ''}:${item.status ?? ''}`;
 
 // The room's activity, in the bottom two thirds of the sidebar, newest first: comments
 // attendees post and slide ratings. Items come from the deck's one poll (activity.js):
 //   { kind: 'comment', key, who, avatar, slide, text, ts }
 //   { kind: 'rating',  key, who, avatar, slide, value, tier, ts }
+//   { kind: 'request', key, id, who, avatar, what, note, slide, status, opened, ts }
+// Open requests are pinned to the top (longest-waiting first); a volunteer marks one delivered
+// with its button, which needs the presenter key.
 // Text is rendered as text only. The list scrolls (the newest are at the top, and a new item
 // arriving while you are scrolled down doesn't move your view).
 export default function ActivityStream() {
-  const { items, offline, loaded } = useActivity();
+  const { items, offline, loaded, notice } = useActivity();
+  const open = items.filter((item) => item.kind === 'request' && item.status === 'open').length;
   // With the activity view on (C, or the button) the stream fills the screen with bigger text.
   const full = useDeckView() === 'activity';
 
@@ -55,11 +61,16 @@ export default function ActivityStream() {
         <h3 className={`m-0 font-display font-extrabold ${full ? 'text-5xl' : 'text-xl'}`}>Activity</h3>
         <span className="flex items-center gap-3">
         <span className={`rounded-full bg-ink font-bold tracking-wide text-white ${full ? 'px-5 py-2 text-xl' : 'px-3 py-1 text-xs'}`}>
-          {offline && items.length === 0 ? 'OFFLINE' : items.length ? `${items.length} ${items.length === 1 ? 'ITEM' : 'ITEMS'}` : 'ACTIVITY'}
+          {offline && items.length === 0 ? 'OFFLINE' : open ? `${open} OPEN` : items.length ? `${items.length} ${items.length === 1 ? 'ITEM' : 'ITEMS'}` : 'ACTIVITY'}
         </span>
         <ViewButton target="activity" name="the activity stream" keyName="C" />
         </span>
       </div>
+      {notice ? (
+        <p role="status" className={`m-0 font-bold ${full ? 'text-2xl' : 'text-sm'}`}>
+          {notice}
+        </p>
+      ) : null}
       <div role="log" aria-live="polite" aria-relevant="additions" className={`mx-auto flex min-h-0 w-full flex-1 flex-col overflow-y-auto overscroll-contain pr-1 [scrollbar-width:thin] ${full ? 'max-w-5xl gap-4' : 'gap-2'}`}>
         {items.length === 0 ? (
           <p className={`m-0 leading-snug ${full ? 'text-3xl' : 'text-base'}`}>
@@ -75,6 +86,34 @@ export default function ActivityStream() {
                 aria-hidden="true"
               />
             );
+            if (item.kind === 'request') {
+              const waiting = item.status === 'open';
+              return (
+                <article
+                  key={item.key}
+                  className={`flex shrink-0 items-center transition-colors duration-1000 ${waiting ? 'border-2 border-ink bg-sun/40' : highlight} ${full ? 'gap-5 rounded-2xl px-5 py-4' : 'gap-3 rounded-xl px-2.5 py-2'} ${waiting ? '' : 'opacity-70'}`}
+                >
+                  {dot}
+                  <div className={`min-w-0 flex-1 [overflow-wrap:anywhere] ${full ? 'text-3xl' : 'text-base'}`}>
+                    <div>
+                      <span className="font-bold">{item.who}</span> {waiting ? 'wants' : 'got'} {item.what}
+                      {waiting ? '' : ' ✓'}
+                    </div>
+                    {item.note ? <div className={`font-medium ${full ? 'text-2xl' : 'text-sm'}`}>{item.note}</div> : null}
+                  </div>
+                  {waiting && canDeliver ? (
+                    <button
+                      type="button"
+                      onClick={() => markDelivered(item.id)}
+                      aria-label={`Mark ${item.what} for ${item.who} delivered`}
+                      className={`shrink-0 cursor-pointer rounded-full border-0 bg-ink font-bold text-white ${full ? 'px-6 py-3 text-2xl' : 'px-3 py-1.5 text-sm'}`}
+                    >
+                      Delivered
+                    </button>
+                  ) : null}
+                </article>
+              );
+            }
             return item.kind === 'rating' ? (
               <article key={item.key} className={`flex shrink-0 items-center transition-colors duration-1000 ${highlight} ${full ? 'gap-5 rounded-2xl px-5 py-3 text-3xl' : 'gap-3 rounded-xl px-2.5 py-1.5 text-base'}`}>
                 {dot}

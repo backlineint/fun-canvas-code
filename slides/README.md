@@ -66,18 +66,26 @@ pulse and confetti. The steadying and confetti are copies of the room page's
 
 A sidebar stays on screen for the whole talk (about 22% of the width, 300-440px). Its top
 third is `RoomPulse`, a compact swarm with the room code, count, median and mood; its
-bottom two thirds is `ActivityStream`, the room's activity, newest first: comments (name,
+bottom two thirds is `ActivityStream`, the room's activity, newest first: **requests** for
+party hats, noise makers and candy ("Alice wants candy", with her note), comments (name,
 avatar color, slide, text; long ones are cut at four lines) and slide ratings ("Alice rated
 slide 4" with the value in a pill colored by mood tier). Each person has one rating row per
 slide that updates in place and moves to the top when they change it, shown a few seconds
 after they stop moving the slider; at most 15 rating rows are kept so they can't crowd out
-comments. The oldest items fall off the bottom. `RoomPulse` reads the deck's mood poll
+comments. The oldest items fall off the bottom.
+
+Open requests are pinned to the top as a queue, the longest-waiting first, and the card's
+badge reads "N OPEN". Each has a **Delivered** button (it needs `VITE_PRESENTER_KEY`, the same
+key as slide reports; in stub mode it just works): clicking marks it delivered at once and the
+row turns into "Alice got candy ✓", dropping into the normal time order; if the server refuses,
+the row goes back and a short notice says to check the key. A request its attendee cancels
+disappears. `ddev drush fun-room:deliver <id>` is the terminal equivalent. `RoomPulse` reads the deck's mood poll
 (`src/mood.js` via `src/useRoomState.js`); `ActivityStream` reads a second poll,
 `src/activity.js` via `src/useActivity.js`, which every 2 seconds asks
 `GET /api/fun/rooms/{code}/comments` for the comments after the newest one it has and
-`GET /api/fun/rooms/{code}/ratings` for the ratings changed since the newest change it has. The dots come from
+`GET /api/fun/rooms/{code}/ratings` for the ratings, and `GET /api/fun/rooms/{code}/requests` for the requests, changed since the newest change it has. The dots come from
 `SwarmField`, shared with the swarm slide. Without `VITE_ROOM_API` a few simulated
-comments and ratings appear. To delete an unwanted comment see the Drupal module's README.
+comments, ratings and requests appear. To delete an unwanted comment see the Drupal module's README.
 
 The deck runs in Reveal's embedded mode beside the sidebar (`.deck-layout` in `index.html`);
 slides keep their 1280x720 design and scale to fit what's left. Add `?sidebar=off` to the

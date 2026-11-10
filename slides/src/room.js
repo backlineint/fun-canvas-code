@@ -6,6 +6,8 @@
 //   GET  {API}/api/fun/rooms/{code}/state   -> { count, median, tier, dots }
 //   GET  {API}/api/fun/rooms/{code}/comments?after={id}   -> { comments: [...] }
 //   GET  {API}/api/fun/rooms/{code}/ratings?since={unix}  -> { ratings: [...] }
+//   GET  {API}/api/fun/rooms/{code}/requests?since={unix} -> { requests: [...] }
+//   POST {API}/api/fun/rooms/{code}/requests/{id}/deliver  (presenter key)
 //
 // VITE_ROOM_API is the Drupal site's origin, for example
 // https://fun-canvas-code.ddev.site. Set the variables in .env.local (see
@@ -205,4 +207,52 @@ export async function getRatings(since = 0) {
   if (res.status === 404) ratingsRetryAt = Date.now() + 60000;
   if (!res.ok) throw new Error(`ratings failed: ${res.status}`);
   return (await res.json()).ratings;
+}
+
+// Requests (party hats, noise makers, candy). Volunteers mark one delivered from the deck,
+// which needs the presenter key; in stub mode it just works on the simulated ones.
+export const canDeliver = isStub || Boolean(PRESENTER_KEY);
+
+const STUB_REQUESTS = [
+  ['Marcus', 4, 'candy', 'row 3, left'],
+  ['Dana', 0, 'hat', ''],
+  ['Sam', 1, 'noise', 'back, by the door'],
+];
+let stubRequests = [];
+let stubRequestTicks = 0;
+
+// The room's requests changed at or after `since` (a unix time), including cancelled ones
+// so they can be dropped. After a 404 it waits a minute before asking again.
+let requestsRetryAt = 0;
+
+export async function getRequests(since = 0) {
+  if (isStub) {
+    stubRequestTicks += 1;
+    const now = Math.floor(Date.now() / 1000);
+    if (stubRequestTicks % 3 === 0 && stubRequests.length < STUB_REQUESTS.length) {
+      const [name, avatar, kind, note] = STUB_REQUESTS[stubRequests.length];
+      stubRequests.push({ id: stubRequests.length + 1, name, avatar, kind, note, slide: 2, status: 'open', at: new Date().toISOString(), changed: now });
+    }
+    return stubRequests.filter((r) => r.changed >= since).map((r) => ({ ...r }));
+  }
+  if (Date.now() < requestsRetryAt) throw new Error('requests endpoint unavailable');
+  const query = since > 0 ? `?since=${since}` : '';
+  const res = await fetch(`${API}/api/fun/rooms/${encodeURIComponent(ROOM_CODE)}/requests${query}`);
+  if (res.status === 404) requestsRetryAt = Date.now() + 60000;
+  if (!res.ok) throw new Error(`requests failed: ${res.status}`);
+  return (await res.json()).requests;
+}
+
+// Marks a request delivered. Throws if the server refuses (a wrong key, say).
+export async function deliverRequest(id) {
+  if (isStub) {
+    const found = stubRequests.find((r) => r.id === id);
+    if (found) Object.assign(found, { status: 'delivered', changed: Math.floor(Date.now() / 1000) });
+    return;
+  }
+  const res = await fetch(`${API}/api/fun/rooms/${encodeURIComponent(ROOM_CODE)}/requests/${id}/deliver`, {
+    method: 'POST',
+    headers: { 'X-Presenter-Key': PRESENTER_KEY },
+  });
+  if (!res.ok) throw new Error(`deliver failed: ${res.status}`);
 }

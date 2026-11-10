@@ -251,6 +251,31 @@ within a couple of seconds. The room page's `comments` component and the deck's
 `ActivityStream` both poll this endpoint (about every 3 and 2 seconds), served mostly from
 the one-second cache.
 
+### Requests
+
+Attendees ask for a party hat, a noise maker or candy from the room page, with an optional
+note about where they are sitting. A request stays **open** until a volunteer marks it
+**delivered** (or the attendee **cancels** it); then they can ask again. Requests are
+`fun_request` entities (`participant`, `room`, `kind` = `hat`/`noise`/`candy`, `note` up to
+40 characters, `slide`, `status`, `created`, `changed`), admin-only and written only by these
+endpoints. Each attendee can have one open request per kind: asking again while one is open
+returns the existing one (200) instead of adding a copy.
+
+| Endpoint | Auth | Notes |
+|---|---|---|
+| `GET /api/fun/rooms/{code}/requests?since={unix}&limit={n}&ids={a,b,c}` | public | `{requests: [{id, name, avatar, kind, note, slide, status, at, changed}]}`, oldest change first. Without `since`: the newest `limit` (default 30, max 50) that are not cancelled. With `since`: everything changed at or after it, **including cancelled** ones so clients can drop them. With `ids` (up to 20): exactly those, whatever their status. Cached a second; works for closed rooms. |
+| `POST .../requests` `{kind, note?}` | `X-Participant-Token` | 201 new, 200 the existing open one; 400 bad JSON; 403 bad token; 404 unknown room; 409 closed; 422 `invalid_kind` / `invalid_note` / `too_long`; 429 over 6 a minute per attendee (or 600 per IP). |
+| `POST .../requests/{id}/cancel` | `X-Participant-Token` | Only the attendee's own open request (403 for someone else's); anything not open is returned unchanged. |
+| `POST .../requests/{id}/deliver` | `X-Presenter-Key` | Marks it delivered (idempotent); works in a closed room; 404 if the id isn't in this room. |
+
+The cursor is the change time rather than the id, because a request keeps its id when it is
+delivered or cancelled. Delivering uses the same shared secret as slide reports, through one
+service (`fun_room.presenter_key`, `PresenterKeyChecker`): 503 if no key is configured, wrong
+keys counted and limited per IP, the right key never limited. From the terminal,
+`ddev drush fun-room:deliver <id>` does the same as the Delivered button. Names and notes
+are public (on the deck and in the feed); an unwanted request can be removed with
+`ddev drush entity:delete fun_request <id>`.
+
 ### Rating events
 
 The deck's activity stream also shows each attendee's slide ratings (their `fun_vote` rows).
