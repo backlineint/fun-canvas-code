@@ -1,0 +1,16 @@
+uuid: debb3219-a1dd-4fc6-ac8c-8b9d64253a71
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - fun_room
+_core:
+  default_config_hash: J6QpKgaRt6T2EZDwZSiKWt8lkPWwSuLhpNwg018pxpE
+name: Room
+type: room
+description: 'A Fun-o-Meter room. The title is the room code attendees enter to join.'
+help: ''
+new_revision: false
+preview_mode: 0
+display_submitted: false

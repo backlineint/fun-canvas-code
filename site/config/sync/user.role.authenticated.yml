@@ -1,0 +1,32 @@
+uuid: 89d279b3-c107-4972-ab9a-f3813e90664c
+langcode: en
+status: true
+dependencies:
+  module:
+    - coffee
+    - contextual
+    - file
+    - fun_room
+    - klaro
+    - media
+    - navigation
+    - node
+    - system
+_core:
+  default_config_hash: dJ0L2DNSj5q6XVZAGsuVDpJTh5UeYkIPwKrUOOpr8YI
+id: authenticated
+label: 'Authenticated user'
+weight: 1
+is_admin: false
+permissions:
+  - 'access administration pages'
+  - 'access coffee'
+  - 'access content'
+  - 'access contextual links'
+  - 'access navigation'
+  - 'delete own files'
+  - 'join fun room'
+  - 'use klaro'
+  - 'view media'
+  - 'view own unpublished content'
+  - 'view the administration theme'

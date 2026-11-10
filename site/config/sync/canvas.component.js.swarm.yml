@@ -1,0 +1,41 @@
+uuid: d931d264-0520-482d-9c44-27dcbda383df
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.js_component.swarm
+active_version: 804d40e22d25f562
+versioned_properties:
+  active:
+    settings:
+      prop_field_definitions:
+        code:
+          required: true
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: NED-4261
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        pollMs:
+          required: false
+          field_type: integer
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: number
+          default_value:
+            -
+              value: 2000
+          expression: ℹ︎integer␟value
+          derived_schema_metadata: {  }
+    fallback_metadata:
+      slot_definitions: {  }
+label: Swarm
+id: js.swarm
+provider: null
+source: js
+source_local_id: swarm

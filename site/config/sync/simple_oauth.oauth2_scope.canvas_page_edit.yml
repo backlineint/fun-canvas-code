@@ -1,0 +1,27 @@
+uuid: 1946d614-2df7-432d-a927-864a30dd0b92
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - canvas_oauth
+_core:
+  default_config_hash: l7Zvv4otXC4WBeW7wQjlrPmtrzrDUf4CTSpyLTaO-6Q
+id: canvas_page_edit
+name: 'canvas:page:edit'
+description: 'Drupal Canvas: Edit Pages'
+grant_types:
+  authorization_code:
+    status: true
+    description: 'Authorization code access for editing Canvas Pages'
+  refresh_token:
+    status: true
+    description: 'Refresh token access for editing Canvas Pages'
+  client_credentials:
+    status: true
+    description: 'Client credentials access for editing Canvas Pages'
+umbrella: false
+parent: null
+granularity_id: permission
+granularity_configuration:
+  permission: 'edit canvas_page'

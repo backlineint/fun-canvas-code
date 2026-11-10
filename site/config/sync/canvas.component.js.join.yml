@@ -1,0 +1,23 @@
+uuid: 06bb0049-8430-49c8-9365-4f768d183990
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.js_component.join
+active_version: 8fe3be948e0194e1
+versioned_properties:
+  active:
+    settings:
+      prop_field_definitions: {  }
+    fallback_metadata:
+      slot_definitions: {  }
+  8fe3be948e0194e1:
+    settings:
+      prop_field_definitions: {  }
+    fallback_metadata:
+      slot_definitions: {  }
+label: Join
+id: js.join
+provider: null
+source: js
+source_local_id: join

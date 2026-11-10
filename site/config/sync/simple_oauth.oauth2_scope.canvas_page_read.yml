@@ -1,0 +1,27 @@
+uuid: 4880eb1f-2cca-4fbd-a361-a4a50ed7a914
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - canvas_oauth
+_core:
+  default_config_hash: wJz7TUZonErDLDFhkeVHqTc9Wz-GRrMKAT8k04p7RNw
+id: canvas_page_read
+name: 'canvas:page:read'
+description: 'Drupal Canvas: Read Pages'
+grant_types:
+  authorization_code:
+    status: true
+    description: 'Authorization code access for reading Canvas Pages'
+  refresh_token:
+    status: true
+    description: 'Refresh token access for reading Canvas Pages'
+  client_credentials:
+    status: true
+    description: 'Client credentials access for reading Canvas Pages'
+umbrella: false
+parent: null
+granularity_id: permission
+granularity_configuration:
+  permission: 'access content'

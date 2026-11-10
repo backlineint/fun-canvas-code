@@ -1,0 +1,27 @@
+uuid: bfcadcdf-48da-460f-97d7-9dcf36dae04c
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - canvas_oauth
+_core:
+  default_config_hash: hbKJcLeGMLw52XZaFgW-OUql6BQvTiCyNevhQrb2_gg
+id: canvas_page_variant
+name: 'canvas:page_variant'
+description: 'Drupal Canvas: Full access to page variants'
+grant_types:
+  client_credentials:
+    status: true
+    description: 'Client credentials access for page variants'
+  authorization_code:
+    status: true
+    description: 'Authorization code access for page variants'
+  refresh_token:
+    status: true
+    description: 'Refresh token access for page variants'
+umbrella: false
+parent: null
+granularity_id: permission
+granularity_configuration:
+  permission: 'administer page template'

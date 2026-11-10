@@ -1,0 +1,93 @@
+# Upsun configuration for the Fun-o-Meter site (Drupal CMS + the fun_room module).
+applications:
+  drupal:
+    # The Drupal project lives in site/.
+    source:
+      root: site
+    type: 'php:8.4'
+
+    relationships:
+      database:
+        service: db
+        endpoint: mysql
+
+    hooks:
+      build: |
+        set -e
+        composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+      deploy: |
+        set -e
+        # Runs on every push once the site is installed: database updates,
+        # config import, cache rebuild. Before the first install it only says so.
+        if vendor/bin/drush status --field=bootstrap 2>/dev/null | grep -q Successful; then
+          vendor/bin/drush deploy -y
+        else
+          echo "Drupal is not installed yet. See DEPLOY.md for the one-time install."
+        fi
+
+    web:
+      locations:
+        '/':
+          root: 'web'
+          expires: 5m
+          passthru: '/index.php'
+          allow: false
+          rules:
+            '\.(avif|webp|jpe?g|png|gif|svgz?|css|js|map|ico|bmp|eot|woff2?|otf|ttf)$':
+              allow: true
+            '^/robots\.txt$':
+              allow: true
+            '^/sitemap\.xml$':
+              allow: true
+            '^/sites/sites\.php$':
+              scripts: false
+            '^/sites/[^/]+/settings.*?\.php$':
+              scripts: false
+        '/sites/default/files':
+          root: 'web/sites/default/files'
+          expires: 5m
+          passthru: '/index.php'
+          allow: true
+          scripts: false
+          rules:
+            '^/sites/default/files/(css|js)':
+              expires: 2w
+
+    mounts:
+      '/web/sites/default/files':
+        source: storage
+        source_path: files
+      '/private':
+        source: storage
+        source_path: private
+      '/tmp':
+        source: storage
+        source_path: tmp
+      '/.drush':
+        source: storage
+        source_path: drush
+      '/drush-backups':
+        source: storage
+        source_path: drush-backups
+
+services:
+  db:
+    type: mariadb:11.8
+    configuration:
+      schemas:
+        - main
+      endpoints:
+        mysql:
+          default_schema: main
+          privileges:
+            main: admin
+
+routes:
+  'https://{default}/':
+    type: upstream
+    upstream: 'drupal:http'
+    cache:
+      enabled: false
+  'https://www.{default}/':
+    type: redirect
+    to: 'https://{default}/'

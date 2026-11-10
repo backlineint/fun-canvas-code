@@ -1,0 +1,28 @@
+uuid: 90f35f65-8b6a-40c1-84fe-47a499cd59cb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_status
+    - node.type.room
+  module:
+    - options
+  enforced:
+    module:
+      - fun_room
+_core:
+  default_config_hash: 6brzWdHTKBGARQfNhvsJ-GWjs5FKq02LmGk5vh8ux4I
+id: node.room.field_status
+field_name: field_status
+entity_type: node
+bundle: room
+label: Status
+description: 'Closed rooms reject new joins.'
+required: true
+translatable: false
+default_value:
+  -
+    value: open
+default_value_callback: ''
+settings: {  }
+field_type: list_string

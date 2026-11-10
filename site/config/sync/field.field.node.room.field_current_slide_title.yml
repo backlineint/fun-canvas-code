@@ -1,0 +1,22 @@
+uuid: 9622b334-1ed3-4d44-ae7a-436aa36e5c4c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_current_slide_title
+    - node.type.room
+  enforced:
+    module:
+      - fun_room
+id: node.room.field_current_slide_title
+field_name: field_current_slide_title
+entity_type: node
+bundle: room
+label: 'Current slide (title)'
+description: 'Title of the slide being shown, reported by the slide deck.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

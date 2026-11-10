@@ -1,0 +1,30 @@
+uuid: 280304b0-b3d4-4dbb-a47a-611712fa6cc7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_current_slide
+    - node.type.room
+  enforced:
+    module:
+      - fun_room
+_core:
+  default_config_hash: FrQ7CyroKwFuDy9hTKKxkRIx2LhPzVyKC1VxBfj4ZCE
+id: node.room.field_current_slide
+field_name: field_current_slide
+entity_type: node
+bundle: room
+label: 'Current slide (index)'
+description: 'Zero-based index reported by the slide deck.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

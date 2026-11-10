@@ -1,0 +1,30 @@
+uuid: a9c85942-6fcd-4e7d-bb15-cbb347e5b9f9
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.js_component.fun-slider
+active_version: f773ce5aae455da6
+versioned_properties:
+  active:
+    settings:
+      prop_field_definitions:
+        code:
+          required: true
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: NED-4261
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+    fallback_metadata:
+      slot_definitions: {  }
+label: 'Fun slider'
+id: js.fun-slider
+provider: null
+source: js
+source_local_id: fun-slider

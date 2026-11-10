@@ -1,0 +1,1078 @@
+uuid: a6b16d05-1dc9-453f-97bd-d429af3113f4
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - canvas
+_core:
+  default_config_hash: Jtg2ZbEaVmgKuS8lDEIZJko2Za7PYAAIzl1Np0vLQYw
+id: global
+label: 'Global CSS'
+css:
+  original: |
+    /*
+     * Ensure your theme imports the font you're using in this file.
+     * Alternatively, you can load fonts purely in Code Components by importing a
+     * CSS file with the font declarations from a URL, i.e. a CDN. For example, you
+     * can uncomment the following line to use the Inter font.
+     * For local development, Workbench loads the global CSS file configured in
+     * canvas.config.json.
+     */
+    /* @import url("https://rsms.me/inter/inter.css"); */
+
+    @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+
+    @import 'tailwindcss';
+
+    @theme {
+      --font-display: 'Bricolage Grotesque', sans-serif;
+      --font-sans: 'DM Sans', sans-serif;
+      --color-cream: #fff4dc;
+      --color-ink: #17163a;
+      --color-coral: #ff5c4d;
+      --color-fun-blue: #3b5bff;
+      --color-sun: #ffd84d;
+      --color-muted: #6b6a85;
+
+      /* A small bounce for the swarm's dots when the room is having a great time. */
+      --animate-wiggle: wiggle 0.7s ease-in-out infinite;
+
+      /* A new comment slides in. */
+      @keyframes comment-in {
+        from {
+          opacity: 0;
+          transform: translateY(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes wiggle {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+    }
+
+    /*
+     * The room's mood. The swarm component writes the room's steadied tier onto <html>
+     * as data-mood="waiting|low|mid|high"; these tokens turn it into colors, and the
+     * room page's components read them (bg-mood-bg, bg-mood-field, bg-mood-accent).
+     * Text stays dark ink on every background; check contrast when changing a color.
+     */
+    :root {
+      --mood-bg: #fff4dc;
+      --mood-field: #fff4dc;
+      --mood-accent: #3b5bff;
+    }
+
+    html[data-mood='low'] {
+      --mood-bg: #cdd7f0;
+      --mood-field: #e6ecfa;
+      --mood-accent: #3b5bff;
+    }
+
+    html[data-mood='mid'] {
+      --mood-bg: #ffe2a0;
+      --mood-field: #fff4dc;
+      --mood-accent: #e5412f;
+    }
+
+    html[data-mood='high'] {
+      --mood-bg: #ff9a72;
+      --mood-field: #ffe27a;
+      --mood-accent: #d6006f;
+    }
+
+    /* Cover the whole window, not just the room's box, and fade between moods. */
+    html[data-mood] body {
+      background-color: var(--mood-bg);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html[data-mood] body {
+        transition: background-color 1.5s ease;
+      }
+    }
+
+    @theme inline {
+      --color-mood-bg: var(--mood-bg);
+      --color-mood-field: var(--mood-field);
+      --color-mood-accent: var(--mood-accent);
+    }
+  compiled: |-
+    /*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
+    @import "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Lora:ital,wght@0,400..700;1,400..700&display=swap";@import "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Lora:ital,wght@0,400..700;1,400..700&display=swap";@layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-translate-x:0;--tw-translate-y:0;--tw-translate-z:0;--tw-border-style:solid;--tw-leading:initial;--tw-font-weight:initial;--tw-tracking:initial;--tw-shadow:0 0 #0000;--tw-shadow-color:initial;--tw-shadow-alpha:100%;--tw-inset-shadow:0 0 #0000;--tw-inset-shadow-color:initial;--tw-inset-shadow-alpha:100%;--tw-ring-color:initial;--tw-ring-shadow:0 0 #0000;--tw-inset-ring-color:initial;--tw-inset-ring-shadow:0 0 #0000;--tw-ring-inset:initial;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-offset-shadow:0 0 #0000;--tw-blur:initial;--tw-brightness:initial;--tw-contrast:initial;--tw-grayscale:initial;--tw-hue-rotate:initial;--tw-invert:initial;--tw-opacity:initial;--tw-saturate:initial;--tw-sepia:initial;--tw-drop-shadow:initial;--tw-drop-shadow-color:initial;--tw-drop-shadow-alpha:100%;--tw-drop-shadow-size:initial;--tw-duration:initial;--tw-ease:initial}}}@layer theme{:root,:host{--font-sans:"DM Sans",sans-serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;--color-white:#fff;--spacing:.25rem;--text-xs:.75rem;--text-xs--line-height:calc(1/.75);--text-sm:.875rem;--text-sm--line-height:calc(1.25/.875);--text-base:1rem;--text-base--line-height:calc(1.5/1);--text-lg:1.125rem;--text-lg--line-height:calc(1.75/1.125);--text-xl:1.25rem;--text-xl--line-height:calc(1.75/1.25);--text-3xl:1.875rem;--text-3xl--line-height:calc(2.25/1.875);--text-4xl:2.25rem;--text-4xl--line-height:calc(2.5/2.25);--text-5xl:3rem;--text-5xl--line-height:1;--text-7xl:4.5rem;--text-7xl--line-height:1;--font-weight-medium:500;--font-weight-bold:700;--font-weight-extrabold:800;--tracking-wide:.025em;--leading-snug:1.375;--radius-2xl:1rem;--radius-3xl:1.5rem;--ease-out:cubic-bezier(0,0,.2,1);--default-transition-duration:.15s;--default-transition-timing-function:cubic-bezier(.4,0,.2,1);--default-font-family:var(--font-sans);--default-mono-font-family:var(--font-mono);--font-display:"Bricolage Grotesque",sans-serif;--color-cream:#fff4dc;--color-ink:#17163a;--color-coral:#ff5c4d;--color-fun-blue:#3b5bff;--color-sun:#ffd84d;--color-muted:#6b6a85;--animate-wiggle:wiggle .7s ease-in-out infinite}}@layer base{@supports (not ((-webkit-appearance:-apple-pay-button))) or (contain-intrinsic-size:1px){::placeholder{color:currentColor}@supports (color:color-mix(in lab, red, red)){::placeholder{color:color-mix(in oklab,currentcolor 50%,transparent)}}}*,:after,:before,::backdrop{box-sizing:border-box;border:0 solid;margin:0;padding:0}::file-selector-button{box-sizing:border-box;border:0 solid;margin:0;padding:0}html,:host{-webkit-text-size-adjust:100%;tab-size:4;line-height:1.5;font-family:var(--default-font-family,ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji");font-feature-settings:var(--default-font-feature-settings,normal);font-variation-settings:var(--default-font-variation-settings,normal);-webkit-tap-highlight-color:transparent}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;-webkit-text-decoration:inherit;-webkit-text-decoration:inherit;-webkit-text-decoration:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,samp,pre{font-family:var(--default-mono-font-family,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace);font-feature-settings:var(--default-mono-font-feature-settings,normal);font-variation-settings:var(--default-mono-font-variation-settings,normal);font-size:1em}small{font-size:80%}sub,sup{vertical-align:baseline;font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}:-moz-focusring{outline:auto}progress{vertical-align:baseline}summary{display:list-item}ol,ul,menu{list-style:none}img,svg,video,canvas,audio,iframe,embed,object{vertical-align:middle;display:block}img,video{max-width:100%;height:auto}button,input,select,optgroup,textarea{font:inherit;font-feature-settings:inherit;font-variation-settings:inherit;letter-spacing:inherit;color:inherit;opacity:1;background-color:#0000;border-radius:0}::file-selector-button{font:inherit;font-feature-settings:inherit;font-variation-settings:inherit;letter-spacing:inherit;color:inherit;opacity:1;background-color:#0000;border-radius:0}:where(select:is([multiple],[size])) optgroup{font-weight:bolder}:where(select:is([multiple],[size])) optgroup option{padding-inline-start:20px}::file-selector-button{margin-inline-end:4px}::placeholder{opacity:1}@supports (not ((-webkit-appearance:-apple-pay-button))) or (contain-intrinsic-size:1px){::placeholder{color:currentColor}@supports (color:color-mix(in lab, red, red)){::placeholder{color:color-mix(in oklab,currentcolor 50%,transparent)}}}textarea{resize:vertical}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-date-and-time-value{min-height:1lh;text-align:inherit}::-webkit-datetime-edit{display:inline-flex}::-webkit-datetime-edit-fields-wrapper{padding:0}::-webkit-datetime-edit{padding-block:0}::-webkit-datetime-edit-year-field{padding-block:0}::-webkit-datetime-edit-month-field{padding-block:0}::-webkit-datetime-edit-day-field{padding-block:0}::-webkit-datetime-edit-hour-field{padding-block:0}::-webkit-datetime-edit-minute-field{padding-block:0}::-webkit-datetime-edit-second-field{padding-block:0}::-webkit-datetime-edit-millisecond-field{padding-block:0}::-webkit-datetime-edit-meridiem-field{padding-block:0}::-webkit-calendar-picker-indicator{line-height:1}:-moz-ui-invalid{box-shadow:none}button,input:where([type=button],[type=reset],[type=submit]){appearance:button}::file-selector-button{appearance:button}::-webkit-inner-spin-button{height:auto}::-webkit-outer-spin-button{height:auto}[hidden]:where(:not([hidden=until-found])){display:none!important}}@layer components;@layer utilities{.pointer-events-none{pointer-events:none}.sr-only{clip-path:inset(50%);white-space:nowrap;border-width:0;width:1px;height:1px;margin:-1px;padding:0;position:absolute;overflow:hidden}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:calc(var(--spacing)*0)}.inset-x-0{inset-inline:calc(var(--spacing)*0)}.inset-y-0{inset-block:calc(var(--spacing)*0)}.top-1\/2{top:50%}.top-\[78\%\]{top:78%}.right-4{right:calc(var(--spacing)*4)}.right-\[10\%\]{right:10%}.bottom-2{bottom:calc(var(--spacing)*2)}.bottom-10{bottom:calc(var(--spacing)*10)}.left-0{left:calc(var(--spacing)*0)}.left-4{left:calc(var(--spacing)*4)}.left-12{left:calc(var(--spacing)*12)}.left-\[10\%\]{left:10%}.left-\[62\%\]{left:62%}.z-10{z-index:10}.m-0{margin:calc(var(--spacing)*0)}.mx-auto{margin-inline:auto}.mt-1{margin-top:calc(var(--spacing)*1)}.mt-2{margin-top:calc(var(--spacing)*2)}.mt-4{margin-top:calc(var(--spacing)*4)}.box-border{box-sizing:border-box}.size-4{width:calc(var(--spacing)*4);height:calc(var(--spacing)*4)}.size-7{width:calc(var(--spacing)*7);height:calc(var(--spacing)*7)}.size-11{width:calc(var(--spacing)*11);height:calc(var(--spacing)*11)}.size-\[18px\]{width:18px;height:18px}.size-\[30px\]{width:30px;height:30px}.h-2{height:calc(var(--spacing)*2)}.h-3{height:calc(var(--spacing)*3)}.h-14{height:calc(var(--spacing)*14)}.h-full{height:100%}.max-h-\[28rem\]{max-height:28rem}.min-h-0{min-height:calc(var(--spacing)*0)}.min-h-5{min-height:calc(var(--spacing)*5)}.min-h-6{min-height:calc(var(--spacing)*6)}.min-h-11{min-height:calc(var(--spacing)*11)}.min-h-14{min-height:calc(var(--spacing)*14)}.min-h-16{min-height:calc(var(--spacing)*16)}.min-h-22{min-height:calc(var(--spacing)*22)}.min-h-32{min-height:calc(var(--spacing)*32)}.min-h-40{min-height:calc(var(--spacing)*40)}.min-h-48{min-height:calc(var(--spacing)*48)}.min-h-80{min-height:calc(var(--spacing)*80)}.min-h-\[72px\]{min-height:72px}.min-h-dvh{min-height:100dvh}.w-1{width:calc(var(--spacing)*1)}.w-2{width:calc(var(--spacing)*2)}.w-7{width:calc(var(--spacing)*7)}.w-full{width:100%}.max-w-\[390px\]{max-width:390px}.max-w-\[480px\]{max-width:480px}.min-w-0{min-width:calc(var(--spacing)*0)}.flex-1{flex:1}.shrink-0{flex-shrink:0}.grow{flex-grow:1}.-translate-x-1\/2{--tw-translate-x:calc(calc(1/2*100%)*-1);translate:var(--tw-translate-x)var(--tw-translate-y)}.-translate-y-1\/2{--tw-translate-y:calc(calc(1/2*100%)*-1);translate:var(--tw-translate-x)var(--tw-translate-y)}.-translate-y-1\/4{--tw-translate-y:calc(calc(1/4*100%)*-1);translate:var(--tw-translate-x)var(--tw-translate-y)}.cursor-pointer{cursor:pointer}.resize-none{resize:none}.list-none{list-style-type:none}.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.flex-col{flex-direction:column}.items-baseline{align-items:baseline}.items-center{align-items:center}.items-start{align-items:flex-start}.justify-between{justify-content:space-between}.justify-center{justify-content:center}.gap-1{gap:calc(var(--spacing)*1)}.gap-2{gap:calc(var(--spacing)*2)}.gap-3{gap:calc(var(--spacing)*3)}.gap-3\.5{gap:calc(var(--spacing)*3.5)}.gap-5{gap:calc(var(--spacing)*5)}.gap-8{gap:calc(var(--spacing)*8)}.truncate{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.overflow-y-auto{overflow-y:auto}.rounded{border-radius:.25rem}.rounded-2xl{border-radius:var(--radius-2xl)}.rounded-3xl{border-radius:var(--radius-3xl)}.rounded-\[20px\]{border-radius:20px}.rounded-full{border-radius:3.40282e38px}.border-0{border-style:var(--tw-border-style);border-width:0}.border-2{border-style:var(--tw-border-style);border-width:2px}.border-4{border-style:var(--tw-border-style);border-width:4px}.border-\[3px\]{border-style:var(--tw-border-style);border-width:3px}.border-dashed{--tw-border-style:dashed;border-style:dashed}.border-ink{border-color:var(--color-ink)}.border-ink\/30{border-color:#17163a4d}@supports (color:color-mix(in lab, red, red)){.border-ink\/30{border-color:color-mix(in oklab,var(--color-ink)30%,transparent)}}.border-ink\/40{border-color:#17163a66}@supports (color:color-mix(in lab, red, red)){.border-ink\/40{border-color:color-mix(in oklab,var(--color-ink)40%,transparent)}}.border-transparent{border-color:#0000}.bg-\[\#c9d3ff\]{background-color:#c9d3ff}.bg-\[\#ffb4a8\]{background-color:#ffb4a8}.bg-coral{background-color:var(--color-coral)}.bg-cream{background-color:var(--color-cream)}.bg-ink{background-color:var(--color-ink)}.bg-ink\/5{background-color:#17163a0d}@supports (color:color-mix(in lab, red, red)){.bg-ink\/5{background-color:color-mix(in oklab,var(--color-ink)5%,transparent)}}.bg-ink\/15{background-color:#17163a26}@supports (color:color-mix(in lab, red, red)){.bg-ink\/15{background-color:color-mix(in oklab,var(--color-ink)15%,transparent)}}.bg-ink\/70{background-color:#17163ab3}@supports (color:color-mix(in lab, red, red)){.bg-ink\/70{background-color:color-mix(in oklab,var(--color-ink)70%,transparent)}}.bg-mood-accent{background-color:var(--mood-accent)}.bg-mood-bg{background-color:var(--mood-bg)}.bg-mood-field{background-color:var(--mood-field)}.bg-muted{background-color:var(--color-muted)}.bg-sun{background-color:var(--color-sun)}.bg-white{background-color:var(--color-white)}.bg-white\/60{background-color:#fff9}@supports (color:color-mix(in lab, red, red)){.bg-white\/60{background-color:color-mix(in oklab,var(--color-white)60%,transparent)}}.p-0{padding:calc(var(--spacing)*0)}.p-3{padding:calc(var(--spacing)*3)}.p-5{padding:calc(var(--spacing)*5)}.px-1{padding-inline:calc(var(--spacing)*1)}.px-3{padding-inline:calc(var(--spacing)*3)}.px-4{padding-inline:calc(var(--spacing)*4)}.px-5{padding-inline:calc(var(--spacing)*5)}.px-6{padding-inline:calc(var(--spacing)*6)}.py-1{padding-block:calc(var(--spacing)*1)}.py-2{padding-block:calc(var(--spacing)*2)}.py-3{padding-block:calc(var(--spacing)*3)}.py-4{padding-block:calc(var(--spacing)*4)}.py-7{padding-block:calc(var(--spacing)*7)}.pt-3{padding-top:calc(var(--spacing)*3)}.pr-4{padding-right:calc(var(--spacing)*4)}.pb-1{padding-bottom:calc(var(--spacing)*1)}.pl-1{padding-left:calc(var(--spacing)*1)}.text-center{text-align:center}.font-display{font-family:var(--font-display)}.font-sans{font-family:var(--font-sans)}.text-3xl{font-size:var(--text-3xl);line-height:var(--tw-leading,var(--text-3xl--line-height))}.text-5xl{font-size:var(--text-5xl);line-height:var(--tw-leading,var(--text-5xl--line-height))}.text-7xl{font-size:var(--text-7xl);line-height:var(--tw-leading,var(--text-7xl--line-height))}.text-base{font-size:var(--text-base);line-height:var(--tw-leading,var(--text-base--line-height))}.text-lg{font-size:var(--text-lg);line-height:var(--tw-leading,var(--text-lg--line-height))}.text-sm{font-size:var(--text-sm);line-height:var(--tw-leading,var(--text-sm--line-height))}.text-xl{font-size:var(--text-xl);line-height:var(--tw-leading,var(--text-xl--line-height))}.text-xs{font-size:var(--text-xs);line-height:var(--tw-leading,var(--text-xs--line-height))}.text-\[13px\]{font-size:13px}.text-\[15px\]{font-size:15px}.text-\[22px\]{font-size:22px}.text-\[32px\]{font-size:32px}.text-\[40px\]{font-size:40px}.leading-\[1\.05\]{--tw-leading:1.05;line-height:1.05}.leading-none{--tw-leading:1;line-height:1}.leading-snug{--tw-leading:var(--leading-snug);line-height:var(--leading-snug)}.font-bold{--tw-font-weight:var(--font-weight-bold);font-weight:var(--font-weight-bold)}.font-extrabold{--tw-font-weight:var(--font-weight-extrabold);font-weight:var(--font-weight-extrabold)}.font-medium{--tw-font-weight:var(--font-weight-medium);font-weight:var(--font-weight-medium)}.tracking-\[0\.1em\]{--tw-tracking:.1em;letter-spacing:.1em}.tracking-\[0\.08em\]{--tw-tracking:.08em;letter-spacing:.08em}.tracking-\[0\.12em\]{--tw-tracking:.12em;letter-spacing:.12em}.tracking-wide{--tw-tracking:var(--tracking-wide);letter-spacing:var(--tracking-wide)}.\[overflow-wrap\:anywhere\]{overflow-wrap:anywhere}.text-\[\#b00020\]{color:#b00020}.text-ink{color:var(--color-ink)}.text-white{color:var(--color-white)}.uppercase{text-transform:uppercase}.no-underline{text-decoration-line:none}.underline{text-decoration-line:underline}.opacity-0{opacity:0}.opacity-35{opacity:.35}.opacity-50{opacity:.5}.opacity-60{opacity:.6}.ring-2{--tw-ring-shadow:var(--tw-ring-inset,)0 0 0 calc(2px + var(--tw-ring-offset-width))var(--tw-ring-color,currentcolor);box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}.ring-4{--tw-ring-shadow:var(--tw-ring-inset,)0 0 0 calc(4px + var(--tw-ring-offset-width))var(--tw-ring-color,currentcolor);box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}.ring-ink{--tw-ring-color:var(--color-ink)}.ring-ink\/70{--tw-ring-color:#17163ab3}@supports (color:color-mix(in lab, red, red)){.ring-ink\/70{--tw-ring-color:color-mix(in oklab,var(--color-ink)70%,transparent)}}.filter{filter:var(--tw-blur,)var(--tw-brightness,)var(--tw-contrast,)var(--tw-grayscale,)var(--tw-hue-rotate,)var(--tw-invert,)var(--tw-saturate,)var(--tw-sepia,)var(--tw-drop-shadow,)}.transition-\[left\,top\]{transition-property:left,top;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}.transition-\[left\]{transition-property:left;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}.transition-colors{transition-property:color,background-color,border-color,outline-color,text-decoration-color,fill,stroke,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}.transition-opacity{transition-property:opacity;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}.duration-700{--tw-duration:.7s;transition-duration:.7s}.ease-out{--tw-ease:var(--ease-out);transition-timing-function:var(--ease-out)}@media (hover:hover){.hover\:bg-ink\/10:hover{background-color:#17163a1a}@supports (color:color-mix(in lab, red, red)){.hover\:bg-ink\/10:hover{background-color:color-mix(in oklab,var(--color-ink)10%,transparent)}}}.focus\:border-ink:focus{border-color:var(--color-ink)}.focus\:outline-none:focus{--tw-outline-style:none;outline-style:none}.disabled\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\:bg-ink\/5:disabled{background-color:#17163a0d}@supports (color:color-mix(in lab, red, red)){.disabled\:bg-ink\/5:disabled{background-color:color-mix(in oklab,var(--color-ink)5%,transparent)}}.disabled\:opacity-40:disabled{opacity:.4}.has-\[\:focus-visible\]\:ring-4:has(:focus-visible){--tw-ring-shadow:var(--tw-ring-inset,)0 0 0 calc(4px + var(--tw-ring-offset-width))var(--tw-ring-color,currentcolor);box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}.has-\[\:focus-visible\]\:ring-fun-blue\/40:has(:focus-visible){--tw-ring-color:#3b5bff66}@supports (color:color-mix(in lab, red, red)){.has-\[\:focus-visible\]\:ring-fun-blue\/40:has(:focus-visible){--tw-ring-color:color-mix(in oklab,var(--color-fun-blue)40%,transparent)}}@media (prefers-reduced-motion:no-preference){.motion-safe\:animate-\[comment-in_0\.4s_ease-out\]{animation:.4s ease-out comment-in}.motion-safe\:animate-wiggle{animation:var(--animate-wiggle)}.motion-safe\:transition-colors{transition-property:color,background-color,border-color,outline-color,text-decoration-color,fill,stroke,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}.motion-safe\:duration-\[1500ms\]{--tw-duration:1.5s;transition-duration:1.5s}}@media (min-width:64rem){.lg\:col-span-3{grid-column:span 3/span 3}.lg\:col-start-1{grid-column-start:1}.lg\:col-start-2{grid-column-start:2}.lg\:col-start-3{grid-column-start:3}.lg\:row-start-1{grid-row-start:1}.lg\:size-6{width:calc(var(--spacing)*6);height:calc(var(--spacing)*6)}.lg\:size-10{width:calc(var(--spacing)*10);height:calc(var(--spacing)*10)}.lg\:h-dvh{height:100dvh}.lg\:max-h-none{max-height:none}.lg\:min-h-0{min-height:calc(var(--spacing)*0)}.lg\:min-h-64{min-height:calc(var(--spacing)*64)}.lg\:w-\[360px\]{width:360px}.lg\:max-w-\[560px\]{max-width:560px}.lg\:max-w-\[1600px\]{max-width:1600px}.lg\:min-w-0{min-width:calc(var(--spacing)*0)}.lg\:flex-1{flex:1}.lg\:flex-none{flex:none}.lg\:shrink-0{flex-shrink:0}.lg\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.lg\:grid-cols-\[auto_1fr_auto\]{grid-template-columns:auto 1fr auto}.lg\:grid-rows-\[minmax\(0\,1fr\)\]{grid-template-rows:minmax(0,1fr)}.lg\:flex-col{flex-direction:column}.lg\:flex-row{flex-direction:row}.lg\:items-center{align-items:center}.lg\:items-start{align-items:flex-start}.lg\:justify-center{justify-content:center}.lg\:justify-start{justify-content:flex-start}.lg\:gap-4{gap:calc(var(--spacing)*4)}.lg\:gap-5{gap:calc(var(--spacing)*5)}.lg\:gap-6{gap:calc(var(--spacing)*6)}.lg\:gap-7{gap:calc(var(--spacing)*7)}.lg\:overflow-y-auto{overflow-y:auto}.lg\:rounded-3xl{border-radius:var(--radius-3xl)}.lg\:bg-ink{background-color:var(--color-ink)}.lg\:p-8{padding:calc(var(--spacing)*8)}.lg\:px-6{padding-inline:calc(var(--spacing)*6)}.lg\:px-12{padding-inline:calc(var(--spacing)*12)}.lg\:py-4{padding-block:calc(var(--spacing)*4)}.lg\:py-16{padding-block:calc(var(--spacing)*16)}.lg\:text-left{text-align:left}.lg\:font-display{font-family:var(--font-display)}.lg\:text-3xl{font-size:var(--text-3xl);line-height:var(--tw-leading,var(--text-3xl--line-height))}.lg\:text-4xl{font-size:var(--text-4xl);line-height:var(--tw-leading,var(--text-4xl--line-height))}.lg\:text-5xl{font-size:var(--text-5xl);line-height:var(--tw-leading,var(--text-5xl--line-height))}.lg\:text-xl{font-size:var(--text-xl);line-height:var(--tw-leading,var(--text-xl--line-height))}.lg\:font-extrabold{--tw-font-weight:var(--font-weight-extrabold);font-weight:var(--font-weight-extrabold)}.lg\:text-white{color:var(--color-white)}.lg\:capitalize{text-transform:capitalize}}}body{font-family:var(--font-sans);margin:0}:root{--mood-bg:#fff4dc;--mood-field:#fff4dc;--mood-accent:#3b5bff}html[data-mood=low]{--mood-bg:#cdd7f0;--mood-field:#e6ecfa;--mood-accent:#3b5bff}html[data-mood=mid]{--mood-bg:#ffe2a0;--mood-field:#fff4dc;--mood-accent:#e5412f}html[data-mood=high]{--mood-bg:#ff9a72;--mood-field:#ffe27a;--mood-accent:#d6006f}html[data-mood] body{background-color:var(--mood-bg)}@media (prefers-reduced-motion:no-preference){html[data-mood] body{transition:background-color 1.5s}}@property --tw-translate-x{syntax:"*";inherits:false;initial-value:0}@property --tw-translate-y{syntax:"*";inherits:false;initial-value:0}@property --tw-translate-z{syntax:"*";inherits:false;initial-value:0}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-leading{syntax:"*";inherits:false}@property --tw-font-weight{syntax:"*";inherits:false}@property --tw-tracking{syntax:"*";inherits:false}@property --tw-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-shadow-color{syntax:"*";inherits:false}@property --tw-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-inset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-shadow-color{syntax:"*";inherits:false}@property --tw-inset-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-ring-color{syntax:"*";inherits:false}@property --tw-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-ring-color{syntax:"*";inherits:false}@property --tw-inset-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-ring-inset{syntax:"*";inherits:false}@property --tw-ring-offset-width{syntax:"<length>";inherits:false;initial-value:0}@property --tw-ring-offset-color{syntax:"*";inherits:false;initial-value:#fff}@property --tw-ring-offset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-blur{syntax:"*";inherits:false}@property --tw-brightness{syntax:"*";inherits:false}@property --tw-contrast{syntax:"*";inherits:false}@property --tw-grayscale{syntax:"*";inherits:false}@property --tw-hue-rotate{syntax:"*";inherits:false}@property --tw-invert{syntax:"*";inherits:false}@property --tw-opacity{syntax:"*";inherits:false}@property --tw-saturate{syntax:"*";inherits:false}@property --tw-sepia{syntax:"*";inherits:false}@property --tw-drop-shadow{syntax:"*";inherits:false}@property --tw-drop-shadow-color{syntax:"*";inherits:false}@property --tw-drop-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-drop-shadow-size{syntax:"*";inherits:false}@property --tw-duration{syntax:"*";inherits:false}@property --tw-ease{syntax:"*";inherits:false}@keyframes comment-in{0%{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}@keyframes wiggle{0%,to{transform:translateY(0)}50%{transform:translateY(-5px)}}.block{display:block}.contents{display:contents}.flex{display:flex}.grid{display:grid}.hidden{display:none}.overflow-hidden{overflow:hidden}@media (min-width:64rem){.lg\:block{display:block}.lg\:contents{display:contents}.lg\:flex{display:flex}.lg\:grid{display:grid}.lg\:hidden{display:none}.lg\:inline{display:inline}}
+js:
+  original: |
+    // @classNameCandidates {"comments":["import","useEffect","useRef","useState","from","react","avatarAt","Face","lib/fun-room-avatars","CommentError","fetchComments","sendComment","lib/fun-room-live","clearJoined","readMyComments","rememberComment","useJoined","lib/fun-room-session","cn","drupal-canvas","useSiteContext","drupal-canvas/react","useSWR","swr","type","FormEvent","KeyboardEvent","Comment","CommentsProps","code","string","pollMs","number","className","The","longest","comment","in","characters","server","enforces","the","same","limit","const","MAX_LENGTH","280","Problem","closed","lost","null","What","an","attendee","sees","of","a","still","on","its","way","to","Pending","key","text","Comments","room","newest","first","and","box","add","one","A","appears","at","once","when","sent","is","swapped","for","s","copy","it","arrives","New","comments","others","arrive","by","polling","after","last","id","I","have","rendered","as","only","so","markup","shows","typed","export","default","function","3000","base","baseUrl","joined","me","roomCode","toUpperCase","participant","setComments","pending","setPending","mine","setMine","setText","sending","setSending","false","problem","setProblem","notice","setNotice","lastId","0","pendingKey","Which","are","this","browser","own","read","mount","render","has","no","storage","incoming","if","length","return","current","known","new","Set","map","merged","filter","!known","sort","b","slice","-100","Math","max","c","error","fun-comments","refreshInterval","dedupingInterval","onSuccess","Array","tooLong","disabled","!me","canSend","!disabled","!sending","trim","!tooLong","async","send","!canSend","body","true","try","saved","await","token","catch","e","status","instanceof","403","else","409","429","Slow","down","little","then","again","422","That","can","t","be","Couldn","that","Try","Give","them","their","words","back","unless","they","started","something","finally","item","onSubmit","event","preventDefault","void","onKeyDown","HTMLTextAreaElement","Enter","!event","shiftKey","nativeEvent","isComposing","ready","undefined","shown","reverse","section","flex","h-full","min-h-80","flex-col","gap-3","rounded-3xl","bg-white","p-5","text-ink","lg:min-h-0","h2","m-0","font-display","text-xl","font-extrabold","form","gap-2","label","htmlFor","comment-","text-sm","font-bold","Say","textarea","value","onChange","target","rows","2","aria-describedby","comment-help-","min-h-16","w-full","resize-none","rounded-2xl","border-2","border-ink/30","p-3","text-base","focus:border-ink","focus:outline-none","disabled:cursor-not-allowed","disabled:bg-ink/5","div","items-center","justify-between","span","text-[#b00020]","button","submit","min-h-11","rounded-full","bg-ink","px-6","text-white","disabled:opacity-40","Send","p","role","min-h-5","This","We","track","you","href","encodeURIComponent","underline","Join","reach","right","now","Retrying","log","aria-live","polite","aria-relevant","additions","aria-label","max-h-[28rem]","min-h-0","flex-1","overflow-y-auto","lg:max-h-none","article","pending-","bg-mood-field","opacity-60","avatar","size","28","[overflow-wrap:anywhere]","motion-safe:animate-[comment-in_0.4s_ease-out]","includes","bg-ink/5","min-w-0","name","font-medium","title","slideTitle","slide","1","No","yet","Be","useEffect,","useRef,","avatarAt,","@/lib/fun-room-avatars","CommentError,","fetchComments,","@/lib/fun-room-live","clearJoined,","readMyComments,","rememberComment,","useJoined,","@/lib/fun-room-session","FormEvent,","string;","pollMs?","number;","className?","/**","comment,","*/","280;","null;","//","room,","first,","only,","code,","3000,","className,","?.baseUrl","??","&&","joined.roomCode.toUpperCase","code.toUpperCase","joined.participant","comments,","pending,","mine,","text,","sending,","problem,","notice,","incoming.length","return;","current.map","comment.id","current,","incoming.filter","!known.has","a,","a.id","b.id","merged.slice","lastId.current","Math.max","lastId.current,","incoming.map","c.id","base,","null,","pollMs,","0,","add,","Array.from","length;","MAX_LENGTH;","||","text.trim","!tooLong;","text;","++pendingKey.current;","key,","body.trim","me.token,","saved.id","e.status","0;","little,","current.filter","item.key","event.preventDefault","event.key","!event.shiftKey","!event.nativeEvent.isComposing","undefined;","/h2","/label","event.target.value","text-","b00020","/span","/button","/div","/form","/?code","/a","/p","max-h-","28rem","pending.map","me.avatar","overflow-wrap:anywhere","item.text","/article","shown.map","motion-safe:animate-","comment-in_0.4s_ease-out","mine.includes","comment.avatar","comment.name","comment.slideTitle","comment.slide","comment.text","shown.length","pending.length","/section","?","++pendingKey","current;","token,","comment-in_0","4s_ease-out"],"fun-slider":["import","useEffect","useRef","useState","from","react","avatarAt","Face","lib/fun-room-avatars","sendVote","VoteError","lib/fun-room-live","clearJoined","saveFun","useJoined","useMyFun","lib/fun-room-session","cn","drupal-canvas","useSiteContext","drupal-canvas/react","type","ChangeEvent","FunSliderProps","code","string","className","How","long","after","the","last","movement","value","is","sent","const","SEND_AFTER_MS","300","to","wait","before","trying","again","a","network","error","or","rate","limit","RETRY_MS","3000","Problem","closed","lost","offline","null","The","attendee","s","fun","slider","dot","moves","instant","they","drag","shortly","pause","One","request","in","flight","at","time","and","newest","always","goes","next","so","quick","drags","can","t","arrive","out","of","order","leave","swarm","on","stale","export","default","function","FunSlider","base","baseUrl","joined","mine","me","roomCode","toUpperCase","participant","dragValue","setDragValue","number","problem","setProblem","What","re-created","each","render","send","needs","kept","refs","timers","see","current","values","auth","token","latest","sending","false","timer","ReturnType","typeof","setTimeout","undefined","unmounted","fatal","A","new","clears","an","earlier","if","return","true","clearTimeout","async","flush","Promise","void","site","room","!token","let","retry","try","result","await","id","catch","e","status","instanceof","0","403","no","longer","knows","this","it","was","reset","have","join","else","409","429","by","itself","only","say","otherwise","finally","They","moved","while","that","onChange","event","HTMLInputElement","Number","currentTarget","ready","disabled","!me","position","50","section","rounded-3xl","bg-white","p-5","text-ink","div","flex","items-baseline","justify-between","gap-3","h2","m-0","font-display","text-xl","font-extrabold","for","you","span","text-3xl","leading-none","aria-hidden","real","range","input","sits","invisibly","top","touch","mouse","keyboard","all","work","screen","reader","gets","normal","px-5","pt-3","pb-1","relative","h-14","rounded-full","has-[:focus-visible]:ring-4","has-[:focus-visible]:ring-fun-blue/40","absolute","inset-x-0","top-1/2","h-3","-translate-y-1/2","bg-ink/15","left-0","bg-mood-accent","motion-safe:transition-colors","motion-safe:duration-[1500ms]","style","width","pointer-events-none","-translate-x-1/2","transition-opacity","opacity-50","left","avatar","size","44","block","size-11","bg-muted","min","max","100","step","1","aria-label","Your","level","aria-valuetext","not","set","yet","inset-0","h-full","w-full","cursor-pointer","opacity-0","disabled:cursor-not-allowed","mt-1","text-sm","font-bold","meh","boatloads","p","role","mt-2","min-h-6","text-base","This","has","We","track","href","encodeURIComponent","underline","Join","reach","right","now","Retrying","!ready","move","your","Drag","useEffect,","useRef,","avatarAt,","@/lib/fun-room-avatars","sendVote,","@/lib/fun-room-live","clearJoined,","saveFun,","useJoined,","useMyFun,","@/lib/fun-room-session","string;","className?","/**","*/","300;","3000;","null;","//","drag;","next,","code,","?.baseUrl","??","&&","joined.roomCode.toUpperCase","code.toUpperCase","joined.participant","dragValue,","problem,","mine?.value","needs,","base,","me?.token","auth.current.token","fatal.current","false;","auth.current","unmounted.current","true;","timer.current","site,","room,","auth.current;","sending.current","||","latest.current","return;","latest.current;","token,","result.id,","e.status","0;","itself,","flush,","event.currentTarget.value","next;","undefined;","50;","you?","/h2","--","/span","/div","/*","top,","touch,","has-",":focus-visible",":ring-4",":ring-fun-blue/40","motion-safe:duration-","1500ms","me.avatar","/?code","/a","/p","/section","?","mine?","me?","current;","id,"],"join":["import","useEffect","useState","from","react","getRoom","join","lib/fun-room-api","AVATARS","Face","lib/fun-room-avatars","clearJoined","readJoined","saveJoined","lib/fun-room-session","useJsonApiClient","drupal-canvas/react","type","JoinResult","Room","Avatar","TourStep","title","string","body","bg","JoinProps","tour","avatars","onJoined","result","void","const","DEFAULT_TOUR","Welcome","to","the","Fun-o-Meter","Everyone","in","this","room","is","a","dot","Together","you","decide","how","talk","feels","bg-sun","Slide","your","Show","much","fun","are","having","any","time","The","median","shows","up","on","big","screen","bg-[#c9d3ff]","app","mirrors","Low","quiet","and","gray","High","loud","colorful","wiggly","Also","comment","request","party","hats","noise","makers","or","candy","bg-[#ffb4a8]","STEP_LABELS","Quick","1","of","3","2","Step","Joined","function","Dots","step","count","number","return","Array","length","map","_","i","span","key","className","absolute","size-[18px]","rounded-full","lg:size-6","style","left","12","37","11","76","top","53","7","50","background","17163A","FF5C4D","3B5BFF","top-[78%]","right-[10%]","left-[10%]","h-2","rounded","bg-ink","left-[62%]","size-[30px]","-translate-x-1/2","-translate-y-1/4","border-[3px]","border-ink","bg-coral","lg:size-10","primaryBtn","min-h-14","rounded-2xl","text-lg","font-bold","text-white","transition-colors","textInput","box-border","border-4","bg-white","px-4","text-ink","heading","m-0","font-display","text-[40px]","font-extrabold","leading-[1.05]","lg:text-5xl","lead","leading-snug","lg:text-xl","On","large","screens","form","stacks","under","its","instead","pinning","button","bottom","stack","flex","flex-1","flex-col","lg:flex-none","spacer","lg:hidden","Only","navigate","when","page","itself","Previews","Workbench","Canvas","editor","render","components","an","iframe","where","leaving","would","break","preview","canNavigate","typeof","window","undefined","self","paths","come","server","storage","so","only","follow","same-site","ones","goTo","path","if","startsWith","!path","location","assign","export","default","Join","client","setStep","0","code","setCode","name","setName","avatar","setAvatar","busy","setBusy","false","error","setError","setRoom","null","A","returning","visitor","goes","straight","their","skip","flash","redirecting","setRedirecting","joined","!client","roomPath","roomCode","then","catch","e","that","gone","closed","no","place","send","them","start","over","reason","instanceof","Error","message","not_found","link","such","as","NED-4261","pre-fills","prefilled","new","URLSearchParams","search","get","toUpperCase","codeReady","trim","4","nameReady","async","submitCode","!codeReady","true","try","await","That","has","We","couldn","t","find","Check","reach","connection","again","finally","submitProfile","!nameReady","participant","5","rate_limited","Too","many","people","joining","network","Try","few","minutes","Something","went","wrong","div","min-h-dvh","items-center","justify-center","bg-cream","px-6","font-sans","p","role","status","text-center","text-3xl","Taking","card","Math","min","asideBg","lg:grid","lg:grid-cols-2","Large","illustration","moves","out","column","into","own","panel","aside","aria-hidden","relative","hidden","overflow-hidden","lg:block","14","inset-0","gap-8","size","240","text-5xl","Your","bottom-10","left-12","main","mx-auto","w-full","max-w-[390px]","gap-5","py-7","lg:max-w-[560px]","lg:justify-center","lg:gap-6","lg:px-12","lg:py-16","text-[13px]","tracking-[0.12em]","uppercase","h1","min-h-40","rounded-3xl","6","gap-2","lg:justify-start","w-7","w-2","opacity-35","onClick","Got","it","Next","min-h-11","text-[15px]","underline","Skip","Native","submission","blocked","sandboxed","previews","allow-forms),","Enter","call","handler","directly","onSubmit","preventDefault","It","apos","s","at","front","label","htmlFor","text-sm","input","id","autoComplete","off","placeholder","NED-0000","value","onChange","currentTarget","onKeyDown","aria-describedby","code-error","min-h-[72px]","text-[32px]","tracking-[0.08em]","alert","text-base","disabled","!busy","bg-muted","Checking","Continue","gap-3.5","lg:gap-5","Who","nm","shown","given-name","Sam","maxLength","30","text-[22px]","Pick","grid","grid-cols-3","gap-3","aria-label","aria-pressed","min-h-22","rounded-[20px]","border-transparent","56","Joining","lg:items-start","lg:text-left","140","You","re","friend","slide","currentSlide","swarm","now","Start","className=\"lg:hidden","useEffect,","getRoom,","@/lib/fun-room-api","AVATARS,","@/lib/fun-room-avatars","clearJoined,","readJoined,","@/lib/fun-room-session","JoinResult,","string;","tour?","avatars?","onJoined?","void;","Together,","having,","bg-","c9d3ff","loud,","comment,","hats,","ffb4a8","step,","number;","Array.from","_,","size-","18px","&&","top-","78","right-","10","left-","62","30px","border-","3px","text-","40px","leading-","1.05","//","Workbench,","iframe,","window.self","window.top;","storage,","path.startsWith","!path.startsWith","window.location.assign","DEFAULT_TOUR,","onJoined,","code,","name,","avatar,","busy,","error,","room,","redirecting,","null,","joined.roomPath","return;","client,","joined.roomCode","them;","e.message","||","/?code","window.location.search","prefilled.toUpperCase","code.trim","4;","name.trim","0;","result.participant,","result.room.code,","result.room.path,","result.room","result.room.path","/p","/div","Math.min","tour.length","card.bg","/*","*/","/aside","max-w-","390px","lg:max-w-","560px","13px","tracking-","0.12em","card.title","/h1","card.body","0,","1,","/button","15px","allow-forms","e.preventDefault","It&apos;s","/label","e.currentTarget.value.toUpperCase","e.key","min-h-","72px","32px","0.08em","/form","you?","e.currentTarget.value","22px","avatars.map","a,","rounded-","20px","/span","You&apos;re","in,","room?.code","??","room.currentSlide","/main","top;","participant,","path,","12em","08em","room?"],"placeholder":["import","cn","from","drupal-canvas","type","PlaceholderProps","title","string","description","className","A","clearly","marked","spot","for","a","feature","whose","backend","is","not","built","yet","Swap","the","placeholder","real","component","in","room","template","when","it","lands","export","default","function","Placeholder","return","section","rounded-3xl","border-2","border-dashed","border-ink/40","bg-white/60","p-5","text-ink","div","flex","items-center","justify-between","gap-3","h2","m-0","font-display","text-xl","font-extrabold","span","rounded-full","bg-ink","px-3","py-1","text-xs","font-bold","tracking-wide","text-white","uppercase","Coming","soon","p","mt-2","text-base","leading-snug","null","string;","description?","className?","//","title,","description,","className,","/h2","/span","/div","/p","/section"],"requests":["import","useEffect","useState","from","react","cancelRequest","fetchRequests","REQUEST_KINDS","RequestError","sendRequest","lib/fun-room-live","clearJoined","readMyRequests","readRequestNote","rememberRequest","saveRequestNote","useJoined","lib/fun-room-session","cn","drupal-canvas","useSiteContext","drupal-canvas/react","useSWR","swr","type","RequestKind","RoomRequest","RequestsProps","code","string","pollMs","number","className","The","longest","note","in","characters","server","enforces","the","same","limit","const","MAX_NOTE","40","Problem","closed","lost","null","A","small","picture","for","each","kind","a","party","hat","blower","wrapped","candy","They","are","decoration","label","says","what","it","is","so","they","hidden","screen","readers","function","KindIcon","return","svg","viewBox","0","48","width","height","fill","none","stroke","17163a","strokeWidth","2","5","strokeLinecap","round","strokeLinejoin","aria-hidden","true","path","d","M24","8","L8","42","H40","Z","ff5c4d","M16","28","L21","33","L26","L31","M12","38","L17","M20","L25","M28","L33","circle","cx","24","cy","7","r","4","ffd84d","noise","M6","14","L36","M14","30","L22","36","M19","22","L28","10","3b5bff","18","6","7fd6a8","L4","V34","c9b6ff","M34","L44","12","M18","C21","16","25","Ask","volunteer","maker","or","with","an","optional","about","where","you","sitting","request","stays","on","its","way","until","marks","delivered","deck","cancel","after","that","can","ask","again","This","browser","follows","only","own","requests","by","ids","remembered","export","default","Requests","3000","base","baseUrl","joined","me","roomCode","toUpperCase","participant","setIds","known","setKnown","Record","setNote","busy","setBusy","boolean","problem","setProblem","notice","setNotice","What","this","remembers","read","mount","render","has","no","storage","merge","incoming","current","next","of","id","error","length","fun-requests","join","refreshInterval","dedupingInterval","onSuccess","latest","knows","undefined","map","filter","sort","b","disabled","!me","fail","e","unknown","status","instanceof","if","403","else","409","429","Slow","down","little","then","try","422","That","t","be","sent","Couldn","send","Try","async","await","token","trim","includes","catch","finally","false","ready","section","flex","flex-col","gap-3","rounded-3xl","bg-white","p-5","text-ink","h2","m-0","font-display","text-xl","font-extrabold","div","gap-1","htmlFor","note-","text-sm","font-bold","Where","input","text","value","maxLength","onChange","event","target","placeholder","Back","left","aisle","min-h-11","w-full","rounded-2xl","border-2","border-ink/30","px-3","text-base","focus:border-ink","focus:outline-none","disabled:cursor-not-allowed","disabled:bg-ink/5","ul","grid","list-none","grid-cols-3","gap-2","p-0","open","tile","min-h-32","items-center","justify-center","bg-ink/5","px-1","py-3","text-center","state","On","Asking","Delivered","Tap","to","li","key","span","font-medium","button","onClick","void","aria-label","Cancel","mt-1","rounded-full","border-ink","px-4","disabled:opacity-40","cursor-pointer","border-0","transition-colors","hover:bg-ink/10","block","p","role","min-h-5","room","We","track","href","encodeURIComponent","underline","Join","reach","right","now","Retrying","something","useEffect,","cancelRequest,","fetchRequests,","REQUEST_KINDS,","RequestError,","sendRequest,","@/lib/fun-room-live","clearJoined,","readMyRequests,","readRequestNote,","rememberRequest,","saveRequestNote,","useJoined,","@/lib/fun-room-session","RequestKind,","string;","pollMs?","number;","className?","/**","note,","*/","40;","null;","//","hat,","blower,","2.5","/svg","candy,","requests,","code,","3000,","className,","?.baseUrl","??","&&","joined.roomCode.toUpperCase","code.toUpperCase","joined.participant","ids,","known,","number,","busy,","string,","problem,","notice,","request.id","request;","next;","ids.length","base,","ids.join","null,","pollMs,","0,","request?.kind","a,","b.id","a.id","||","e.status","0;","little,","return;","current,","me.token,","kind,","note.trim","current.includes","request.kind","undefined;","/h2","sitting?","/label","event.target.value","left,","/div","REQUEST_KINDS.map","label,","request?.status","/span","/button","tile,","/li","/ul","/?code","/a","/p","/section","?","request?","token,"],"room":["import","Children","from","react","fetchRoom","lib/fun-room-api","avatarAt","Face","lib/fun-room-avatars","useJoined","lib/fun-room-session","cn","drupal-canvas","useJsonApiClient","usePageContext","drupal-canvas/react","useSWR","swr","type","ReactNode","RoomProps","code","string","open","or","closed","The","template","maps","the","field","s","label","so","Open","and","Closed","arrive","too","status","currentSlide","number","slideTitle","pollMs","swarm","slider","requests","comments","className","room","page","used","as","one","Canvas","for","every","node","entity-field","props","paint","first","render","on","a","real","component","then","polls","its","uuid","comes","context","slide","changes","show","up","without","reload","Each","feature","slot","takes","that","implements","it","Placeholder","until","backend","exists","export","default","function","Room","0","2000","const","client","mainEntity","data","error","fun-room","null","refreshInterval","dedupingInterval","view","Polled","is","authoritative","an","empty","polled","title","stays","isOpen","toLowerCase","Who","this","browser","joined","undefined","has","been","asked","nothing","flashes","Someone","who","arrives","by","shared","link","QR","not","here","yet","they","get","to","join","flow","with","filled","in","instead","of","name","me","roomCode","toUpperCase","participant","On","phones","column","header","slots","order","From","lg","breakpoint","follows","presenter","screen","main","bar","filling","height","under","beside","360px","sidebar","rest","two","wrappers","use","contents","their","children","same","wide","screens","exactly","tall","long","comment","list","scrolls","inside","card","stretching","grid","row","minmax","1fr","content","can","t","outgrow","return","div","mx-auto","flex","min-h-dvh","w-full","max-w-[480px]","flex-col","gap-5","bg-mood-bg","px-6","py-7","font-sans","text-ink","motion-safe:transition-colors","motion-safe:duration-[1500ms]","lg:h-dvh","lg:max-w-[1600px]","lg:flex-row","lg:gap-7","lg:p-8","lg:flex","lg:min-h-0","lg:min-w-0","lg:flex-1","lg:flex-col","lg:gap-4","lg:overflow-y-auto","gap-3","lg:grid","lg:grid-cols-[auto_1fr_auto]","lg:items-center","items-center","justify-between","lg:contents","text-[13px]","font-bold","tracking-[0.12em]","uppercase","lg:col-start-1","lg:row-start-1","min-w-0","gap-2","rounded-full","bg-white","py-1","pr-4","pl-1","text-sm","lg:col-start-3","avatar","size","32","span","sr-only","Joined","truncate","lg:col-start-2","lg:justify-start","h1","m-0","font-display","text-5xl","leading-none","font-extrabold","[overflow-wrap:anywhere]","lg:text-4xl","px-4","py-2","bg-sun","bg-ink","text-white","p","text-lg","lg:col-span-3","lg:rounded-3xl","lg:bg-ink","lg:px-6","lg:py-4","lg:text-white","hidden","tracking-[0.1em]","lg:block","Now","showing","lg:font-display","lg:text-3xl","lg:font-extrabold","lg:hidden","lg:capitalize","1","lg:inline","block","role","We","apos","reach","right","now","Retrying","!me","href","encodeURIComponent","rounded-2xl","px-5","py-4","text-center","no-underline","Join","Slot","grow","lg:w-[360px]","lg:shrink-0","One","cell","layout","Renders","unused","leaves","no","gap","makes","take","remaining","itself","stretches","wraps","display","elements","sits","directly","boolean","if","toArray","length","lg:min-h-64","lg:grid-rows-[minmax(0,1fr)]","className=\"lg:font-display","className=\"lg:hidden","className=\"lg:capitalize","'lg:grid","'lg:min-h-64","@/lib/fun-room-api","avatarAt,","@/lib/fun-room-avatars","@/lib/fun-room-session","useJsonApiClient,","string;","/**","label,","*/","currentSlide?","number;","slideTitle?","pollMs?","swarm?","ReactNode;","slider?","requests?","comments?","className?","//","page,","render;","it,","code,","status,","0,","2000,","swarm,","slider,","requests,","comments,","className,","mainEntity?.uuid;","data,","&&","null,","client,","pollMs,","data?.code","??","data?.status","data?.currentSlide","currentSlide,","authoritative,","data?.slideTitle","slideTitle,","view.status.toLowerCase","asked,","yet;","joined.roomCode.toUpperCase","code.toUpperCase","joined.participant","null;","header,","bar,","height,","tall,","max-w-","480px","motion-safe:duration-","1500ms","lg:max-w-","1600px","lg:grid-cols-","auto_1fr_auto","text-","13px","tracking-","0.12em","/div","me.avatar","/span","me.name","overflow-wrap:anywhere","view.code","/h1","0.1em","view.currentSlide","view.slideTitle","/p","can&apos;t","/header","/?code","/a","/Slot","lg:w-","slot,","elements,","children,","children?","grow?","Children.toArray","lg:grid-rows-","0,1fr","mainEntity?","uuid;","data?","12em","1em"],"swarm":["import","useEffect","useRef","useState","from","react","avatarAt","AVATARS","lib/fun-room-avatars","fireConfetti","lib/fun-room-confetti","fetchSwarm","lib/fun-room-live","applyMood","clearMood","createSteadier","moodFor","moodOverride","shouldCelebrate","lib/fun-room-mood","useMyFun","lib/fun-room-session","cn","drupal-canvas","useSiteContext","drupal-canvas/react","useSWR","swr","type","Tier","SwarmProps","code","string","pollMs","number","className","Everyone","in","the","room","as","a","dot","on","0-100","fun","scale","with","s","median","It","polls","swarm","endpoint","so","dots","slide","to","their","new","places","people","move","sliders","This","browser","own","is","drawn","larger","it","easy","find","also","themes","whole","page","steadied","mood","goes","onto","html","data-mood","global","css","does","colors","and","confetti","off","when","climbs","into","high","Add","low","mid","waiting","address","preview","export","default","function","Swarm","2000","const","base","baseUrl","mine","The","tier","shows","smoothed","threshold","doesn","t","flicker","Counted","per","poll","onSuccess","SWR","hands","back","same","data","object","returns","nothing","an","effect","would","miss","those","shown","setShown","null","steady","previous","undefined","lastBurst","0","forced","error","fun-swarm","refreshInterval","dedupingInterval","state","next","current","now","Date","if","map","avatar","bg","summary","voters","of","1","attendee","attendees","out","100","empty","nobody","has","moved","yet","return","section","flex","h-full","min-h-80","flex-col","rounded-3xl","bg-white","p-5","text-ink","div","items-start","justify-between","gap-3","min-w-0","font-display","text-7xl","leading-none","font-extrabold","mt-2","text-lg","font-bold","label","headline","shrink-0","text-sm","count","Connecting","p","role","status","m-0","We","can","apos","reach","right","Retrying","img","aria-label","relative","mt-4","min-h-48","flex-1","overflow-hidden","rounded-2xl","bg-mood-field","motion-safe:transition-colors","motion-safe:duration-[1500ms]","span","absolute","inset-y-0","w-1","bg-ink/70","transition-[left]","duration-700","ease-out","style","left","isMine","id","key","-translate-x-1/2","-translate-y-1/2","transition-[left,top]","z-10","x","top","y","block","rounded-full","ring-ink","size-7","ring-4","size-4","ring-2","ring-ink/70","lively","motion-safe:animate-wiggle","backgroundColor","bottom-2","left-4","meh","right-4","boatloads","'motion-safe:animate-wiggle","useEffect,","useRef,","avatarAt,","@/lib/fun-room-avatars","@/lib/fun-room-confetti","@/lib/fun-room-live","applyMood,","clearMood,","createSteadier,","moodFor,","moodOverride,","shouldCelebrate,","@/lib/fun-room-mood","@/lib/fun-room-session","string;","pollMs?","number;","className?","//","scale,","endpoint,","global.css","?mood","low|mid|high|waiting","code,","2000,","?.baseUrl","??","shows,","new,","shown,","data,","base,","null,","pollMs,","0,","forced.current","steady.current","state.tier","Date.now","previous.current,","next,","lastBurst.current,","lastBurst.current","now;","AVATARS.map","avatar.bg","previous.current","next;","data?.median","null;","data?.voters","data.voters","className,","--","/div","mood.label","mood.headline","data.count","can&apos;t","/p","motion-safe:duration-","1500ms","transition-","data?.dots.map","mine?.id","dot.id;","dot.id","left,top","&&","dot.x","dot.y","mood.lively","dot.avatar","/span","/section","?","current,","data?","mine?","id;"]}
+  compiled: ''
+assets:
+  -
+    name: '@/lib/fun-room-api'
+    uri: 'public://canvas/assets/fun-room-api-BNb5gy_8.js'
+    path: src/lib/fun-room-api.ts
+    source: |
+      // Room API over Drupal JSON:API (the `fun_room` module on the site). A room is a
+      // node of type `room`: its title is the room code.
+      //   GET  /jsonapi/node/room?filter[title]=NED-4261
+      //   GET  /jsonapi/node/room/{uuid}
+      //   POST /jsonapi/fun_participant/fun_participant
+      // Keep every network call in this module. The caller passes in the client from
+      // `useJsonApiClient()` because that is a hook and can only be used in a component.
+
+      export type Room = {
+        /** JSON:API resource id (uuid), needed to relate a participant to the room. */
+        id: string;
+        code: string;
+        status: 'open' | 'closed';
+        /** Zero-based slide index, as reported by the deck. Show it as index + 1. */
+        currentSlide: number;
+        /** Title of the slide being shown, as reported by the deck (may be empty). */
+        slideTitle: string;
+        /** The room page's path: its alias, such as /room/ned-4261, else /node/{nid}. */
+        path: string;
+      };
+
+      export type Profile = {
+        name: string;
+        avatar: number;
+      };
+
+      export type JoinResult = {
+        room: Room;
+        participant: Profile & { token: string };
+      };
+
+      /**
+       * The part of the JSON:API client this module uses. `useJsonApiClient()`
+       * returns `null` when no client is configured.
+       */
+      export type RoomClient = {
+        getCollection: (
+          type: string,
+          options?: { queryString?: string; disableCache?: boolean },
+        ) => Promise<unknown>;
+        getResource: (
+          type: string,
+          id: string,
+          options?: { disableCache?: boolean },
+        ) => Promise<unknown>;
+        createResource: (
+          type: string,
+          body: object,
+          options?: { rawResponse?: boolean; disableCache?: boolean },
+        ) => Promise<unknown>;
+      };
+
+      const ROOM_TYPE = 'node--room';
+      const PARTICIPANT_TYPE = 'fun_participant--fun_participant';
+
+      type Resource = Record<string, unknown> & {
+        id?: string;
+        attributes?: Record<string, unknown>;
+      };
+
+      // The Canvas client returns deserialized (flattened) resources; plain JSON:API
+      // documents nest fields under `attributes`. Accept both.
+      function field(resource: Resource, name: string): unknown {
+        return resource.attributes?.[name] ?? resource[name];
+      }
+
+      function toRoom(resource: Resource): Room {
+        const alias = (field(resource, 'path') as { alias?: string } | null)?.alias;
+        return {
+          id: String(resource.id ?? ''),
+          code: String(field(resource, 'title') ?? ''),
+          status: field(resource, 'field_status') === 'closed' ? 'closed' : 'open',
+          currentSlide: Number(field(resource, 'field_current_slide') ?? 0),
+          slideTitle: String(field(resource, 'field_current_slide_title') ?? ''),
+          path:
+            alias || `/node/${String(field(resource, 'drupal_internal__nid') ?? '')}`,
+        };
+      }
+
+      function requireClient(client: RoomClient | null): RoomClient {
+        if (!client) throw new Error('unavailable');
+        return client;
+      }
+
+      export async function getRoom(
+        client: RoomClient | null,
+        code: string,
+      ): Promise<Room> {
+        const query = new URLSearchParams({
+          'filter[title]': code.trim().toUpperCase(),
+        });
+        const result = await requireClient(client).getCollection(ROOM_TYPE, {
+          queryString: query.toString(),
+          // A room can close at any time, so never serve a cached lookup.
+          disableCache: true,
+        });
+
+        const resources = Array.isArray(result)
+          ? result
+          : ((result as { data?: Resource[] } | null)?.data ?? []);
+        if (resources.length === 0) throw new Error('not_found');
+
+        const room = toRoom(resources[0] as Resource);
+        if (room.status === 'closed') throw new Error('closed');
+        return room;
+      }
+
+      /**
+       * Reads a room by its JSON:API id, for polling. Unlike `getRoom` this returns a
+       * closed room, since the room page needs to show that state.
+       */
+      export async function fetchRoom(
+        client: RoomClient | null,
+        id: string,
+      ): Promise<Room> {
+        const result = await requireClient(client).getResource(ROOM_TYPE, id, {
+          disableCache: true,
+        });
+        const resource = (result as { data?: Resource } | null)?.data ?? result;
+        if (!resource) throw new Error('not_found');
+        return toRoom(resource as Resource);
+      }
+
+      // 24 random bytes as hex. `getRandomValues` works in insecure contexts, unlike
+      // `randomUUID`. The server stores only a SHA-256 of this secret.
+      function newToken(): string {
+        return Array.from(crypto.getRandomValues(new Uint8Array(24)), (byte) =>
+          byte.toString(16).padStart(2, '0'),
+        ).join('');
+      }
+
+      export async function join(
+        client: RoomClient | null,
+        code: string,
+        profile: Profile,
+      ): Promise<JoinResult> {
+        const room = await getRoom(client, code);
+        const token = newToken();
+
+        const result = (await requireClient(client).createResource(
+          PARTICIPANT_TYPE,
+          {
+            data: {
+              type: PARTICIPANT_TYPE,
+              attributes: { name: profile.name, avatar: profile.avatar, token },
+              relationships: {
+                room: { data: { type: ROOM_TYPE, id: room.id } },
+              },
+            },
+          },
+          // Raw mode exposes the HTTP status; the client does not throw on 4xx.
+          { rawResponse: true, disableCache: true },
+        )) as { response?: Response } | null;
+
+        const status = result?.response?.status;
+        if (status === 429) throw new Error('rate_limited');
+        if (status !== 201) throw new Error('join_failed');
+
+        return { room, participant: { ...profile, token } };
+      }
+  -
+    name: '@/lib/fun-room-avatars'
+    uri: 'public://canvas/assets/fun-room-avatars-C7gAYn_X.js'
+    path: src/lib/fun-room-avatars.tsx
+    source: |
+      // The attendee avatars. A participant stores only an index into AVATARS, so the
+      // Join flow (which offers the choices) and the room page (which shows the one
+      // that was picked) draw them from this one list.
+
+      export type Avatar = {
+        bg: string;
+        mouth: string;
+      };
+
+      export const AVATARS: Avatar[] = [
+        { bg: '#FF5C4D', mouth: 'M 12 26 Q 20 33 28 26' },
+        { bg: '#FFD84D', mouth: 'M 12 28 L 28 28' },
+        { bg: '#3B5BFF', mouth: 'M 11 25 Q 20 37 29 25 Z' },
+        { bg: '#7FD6A8', mouth: 'M 12 28 Q 20 24 28 28' },
+        { bg: '#C9B6FF', mouth: 'M 13 27 Q 20 32 27 27' },
+        { bg: '#FFB4A8', mouth: 'M 12 25 Q 20 35 28 25' },
+      ];
+
+      /** The avatar at `index`, falling back to the first for a stale or bad value. */
+      export function avatarAt(index: number, avatars: Avatar[] = AVATARS): Avatar {
+        return avatars[index] ?? avatars[0];
+      }
+
+      export function Face({ avatar, size }: { avatar: Avatar; size: number }) {
+        return (
+          <svg width={size} height={size} viewBox="0 0 40 40" aria-hidden="true">
+            <circle cx="20" cy="20" r="20" fill={avatar.bg} />
+            <circle cx="14" cy="16" r="2.5" fill="#17163A" />
+            <circle cx="26" cy="16" r="2.5" fill="#17163A" />
+            <path
+              d={avatar.mouth}
+              stroke="#17163A"
+              strokeWidth="2.5"
+              fill="none"
+              strokeLinecap="round"
+            />
+          </svg>
+        );
+      }
+  -
+    name: '@/lib/fun-room-confetti'
+    uri: 'public://canvas/assets/fun-room-confetti-Buwr0FCR.js'
+    path: src/lib/fun-room-confetti.ts
+    source: |
+      // One burst of confetti over the whole page, drawn on a throwaway canvas that
+      // ignores the pointer and is hidden from screen readers. Skipped for people who
+      // asked their device for less motion. The deck has a copy in slides/src/mood.js.
+
+      const PIECES = 140;
+      const DURATION_MS = 2800;
+
+      type Piece = {
+        x: number;
+        y: number;
+        vx: number;
+        vy: number;
+        size: number;
+        spin: number;
+        angle: number;
+        color: string;
+      };
+
+      export function fireConfetti(colors: string[]): void {
+        if (typeof document === 'undefined' || colors.length === 0) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        const canvas = document.createElement('canvas');
+        canvas.setAttribute('aria-hidden', 'true');
+        canvas.style.cssText =
+          'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2147483000';
+        const ratio = window.devicePixelRatio || 1;
+        canvas.width = window.innerWidth * ratio;
+        canvas.height = window.innerHeight * ratio;
+        const context = canvas.getContext('2d');
+        if (!context) return;
+        document.body.appendChild(canvas);
+        context.scale(ratio, ratio);
+
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const pieces: Piece[] = Array.from({ length: PIECES }, (_, i) => ({
+          // Two cannons from the bottom corners, aimed at the middle.
+          x: i % 2 ? width * 0.05 : width * 0.95,
+          y: height * 0.95,
+          vx: (i % 2 ? 1 : -1) * (3 + Math.random() * 7),
+          vy: -(9 + Math.random() * 11),
+          size: 6 + Math.random() * 8,
+          spin: (Math.random() - 0.5) * 0.4,
+          angle: Math.random() * Math.PI,
+          color: colors[i % colors.length],
+        }));
+
+        const start = performance.now();
+        const frame = (now: number) => {
+          const elapsed = now - start;
+          context.clearRect(0, 0, width, height);
+          context.globalAlpha = Math.max(
+            0,
+            Math.min(1, (DURATION_MS - elapsed) / 700),
+          );
+          for (const piece of pieces) {
+            piece.vy += 0.3;
+            piece.vx *= 0.99;
+            piece.x += piece.vx;
+            piece.y += piece.vy;
+            piece.angle += piece.spin;
+            context.save();
+            context.translate(piece.x, piece.y);
+            context.rotate(piece.angle);
+            context.fillStyle = piece.color;
+            context.fillRect(
+              -piece.size / 2,
+              -piece.size / 4,
+              piece.size,
+              piece.size / 2,
+            );
+            context.restore();
+          }
+          if (elapsed < DURATION_MS) requestAnimationFrame(frame);
+          else canvas.remove();
+        };
+        requestAnimationFrame(frame);
+      }
+  -
+    name: '@/lib/fun-room-live'
+    uri: 'public://canvas/assets/fun-room-live-BRD2ngdG.js'
+    path: src/lib/fun-room-live.ts
+    source: |
+      // The live half of a room: reading the swarm, sending the attendee's fun level, and
+      // the room's comments.
+      //   GET  {base}/api/fun/rooms/{code}/state
+      //   POST {base}/api/fun/rooms/{code}/vote   { value }   header X-Participant-Token
+      //   GET  {base}/api/fun/rooms/{code}/comments?after={id}&limit={n}
+      //   POST {base}/api/fun/rooms/{code}/comments   { text }   header X-Participant-Token
+      //   GET  {base}/api/fun/rooms/{code}/requests?ids={a,b,c}
+      //   POST {base}/api/fun/rooms/{code}/requests   { kind, note? }   header X-Participant-Token
+      //   POST {base}/api/fun/rooms/{code}/requests/{id}/cancel   header X-Participant-Token
+      // These are plain fetch calls (not JSON:API). `base` is the site's address from
+      // `useSiteContext().baseUrl`, which is the site itself on a Drupal page and the
+      // connected site in Workbench. Keep every call to these endpoints in this module.
+
+      export type Dot = {
+        /** Opaque and stable, so a dot keeps its place between polls. */
+        id: string;
+        /** The fun level, 0 to 100. */
+        x: number;
+        /** Vertical place, 8 to 92 percent from the top. */
+        y: number;
+        /** Index into the avatar list, which gives the dot its color. */
+        avatar: number;
+      };
+
+      export type Tier = 'low' | 'mid' | 'high';
+
+      export type SwarmState = {
+        code: string;
+        status: 'open' | 'closed';
+        /** Zero-based index of the slide being shown. */
+        slide: number;
+        /** Everyone who joined. */
+        count: number;
+        /** Those who have moved the slider (and so have a dot). */
+        voters: number;
+        median: number | null;
+        tier: Tier | null;
+        dots: Dot[];
+        updated: number;
+      };
+
+      export type VoteResult = {
+        /** The attendee's own dot id, to find it in the swarm. */
+        id: string;
+        value: number;
+        slide: number;
+      };
+
+      /** A failed vote. `reason` is the server's error code, or "network". */
+      export class VoteError extends Error {
+        readonly status: number;
+        readonly reason: string;
+
+        constructor(status: number, reason: string) {
+          super(`vote failed: ${reason}`);
+          this.status = status;
+          this.reason = reason;
+        }
+      }
+
+      const endpoint = (base: string, code: string, name: string) =>
+        `${base.replace(/\/+$/, '')}/api/fun/rooms/${encodeURIComponent(code.trim().toUpperCase())}/${name}`;
+
+      export async function fetchSwarm(
+        base: string,
+        code: string,
+      ): Promise<SwarmState> {
+        const response = await fetch(endpoint(base, code, 'state'), {
+          headers: { Accept: 'application/json' },
+        });
+        if (!response.ok) throw new Error(`swarm failed: ${response.status}`);
+        return (await response.json()) as SwarmState;
+      }
+
+      export async function sendVote(
+        base: string,
+        code: string,
+        token: string,
+        value: number,
+      ): Promise<VoteResult> {
+        let response: Response;
+        try {
+          response = await fetch(endpoint(base, code, 'vote'), {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              'X-Participant-Token': token,
+            },
+            body: JSON.stringify({ value }),
+          });
+        } catch {
+          throw new VoteError(0, 'network');
+        }
+        if (!response.ok) {
+          const body = (await response.json().catch(() => ({}))) as {
+            error?: string;
+          };
+          throw new VoteError(response.status, body.error ?? 'error');
+        }
+        return (await response.json()) as VoteResult;
+      }
+
+      export type Comment = {
+        /** Rises with every comment, so a poller can ask for "after" the last one it has. */
+        id: number;
+        name: string;
+        /** Index into the avatar list. */
+        avatar: number;
+        /** Zero-based index of the slide showing when it was posted. */
+        slide: number;
+        slideTitle: string;
+        /** Plain text. Always render it as text, never as HTML. */
+        text: string;
+        /** ISO 8601 UTC time. */
+        at: string;
+      };
+
+      /** A failed comment. `reason` is the server's error code, or "network". */
+      export class CommentError extends Error {
+        readonly status: number;
+        readonly reason: string;
+
+        constructor(status: number, reason: string) {
+          super(`comment failed: ${reason}`);
+          this.status = status;
+          this.reason = reason;
+        }
+      }
+
+      /** The room's comments, oldest first. With `after`, only those newer than that id. */
+      export async function fetchComments(
+        base: string,
+        code: string,
+        after = 0,
+      ): Promise<Comment[]> {
+        const query = after > 0 ? `?after=${after}` : '';
+        const response = await fetch(`${endpoint(base, code, 'comments')}${query}`, {
+          headers: { Accept: 'application/json' },
+        });
+        if (!response.ok) throw new Error(`comments failed: ${response.status}`);
+        return ((await response.json()) as { comments: Comment[] }).comments;
+      }
+
+      export async function sendComment(
+        base: string,
+        code: string,
+        token: string,
+        text: string,
+      ): Promise<Comment> {
+        let response: Response;
+        try {
+          response = await fetch(endpoint(base, code, 'comments'), {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              'X-Participant-Token': token,
+            },
+            body: JSON.stringify({ text }),
+          });
+        } catch {
+          throw new CommentError(0, 'network');
+        }
+        if (!response.ok) {
+          const body = (await response.json().catch(() => ({}))) as {
+            error?: string;
+          };
+          throw new CommentError(response.status, body.error ?? 'error');
+        }
+        return (await response.json()) as Comment;
+      }
+
+      export type RequestKind = 'hat' | 'noise' | 'candy';
+
+      export type RequestStatus = 'open' | 'delivered' | 'cancelled';
+
+      export type RoomRequest = {
+        id: number;
+        name: string;
+        avatar: number;
+        kind: RequestKind;
+        /** Where the attendee is sitting, as they typed it. Plain text. */
+        note: string;
+        slide: number;
+        status: RequestStatus;
+        at: string;
+        /** Unix time of the last change (a delivery or cancel). */
+        changed: number;
+      };
+
+      /** What each kind is called, and how to say it in a sentence. */
+      export const REQUEST_KINDS: {
+        kind: RequestKind;
+        label: string;
+        what: string;
+      }[] = [
+        { kind: 'hat', label: 'Party hat', what: 'a party hat' },
+        { kind: 'noise', label: 'Noise maker', what: 'a noise maker' },
+        { kind: 'candy', label: 'Candy', what: 'candy' },
+      ];
+
+      /** A failed request call. `reason` is the server's error code, or "network". */
+      export class RequestError extends Error {
+        readonly status: number;
+        readonly reason: string;
+
+        constructor(status: number, reason: string) {
+          super(`request failed: ${reason}`);
+          this.status = status;
+          this.reason = reason;
+        }
+      }
+
+      /** These requests (by id), whatever their status. */
+      export async function fetchRequests(
+        base: string,
+        code: string,
+        ids: number[],
+      ): Promise<RoomRequest[]> {
+        const response = await fetch(
+          `${endpoint(base, code, 'requests')}?ids=${ids.slice(-20).join(',')}`,
+          { headers: { Accept: 'application/json' } },
+        );
+        if (!response.ok) throw new Error(`requests failed: ${response.status}`);
+        return ((await response.json()) as { requests: RoomRequest[] }).requests;
+      }
+
+      async function post(
+        url: string,
+        token: string,
+        body?: unknown,
+      ): Promise<Response> {
+        let response: Response;
+        try {
+          response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              'X-Participant-Token': token,
+            },
+            body: body === undefined ? undefined : JSON.stringify(body),
+          });
+        } catch {
+          throw new RequestError(0, 'network');
+        }
+        if (!response.ok) {
+          const failed = (await response.json().catch(() => ({}))) as {
+            error?: string;
+          };
+          throw new RequestError(response.status, failed.error ?? 'error');
+        }
+        return response;
+      }
+
+      /** Asks for something. An attendee's open request of that kind is returned as it is. */
+      export async function sendRequest(
+        base: string,
+        code: string,
+        token: string,
+        kind: RequestKind,
+        note: string,
+      ): Promise<RoomRequest> {
+        const response = await post(endpoint(base, code, 'requests'), token, {
+          kind,
+          note,
+        });
+        return (await response.json()) as RoomRequest;
+      }
+
+      export async function cancelRequest(
+        base: string,
+        code: string,
+        token: string,
+        id: number,
+      ): Promise<RoomRequest> {
+        const response = await post(
+          endpoint(base, code, `requests/${id}/cancel`),
+          token,
+        );
+        return (await response.json()) as RoomRequest;
+      }
+  -
+    name: '@/lib/fun-room-mood'
+    uri: 'public://canvas/assets/fun-room-mood-Dor_yaYX.js'
+    path: src/lib/fun-room-mood.ts
+    source: |
+      // How the room's mood reads: a label and headline for each tier of the median. The
+      // server decides the tier (see SwarmState in the fun_room module), so there is one
+      // set of thresholds. The swarm uses these words and also themes the whole page: it
+      // writes the steadied tier to <html data-mood>, and global.css turns that into colors.
+      // The deck keeps a copy of the steadying and celebration logic in slides/src/mood.js.
+
+      import type { Tier } from '@/lib/fun-room-live';
+
+      export type Mood = {
+        label: string;
+        headline: string;
+        /** Whether the dots should wiggle (for people who haven't asked for less motion). */
+        lively: boolean;
+      };
+
+      const MOODS: Record<Tier, Mood> = {
+        low: { label: 'Sleepy', headline: 'Quiet in here', lively: false },
+        mid: {
+          label: 'Warming up',
+          headline: 'The room is warming up',
+          lively: false,
+        },
+        high: { label: 'Boatloads', headline: 'BOATLOADS OF FUN!', lively: true },
+      };
+
+      const WAITING: Mood = {
+        label: 'Waiting',
+        headline: 'No dots yet. Be the first.',
+        lively: false,
+      };
+
+      /** The mood for a tier, or the waiting state when nobody has voted. */
+      export const moodFor = (tier: Tier | null | undefined): Mood =>
+        tier ? MOODS[tier] : WAITING;
+
+      /** What the swarm waits for before the page changes mood, in consecutive polls. */
+      export const STEADY_POLLS = 2;
+
+      /**
+       * Smooths the tier so a median hovering on a threshold doesn't flip the theme at
+       * every poll. The first tier seen is used at once; "no votes" (null) applies at once;
+       * any other change needs the same new tier on STEADY_POLLS polls in a row.
+       */
+      export function createSteadier(): (tier: Tier | null) => Tier | null {
+        let shown: Tier | null | undefined;
+        let candidate: Tier | null = null;
+        let seen = 0;
+        return (tier) => {
+          if (shown === undefined || tier === null || tier === shown) {
+            shown = tier;
+            candidate = null;
+            seen = 0;
+            return shown;
+          }
+          seen = candidate === tier ? seen + 1 : 1;
+          candidate = tier;
+          if (seen >= STEADY_POLLS) {
+            shown = tier;
+            candidate = null;
+            seen = 0;
+          }
+          return shown;
+        };
+      }
+
+      /** A tier forced by ?mood=low|mid|high|waiting in the page's address, for rehearsing. */
+      export function moodOverride(
+        search: string = typeof window === 'undefined' ? '' : window.location.search,
+      ): Tier | null | undefined {
+        const value = new URLSearchParams(search).get('mood');
+        if (value === 'waiting') return null;
+        return value === 'low' || value === 'mid' || value === 'high'
+          ? value
+          : undefined;
+      }
+
+      /** Writes the mood onto <html> so global.css can theme the whole page. */
+      export function applyMood(tier: Tier | null | undefined): void {
+        if (typeof document === 'undefined') return;
+        document.documentElement.dataset.mood = tier ?? 'waiting';
+      }
+
+      export function clearMood(): void {
+        if (typeof document === 'undefined') return;
+        delete document.documentElement.dataset.mood;
+      }
+
+      /** How soon the confetti can go off again. */
+      export const CELEBRATE_COOLDOWN_MS = 60_000;
+
+      /**
+       * Confetti when the room climbs into "high" from low or mid during this visit.
+       * Not on the first reading (a reload straight into high), not while it stays high,
+       * not from "no votes" (the first voter shouldn't set it off), and not within a minute
+       * of the last burst.
+       */
+      export function shouldCelebrate(
+        previous: Tier | null | undefined,
+        next: Tier | null,
+        lastBurstAt: number,
+        now: number,
+      ): boolean {
+        return (
+          next === 'high' &&
+          (previous === 'low' || previous === 'mid') &&
+          now - lastBurstAt >= CELEBRATE_COOLDOWN_MS
+        );
+      }
+  -
+    name: '@/lib/fun-room-session'
+    uri: 'public://canvas/assets/fun-room-session-DNqq0-El.js'
+    path: src/lib/fun-room-session.ts
+    source: |
+      // What this browser remembers about the room it joined, so the home page can
+      // send a returning visitor straight to their room, the room page can show who
+      // they are, and the slider and swarm can find the attendee's own dot. Storage can
+      // be blocked (private windows, site settings), so every access is guarded and the
+      // app works without it.
+
+      import { useMemo, useSyncExternalStore } from 'react';
+      import type { Profile } from '@/lib/fun-room-api';
+
+      export type Joined = {
+        participant: Profile & { token: string };
+        roomCode: string;
+        /** The room page's path, for example /room/ned-4261. */
+        roomPath: string;
+      };
+
+      /** What the browser remembers of its own dot in a room. */
+      export type MyFun = {
+        /** The dot's opaque id, as the vote endpoint returned it. */
+        id?: string;
+        /** The last value this browser sent. */
+        value?: number;
+      };
+
+      const JOINED_KEY = 'fun-o-meter:joined';
+      const funKey = (code: string) => `fun-o-meter:fun:${code.toUpperCase()}`;
+
+      // The room page is built from several separate components on one page (the room
+      // header, the slider, the swarm). The browser's `storage` event only reaches
+      // other tabs, so saving also dispatches this event to tell the rest of the page.
+      const CHANGED = 'fun-o-meter:session';
+
+      function notify(): void {
+        try {
+          window.dispatchEvent(new Event(CHANGED));
+        } catch {
+          // no window (server render): nothing to tell
+        }
+      }
+
+      function readRaw(key: string): string | null {
+        try {
+          return localStorage.getItem(key);
+        } catch {
+          return null;
+        }
+      }
+
+      function writeRaw(key: string, value: string | null): void {
+        try {
+          if (value === null) localStorage.removeItem(key);
+          else localStorage.setItem(key, value);
+        } catch {
+          // storage is unavailable; the visitor just has to start again next time
+        }
+        notify();
+      }
+
+      function parseJoined(raw: string | null): Joined | null {
+        if (!raw) return null;
+        try {
+          const value = JSON.parse(raw) as Partial<Joined> | null;
+          return value &&
+            value.participant &&
+            typeof value.roomCode === 'string' &&
+            typeof value.roomPath === 'string'
+            ? (value as Joined)
+            : null;
+        } catch {
+          return null;
+        }
+      }
+
+      function parseFun(raw: string | null): MyFun | null {
+        if (!raw) return null;
+        try {
+          const value = JSON.parse(raw) as MyFun | null;
+          return value && typeof value === 'object' ? value : null;
+        } catch {
+          return null;
+        }
+      }
+
+      export function readJoined(): Joined | null {
+        return parseJoined(readRaw(JOINED_KEY));
+      }
+
+      export function saveJoined(joined: Joined): void {
+        writeRaw(JOINED_KEY, JSON.stringify(joined));
+      }
+
+      export function clearJoined(): void {
+        writeRaw(JOINED_KEY, null);
+      }
+
+      export function readFun(code: string): MyFun | null {
+        return parseFun(readRaw(funKey(code)));
+      }
+
+      export function saveFun(code: string, fun: MyFun): void {
+        writeRaw(funKey(code), JSON.stringify(fun));
+      }
+
+      export function clearFun(code: string): void {
+        writeRaw(funKey(code), null);
+      }
+
+      const commentsKey = (code: string) =>
+        `fun-o-meter:comments:${code.toUpperCase()}`;
+
+      /** Ids of the comments this browser posted in a room, so they can be marked as its own. */
+      export function readMyComments(code: string): number[] {
+        try {
+          const parsed: unknown = JSON.parse(readRaw(commentsKey(code)) ?? '[]');
+          return Array.isArray(parsed)
+            ? parsed.filter((id): id is number => Number.isInteger(id))
+            : [];
+        } catch {
+          return [];
+        }
+      }
+
+      export function rememberComment(code: string, id: number): void {
+        const ids = readMyComments(code);
+        if (!ids.includes(id)) {
+          writeRaw(commentsKey(code), JSON.stringify([...ids, id].slice(-200)));
+        }
+      }
+
+      const requestsKey = (code: string) =>
+        `fun-o-meter:requests:${code.toUpperCase()}`;
+      const requestNoteKey = (code: string) =>
+        `fun-o-meter:request-note:${code.toUpperCase()}`;
+
+      /** Ids of the requests this browser made in a room, so it can follow them. */
+      export function readMyRequests(code: string): number[] {
+        try {
+          const parsed: unknown = JSON.parse(readRaw(requestsKey(code)) ?? '[]');
+          return Array.isArray(parsed)
+            ? parsed.filter((id): id is number => Number.isInteger(id))
+            : [];
+        } catch {
+          return [];
+        }
+      }
+
+      export function rememberRequest(code: string, id: number): void {
+        const ids = readMyRequests(code);
+        if (!ids.includes(id)) {
+          writeRaw(requestsKey(code), JSON.stringify([...ids, id].slice(-100)));
+        }
+      }
+
+      /** The "where are you sitting" note last used in a room. */
+      export function readRequestNote(code: string): string {
+        return readRaw(requestNoteKey(code)) ?? '';
+      }
+
+      export function saveRequestNote(code: string, note: string): void {
+        writeRaw(requestNoteKey(code), note === '' ? null : note);
+      }
+
+      // Marks "not read yet" for the server render, which has no storage.
+      const PENDING = 'pending';
+
+      function subscribe(onChange: () => void) {
+        window.addEventListener('storage', onChange);
+        window.addEventListener(CHANGED, onChange);
+        return () => {
+          window.removeEventListener('storage', onChange);
+          window.removeEventListener(CHANGED, onChange);
+        };
+      }
+
+      /**
+       * The stored join, kept current when storage changes in this tab or another.
+       * Returns `undefined` until the browser has been asked (the server render and
+       * the first paint), then the join or `null` when there is none.
+       */
+      export function useJoined(): Joined | null | undefined {
+        const raw = useSyncExternalStore(
+          subscribe,
+          () => readRaw(JOINED_KEY) ?? '',
+          () => PENDING,
+        );
+        return useMemo(() => (raw === PENDING ? undefined : parseJoined(raw)), [raw]);
+      }
+
+      /**
+       * This browser's own dot in a room, kept current the same way. `undefined`
+       * until the browser has been asked, then the stored dot or `null`.
+       */
+      export function useMyFun(code: string): MyFun | null | undefined {
+        const raw = useSyncExternalStore(
+          subscribe,
+          () => readRaw(funKey(code)) ?? '',
+          () => PENDING,
+        );
+        return useMemo(() => (raw === PENDING ? undefined : parseFun(raw)), [raw]);
+      }
+packageJson: |
+  {
+    "name": "fun-canvas-project",
+    "version": "0.0.0",
+    "private": true,
+    "description": "Starter template for @drupal-canvas/create with tooling for AI-assisted development",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/acquia/nebula.git"
+    },
+    "author": "Acquia Engineering (https://www.acquia.com)",
+    "bugs": "https://github.com/acquia/nebula/issues",
+    "homepage": "https://github.com/acquia/nebula#readme",
+    "type": "module",
+    "dependencies": {
+      "class-variance-authority": "^0.7.1",
+      "clsx": "^2.1.1",
+      "drupal-canvas": "^0.7.1",
+      "drupal-jsonapi-params": "^3.0.1",
+      "react": "^19.2.5",
+      "react-dom": "^19.2.5",
+      "swr": "^2.4.1",
+      "tailwind-merge": "^3.5.0"
+    },
+    "devDependencies": {
+      "@drupal-canvas/cli": "^0.26.2",
+      "@drupal-canvas/eslint-config": "^0.10.1",
+      "@drupal-canvas/workbench": "^0.13.2",
+      "@eslint/js": "^9.39.4",
+      "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
+      "eslint": "^9.39.4",
+      "husky": "^9.1.7",
+      "lint-staged": "^16.4.0",
+      "npm-run-all": "^4.1.5",
+      "playwright": "^1.59.1",
+      "prettier": "^3.8.3",
+      "prettier-plugin-tailwindcss": "^0.7.2"
+    },
+    "lint-staged": {
+      "*.{css,js,jsx,json,html,md,mdx,yml}": "prettier --write",
+      "*.{js,jsx,yml,yaml}": "eslint --fix"
+    },
+    "scripts": {
+      "canvas": "canvas",
+      "dev": "canvas-workbench",
+      "code:check": "run-s -c -n code:check:**",
+      "code:check:prettier": "npm run s:prettier -- --check",
+      "code:check:eslint": "npm run s:eslint",
+      "code:fix": "run-s -c -n code:fix:**",
+      "code:fix:prettier": "npm run s:prettier -- --write",
+      "code:fix:eslint": "npm run s:eslint -- --fix",
+      "s:prettier": "prettier \"**/*.{css,js,jsx,json,html,md,mdx,yml}\"",
+      "s:eslint": "eslint \"**/*.{js,jsx,yml,yaml}\"",
+      "prepare": "husky"
+    }
+  }

@@ -1,0 +1,98 @@
+uuid: c680b677-6926-404c-97d5-3a97165a7811
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.room.field_current_slide
+    - field.field.node.room.field_current_slide_id
+    - field.field.node.room.field_current_slide_title
+    - field.field.node.room.field_status
+    - node.type.room
+  module:
+    - content_moderation
+    - path
+  enforced:
+    module:
+      - fun_room
+_core:
+  default_config_hash: kW1LXufV9QfCDwSlMl_6Myya88yfmp0aQ0ao6tSvK10
+id: node.room.default
+targetEntityType: node
+bundle: room
+mode: default
+content:
+  field_current_slide:
+    type: number
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_current_slide_id:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_current_slide_title:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_status:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 100
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  url_redirects:
+    weight: 50
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  promote: true
+  publish_on: true
+  publish_state: true
+  sticky: true
+  uid: true
+  unpublish_on: true
+  unpublish_state: true

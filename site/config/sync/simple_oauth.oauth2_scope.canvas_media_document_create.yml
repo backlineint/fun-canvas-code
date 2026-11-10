@@ -1,0 +1,27 @@
+uuid: 48d16ae2-abe8-48f9-ac33-915be22aa6e2
+langcode: en
+status: true
+dependencies:
+  enforced:
+    config:
+      - media.type.document
+    module:
+      - canvas_oauth
+id: canvas_media_document_create
+name: 'canvas:media:document:create'
+description: 'Drupal Canvas: Create Document media'
+grant_types:
+  authorization_code:
+    status: true
+    description: 'Authorization code access for creating Document media'
+  refresh_token:
+    status: true
+    description: 'Refresh token access for creating Document media'
+  client_credentials:
+    status: true
+    description: 'Client credentials access for creating Document media'
+umbrella: false
+parent: null
+granularity_id: permission
+granularity_configuration:
+  permission: 'create document media'

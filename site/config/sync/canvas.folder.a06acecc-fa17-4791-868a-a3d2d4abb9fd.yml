@@ -1,0 +1,25 @@
+uuid: a06acecc-fa17-4791-868a-a3d2d4abb9fd
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.component.js.comments
+    - canvas.component.js.join
+    - canvas.component.js.requests
+    - canvas.component.js.room
+    - canvas.component.js.swarm
+    - canvas.component.marker.page_content
+    - canvas.component.sdc.navigation.message
+    - canvas.component.sdc.navigation.title
+name: Other
+configEntityTypeId: component
+weight: 0
+items:
+  - js.comments
+  - js.join
+  - js.requests
+  - js.room
+  - js.swarm
+  - marker.page_content
+  - sdc.navigation.message
+  - sdc.navigation.title

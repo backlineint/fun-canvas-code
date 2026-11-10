@@ -1,0 +1,42 @@
+uuid: 8b1c7e4f-9b49-42f5-9fe9-b0f5519e990b
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.js_component.placeholder
+active_version: 160bb0516bf77b83
+versioned_properties:
+  active:
+    settings:
+      prop_field_definitions:
+        title:
+          required: true
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: Swarm
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        description:
+          required: false
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: 'Everyone in the room as a dot on a fun scale.'
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+    fallback_metadata:
+      slot_definitions: {  }
+label: Placeholder
+id: js.placeholder
+provider: null
+source: js
+source_local_id: placeholder

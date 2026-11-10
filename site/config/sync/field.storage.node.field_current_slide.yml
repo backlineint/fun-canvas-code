@@ -1,0 +1,25 @@
+uuid: 6b016ac0-f06e-4109-863a-f366ba4577b1
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+  enforced:
+    module:
+      - fun_room
+_core:
+  default_config_hash: 5rfX04RbhJPaXu_CeClYh_NO31Q00GEskS9hvLRK8hM
+id: node.field_current_slide
+field_name: field_current_slide
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

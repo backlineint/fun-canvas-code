@@ -1,0 +1,41 @@
+uuid: 93ad243d-7466-48df-ada0-fa281fdb14e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.js_component.requests
+active_version: 23378d4df3998a90
+versioned_properties:
+  active:
+    settings:
+      prop_field_definitions:
+        code:
+          required: true
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: NED-4261
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        pollMs:
+          required: false
+          field_type: integer
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: number
+          default_value:
+            -
+              value: 3000
+          expression: ℹ︎integer␟value
+          derived_schema_metadata: {  }
+    fallback_metadata:
+      slot_definitions: {  }
+label: Requests
+id: js.requests
+provider: null
+source: js
+source_local_id: requests

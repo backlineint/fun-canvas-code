@@ -1,0 +1,27 @@
+uuid: 59a0daa3-7bf2-4e38-adaa-d69ffe41c928
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - canvas_oauth
+_core:
+  default_config_hash: mOaHFn4G_5PSBBzwadUCWtnqIA2ggv2Da4gdMIEvUo0
+id: canvas_brand_kit
+name: 'canvas:brand_kit'
+description: 'Drupal Canvas: Full access to brand kits'
+grant_types:
+  client_credentials:
+    status: true
+    description: 'Client credentials access for brand kits'
+  authorization_code:
+    status: true
+    description: 'Authorization code access for brand kits'
+  refresh_token:
+    status: true
+    description: 'Refresh token access for brand kits'
+umbrella: false
+parent: null
+granularity_id: permission
+granularity_configuration:
+  permission: 'administer brand kit'

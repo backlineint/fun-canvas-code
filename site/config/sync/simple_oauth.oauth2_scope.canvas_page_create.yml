@@ -1,0 +1,27 @@
+uuid: 38aada99-91ac-48e1-ba86-27ab8e743a4e
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - canvas_oauth
+_core:
+  default_config_hash: FSU_z0KQt6VYvgvkpzzAGeb9tCQ7fUfzmBeyUdIcewg
+id: canvas_page_create
+name: 'canvas:page:create'
+description: 'Drupal Canvas: Create Pages'
+grant_types:
+  authorization_code:
+    status: true
+    description: 'Authorization code access for creating Canvas Pages'
+  refresh_token:
+    status: true
+    description: 'Refresh token access for creating Canvas Pages'
+  client_credentials:
+    status: true
+    description: 'Client credentials access for creating Canvas Pages'
+umbrella: false
+parent: null
+granularity_id: permission
+granularity_configuration:
+  permission: 'create canvas_page'

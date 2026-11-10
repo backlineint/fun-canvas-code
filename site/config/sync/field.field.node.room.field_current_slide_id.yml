@@ -1,0 +1,24 @@
+uuid: 99c5d467-2f46-4e5c-8b35-eefd9004a1b4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_current_slide_id
+    - node.type.room
+  enforced:
+    module:
+      - fun_room
+_core:
+  default_config_hash: lJPjDFj2Q_k0z4MK1pU2KLyoYQLcpJgZFD4sCCBRfoY
+id: node.room.field_current_slide_id
+field_name: field_current_slide_id
+entity_type: node
+bundle: room
+label: 'Current slide (id)'
+description: 'Stable id of the slide being shown, reported by the slide deck.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

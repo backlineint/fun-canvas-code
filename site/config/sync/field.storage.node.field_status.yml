@@ -1,0 +1,32 @@
+uuid: 2a5b4638-c25f-49b0-a200-0edcc0db9106
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+  enforced:
+    module:
+      - fun_room
+_core:
+  default_config_hash: UuoR-l4WHMiOPFqwzbyfwy27XlTstAvpS1ox_uaOGcc
+id: node.field_status
+field_name: field_status
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: open
+      label: Open
+    -
+      value: closed
+      label: Closed
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

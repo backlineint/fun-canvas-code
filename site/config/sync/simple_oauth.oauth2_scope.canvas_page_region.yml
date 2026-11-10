@@ -1,0 +1,27 @@
+uuid: 49dc6a49-8d67-4aa7-bdb5-636f95a2e979
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - canvas_oauth
+_core:
+  default_config_hash: KS0CtwlRR85xX1bmtQVIcZZL2qVb3poNu7vPO-83d7o
+id: canvas_page_region
+name: 'canvas:page_region'
+description: 'Drupal Canvas: Full access to global regions (page regions)'
+grant_types:
+  client_credentials:
+    status: true
+    description: 'Client credentials access for global regions'
+  authorization_code:
+    status: true
+    description: 'Authorization code access for global regions'
+  refresh_token:
+    status: true
+    description: 'Refresh token access for global regions'
+umbrella: false
+parent: null
+granularity_id: permission
+granularity_configuration:
+  permission: 'administer page template'

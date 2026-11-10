@@ -1,0 +1,429 @@
+uuid: fd97775c-5022-4f2d-84a5-25b07246e94b
+langcode: en
+status: true
+dependencies: {  }
+machineName: fun-slider
+name: 'Fun slider'
+required:
+  - code
+props:
+  code:
+    type: string
+    title: Code
+    description: 'The room code, such as NED-4261.'
+    examples:
+      - NED-4261
+slots: {  }
+js:
+  original: |
+    import { useEffect, useRef, useState } from 'react';
+    import { avatarAt, Face } from '@/lib/fun-room-avatars';
+    import { sendVote, VoteError } from '@/lib/fun-room-live';
+    import {
+      clearJoined,
+      saveFun,
+      useJoined,
+      useMyFun,
+    } from '@/lib/fun-room-session';
+    import { cn } from 'drupal-canvas';
+    import { useSiteContext } from 'drupal-canvas/react';
+    import type { ChangeEvent } from 'react';
+
+    type FunSliderProps = {
+      code: string;
+      className?: string;
+    };
+
+    /** How long after the last movement the value is sent. */
+    const SEND_AFTER_MS = 300;
+    /** How long to wait before trying again after a network error or rate limit. */
+    const RETRY_MS = 3000;
+
+    type Problem = 'closed' | 'lost' | 'offline' | null;
+
+    // The attendee's fun slider. The dot moves the instant they drag; the value is
+    // sent shortly after they pause. One request is in flight at a time and the
+    // newest value always goes next, so quick drags can't arrive out of order and
+    // leave the swarm on a stale value.
+    export default function FunSlider({ code, className }: FunSliderProps) {
+      const base = useSiteContext()?.baseUrl ?? '';
+      const joined = useJoined();
+      const mine = useMyFun(code);
+      const me =
+        joined && joined.roomCode.toUpperCase() === code.toUpperCase()
+          ? joined.participant
+          : null;
+
+      const [dragValue, setDragValue] = useState<number | null>(null);
+      const [problem, setProblem] = useState<Problem>(null);
+      const value = dragValue ?? mine?.value ?? null;
+
+      // What the (re-created each render) send function needs, kept in refs so the
+      // timers always see the current values.
+      const auth = useRef({ base, code, token: me?.token ?? '' });
+      const latest = useRef<number | null>(null);
+      const sending = useRef(false);
+      const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+      const unmounted = useRef(false);
+      const fatal = useRef(false);
+
+      useEffect(() => {
+        // A new token (they joined again) clears an earlier fatal error.
+        if (auth.current.token !== (me?.token ?? '')) fatal.current = false;
+        auth.current = { base, code, token: me?.token ?? '' };
+      });
+
+      useEffect(() => {
+        unmounted.current = false;
+        return () => {
+          unmounted.current = true;
+          clearTimeout(timer.current);
+        };
+      }, []);
+
+      async function flush(): Promise<void> {
+        const { base: site, code: room, token } = auth.current;
+        if (
+          sending.current ||
+          latest.current === null ||
+          !token ||
+          fatal.current ||
+          unmounted.current
+        ) {
+          return;
+        }
+
+        sending.current = true;
+        const sent = latest.current;
+        let retry = false;
+        try {
+          const result = await sendVote(site, room, token, sent);
+          saveFun(room, { id: result.id, value: sent });
+          setProblem(null);
+        } catch (e) {
+          const status = e instanceof VoteError ? e.status : 0;
+          if (status === 403) {
+            // The site no longer knows this token (it was reset): they have to join again.
+            fatal.current = true;
+            clearJoined();
+            setProblem('lost');
+          } else if (status === 409) {
+            fatal.current = true;
+            setProblem('closed');
+          } else {
+            retry = true;
+            // A rate limit (429) clears by itself, so only say "offline" otherwise.
+            if (status !== 429) setProblem('offline');
+          }
+        } finally {
+          sending.current = false;
+        }
+
+        if (fatal.current || unmounted.current) return;
+        if (retry) {
+          timer.current = setTimeout(flush, RETRY_MS);
+        } else if (latest.current !== sent) {
+          // They moved again while that was in flight.
+          void flush();
+        }
+      }
+
+      function onChange(event: ChangeEvent<HTMLInputElement>) {
+        const next = Number(event.currentTarget.value);
+        setDragValue(next);
+        latest.current = next;
+        clearTimeout(timer.current);
+        timer.current = setTimeout(flush, SEND_AFTER_MS);
+      }
+
+      const ready = joined !== undefined;
+      const disabled = !me || problem === 'closed' || problem === 'lost';
+      const position = value ?? 50;
+
+      return (
+        <section className={cn('rounded-3xl bg-white p-5 text-ink', className)}>
+          <div className="flex items-baseline justify-between gap-3">
+            <h2 className="m-0 font-display text-xl font-extrabold">
+              How fun is it for you?
+            </h2>
+            <span
+              className="font-display text-3xl leading-none font-extrabold"
+              aria-hidden="true"
+            >
+              {value ?? '--'}
+            </span>
+          </div>
+
+          {/* A dot you can drag. The real range input sits invisibly on top, so touch,
+              mouse and keyboard all work and a screen reader gets a normal slider. */}
+          <div className="px-5 pt-3 pb-1">
+            <div className="relative h-14 rounded-full has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-fun-blue/40">
+              <div className="absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 rounded-full bg-ink/15" />
+              <div
+                className="absolute top-1/2 left-0 h-3 -translate-y-1/2 rounded-full bg-mood-accent motion-safe:transition-colors motion-safe:duration-[1500ms]"
+                style={{ width: `${position}%` }}
+              />
+              <div
+                className={cn(
+                  'pointer-events-none absolute top-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity',
+                  disabled && 'opacity-50',
+                )}
+                style={{ left: `${position}%` }}
+              >
+                {me ? (
+                  <Face avatar={avatarAt(me.avatar)} size={44} />
+                ) : (
+                  <span className="block size-11 rounded-full bg-muted" />
+                )}
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={1}
+                value={position}
+                disabled={disabled}
+                onChange={onChange}
+                aria-label="Your fun level"
+                aria-valuetext={
+                  value === null ? 'not set yet' : `${value} out of 100`
+                }
+                className="absolute inset-0 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
+              />
+            </div>
+            <div className="mt-1 flex justify-between text-sm font-bold">
+              <span>meh</span>
+              <span>boatloads</span>
+            </div>
+          </div>
+
+          <p role="status" className="m-0 mt-2 min-h-6 text-base">
+            {problem === 'closed' ? (
+              'This room has closed.'
+            ) : problem === 'lost' ? (
+              <>
+                We lost track of you.{' '}
+                <a
+                  href={`/?code=${encodeURIComponent(code)}`}
+                  className="font-bold underline"
+                >
+                  Join the room again
+                </a>
+                .
+              </>
+            ) : problem === 'offline' ? (
+              "We can't reach the room right now. Retrying."
+            ) : !ready ? null : !me ? (
+              <>
+                Join this room to move your dot.{' '}
+                <a
+                  href={`/?code=${encodeURIComponent(code)}`}
+                  className="font-bold underline"
+                >
+                  Join
+                </a>
+              </>
+            ) : value === null ? (
+              'Drag the dot to join the swarm.'
+            ) : (
+              `Your dot is at ${value}.`
+            )}
+          </p>
+        </section>
+      );
+    }
+  compiled: |
+    var __async = (__this, __arguments, generator) => {
+      return new Promise((resolve, reject) => {
+        var fulfilled = (value) => {
+          try {
+            step(generator.next(value));
+          } catch (e) {
+            reject(e);
+          }
+        };
+        var rejected = (value) => {
+          try {
+            step(generator.throw(value));
+          } catch (e) {
+            reject(e);
+          }
+        };
+        var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+        step((generator = generator.apply(__this, __arguments)).next());
+      });
+    };
+    import { jsxs, jsx, Fragment } from "react/jsx-runtime";
+    import { useState, useRef, useEffect } from "react";
+    import { Face, avatarAt } from "@/lib/fun-room-avatars";
+    import { sendVote, VoteError } from "@/lib/fun-room-live";
+    import { useJoined, useMyFun, saveFun, clearJoined } from "@/lib/fun-room-session";
+    import { cn } from "drupal-canvas";
+    import { useSiteContext } from "drupal-canvas/react";
+    const SEND_AFTER_MS = 300;
+    const RETRY_MS = 3e3;
+    function FunSlider({ code, className }) {
+      var _a, _b, _c, _d;
+      const base = (_b = (_a = useSiteContext()) == null ? void 0 : _a.baseUrl) != null ? _b : "";
+      const joined = useJoined();
+      const mine = useMyFun(code);
+      const me = joined && joined.roomCode.toUpperCase() === code.toUpperCase() ? joined.participant : null;
+      const [dragValue, setDragValue] = useState(null);
+      const [problem, setProblem] = useState(null);
+      const value = (_c = dragValue != null ? dragValue : mine == null ? void 0 : mine.value) != null ? _c : null;
+      const auth = useRef({ base, code, token: (_d = me == null ? void 0 : me.token) != null ? _d : "" });
+      const latest = useRef(null);
+      const sending = useRef(false);
+      const timer = useRef(void 0);
+      const unmounted = useRef(false);
+      const fatal = useRef(false);
+      useEffect(() => {
+        var _a2, _b2;
+        if (auth.current.token !== ((_a2 = me == null ? void 0 : me.token) != null ? _a2 : "")) fatal.current = false;
+        auth.current = { base, code, token: (_b2 = me == null ? void 0 : me.token) != null ? _b2 : "" };
+      });
+      useEffect(() => {
+        unmounted.current = false;
+        return () => {
+          unmounted.current = true;
+          clearTimeout(timer.current);
+        };
+      }, []);
+      function flush() {
+        return __async(this, null, function* () {
+          const { base: site, code: room, token } = auth.current;
+          if (sending.current || latest.current === null || !token || fatal.current || unmounted.current) {
+            return;
+          }
+          sending.current = true;
+          const sent = latest.current;
+          let retry = false;
+          try {
+            const result = yield sendVote(site, room, token, sent);
+            saveFun(room, { id: result.id, value: sent });
+            setProblem(null);
+          } catch (e) {
+            const status = e instanceof VoteError ? e.status : 0;
+            if (status === 403) {
+              fatal.current = true;
+              clearJoined();
+              setProblem("lost");
+            } else if (status === 409) {
+              fatal.current = true;
+              setProblem("closed");
+            } else {
+              retry = true;
+              if (status !== 429) setProblem("offline");
+            }
+          } finally {
+            sending.current = false;
+          }
+          if (fatal.current || unmounted.current) return;
+          if (retry) {
+            timer.current = setTimeout(flush, RETRY_MS);
+          } else if (latest.current !== sent) {
+            void flush();
+          }
+        });
+      }
+      function onChange(event) {
+        const next = Number(event.currentTarget.value);
+        setDragValue(next);
+        latest.current = next;
+        clearTimeout(timer.current);
+        timer.current = setTimeout(flush, SEND_AFTER_MS);
+      }
+      const ready = joined !== void 0;
+      const disabled = !me || problem === "closed" || problem === "lost";
+      const position = value != null ? value : 50;
+      return /* @__PURE__ */ jsxs("section", { className: cn("rounded-3xl bg-white p-5 text-ink", className), children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex items-baseline justify-between gap-3", children: [
+          /* @__PURE__ */ jsx("h2", { className: "m-0 font-display text-xl font-extrabold", children: "How fun is it for you?" }),
+          /* @__PURE__ */ jsx(
+            "span",
+            {
+              className: "font-display text-3xl leading-none font-extrabold",
+              "aria-hidden": "true",
+              children: value != null ? value : "--"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxs("div", { className: "px-5 pt-3 pb-1", children: [
+          /* @__PURE__ */ jsxs("div", { className: "relative h-14 rounded-full has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-fun-blue/40", children: [
+            /* @__PURE__ */ jsx("div", { className: "absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 rounded-full bg-ink/15" }),
+            /* @__PURE__ */ jsx(
+              "div",
+              {
+                className: "absolute top-1/2 left-0 h-3 -translate-y-1/2 rounded-full bg-mood-accent motion-safe:transition-colors motion-safe:duration-[1500ms]",
+                style: { width: `${position}%` }
+              }
+            ),
+            /* @__PURE__ */ jsx(
+              "div",
+              {
+                className: cn(
+                  "pointer-events-none absolute top-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity",
+                  disabled && "opacity-50"
+                ),
+                style: { left: `${position}%` },
+                children: me ? /* @__PURE__ */ jsx(Face, { avatar: avatarAt(me.avatar), size: 44 }) : /* @__PURE__ */ jsx("span", { className: "block size-11 rounded-full bg-muted" })
+              }
+            ),
+            /* @__PURE__ */ jsx(
+              "input",
+              {
+                type: "range",
+                min: 0,
+                max: 100,
+                step: 1,
+                value: position,
+                disabled,
+                onChange,
+                "aria-label": "Your fun level",
+                "aria-valuetext": value === null ? "not set yet" : `${value} out of 100`,
+                className: "absolute inset-0 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxs("div", { className: "mt-1 flex justify-between text-sm font-bold", children: [
+            /* @__PURE__ */ jsx("span", { children: "meh" }),
+            /* @__PURE__ */ jsx("span", { children: "boatloads" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsx("p", { role: "status", className: "m-0 mt-2 min-h-6 text-base", children: problem === "closed" ? "This room has closed." : problem === "lost" ? /* @__PURE__ */ jsxs(Fragment, { children: [
+          "We lost track of you.",
+          " ",
+          /* @__PURE__ */ jsx(
+            "a",
+            {
+              href: `/?code=${encodeURIComponent(code)}`,
+              className: "font-bold underline",
+              children: "Join the room again"
+            }
+          ),
+          "."
+        ] }) : problem === "offline" ? "We can't reach the room right now. Retrying." : !ready ? null : !me ? /* @__PURE__ */ jsxs(Fragment, { children: [
+          "Join this room to move your dot.",
+          " ",
+          /* @__PURE__ */ jsx(
+            "a",
+            {
+              href: `/?code=${encodeURIComponent(code)}`,
+              className: "font-bold underline",
+              children: "Join"
+            }
+          )
+        ] }) : value === null ? "Drag the dot to join the swarm." : `Your dot is at ${value}.` })
+      ] });
+    }
+    export {
+      FunSlider as default
+    };
+css:
+  original: ''
+  compiled: ''
+dataDependencies:
+  drupalSettings:
+    - v0.baseUrl
+    - v0.branding
+    - v0.themeAssets

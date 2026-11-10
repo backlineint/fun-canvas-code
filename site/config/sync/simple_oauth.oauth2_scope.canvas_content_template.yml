@@ -1,0 +1,27 @@
+uuid: 22a419f2-6441-46b5-80f8-97a5796d5b36
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - canvas_oauth
+_core:
+  default_config_hash: dGCi5sKDK5moBsxiigILII61GZGWAkR2LJm4TTDh5r8
+id: canvas_content_template
+name: 'canvas:content_template'
+description: 'Drupal Canvas: Full access to content templates'
+grant_types:
+  client_credentials:
+    status: true
+    description: 'Client credentials access for content templates'
+  authorization_code:
+    status: true
+    description: 'Authorization code access for content templates'
+  refresh_token:
+    status: true
+    description: 'Refresh token access for content templates'
+umbrella: false
+parent: null
+granularity_id: permission
+granularity_configuration:
+  permission: 'administer content templates'

@@ -1,0 +1,29 @@
+uuid: b4e0d94d-546a-4677-ac15-959298603694
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.room
+  module:
+    - node
+  enforced:
+    module:
+      - fun_room
+_core:
+  default_config_hash: BSAWgKX2OShjMau6zkDnQY8wCAFfbsFLiFek0uvFHDI
+id: room
+label: Room
+type: 'canonical_entities:node'
+pattern: '/room/[node:title]'
+selection_criteria:
+  d9f8b2a4-6c3e-4f10-9a57-2b8e1c7d4a60:
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: node
+    bundles:
+      room: room
+    uuid: d9f8b2a4-6c3e-4f10-9a57-2b8e1c7d4a60
+selection_logic: and
+weight: -10
+relationships: {  }

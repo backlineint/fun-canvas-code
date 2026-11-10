@@ -1,0 +1,27 @@
+uuid: aa1315a0-86bc-4059-b3a2-873c2c2c3486
+langcode: en
+status: true
+dependencies:
+  enforced:
+    config:
+      - media.type.svg_image
+    module:
+      - canvas_oauth
+id: canvas_media_svg_image_create
+name: 'canvas:media:svg_image:create'
+description: 'Drupal Canvas: Create SVG Image media'
+grant_types:
+  authorization_code:
+    status: true
+    description: 'Authorization code access for creating SVG Image media'
+  refresh_token:
+    status: true
+    description: 'Refresh token access for creating SVG Image media'
+  client_credentials:
+    status: true
+    description: 'Client credentials access for creating SVG Image media'
+umbrella: false
+parent: null
+granularity_id: permission
+granularity_configuration:
+  permission: 'create svg_image media'

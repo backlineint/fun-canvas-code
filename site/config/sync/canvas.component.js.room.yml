@@ -1,0 +1,204 @@
+uuid: 29d69fcf-467d-4df7-bf0c-cf5af4b6a7a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.js_component.room
+  module:
+    - options
+active_version: a34bb0e47a45541b
+versioned_properties:
+  active:
+    settings:
+      prop_field_definitions:
+        code:
+          required: true
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: NED-4261
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        status:
+          required: true
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: open
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        currentSlide:
+          required: false
+          field_type: integer
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: number
+          default_value:
+            -
+              value: 0
+          expression: ℹ︎integer␟value
+          derived_schema_metadata: {  }
+        slideTitle:
+          required: false
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: 'Live demo: the Swarm'
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        pollMs:
+          required: false
+          field_type: integer
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: number
+          default_value:
+            -
+              value: 2000
+          expression: ℹ︎integer␟value
+          derived_schema_metadata: {  }
+    fallback_metadata:
+      slot_definitions:
+        swarm:
+          title: Swarm
+        slider:
+          title: Slider
+        requests:
+          title: Requests
+        comments:
+          title: Comments
+  c65bba8b21e11e76:
+    settings:
+      prop_field_definitions:
+        code:
+          required: true
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: NED-4261
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        status:
+          required: true
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: open
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        currentSlide:
+          required: false
+          field_type: integer
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: number
+          default_value:
+            -
+              value: 0
+          expression: ℹ︎integer␟value
+          derived_schema_metadata: {  }
+        pollMs:
+          required: false
+          field_type: integer
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: number
+          default_value:
+            -
+              value: 2000
+          expression: ℹ︎integer␟value
+          derived_schema_metadata: {  }
+    fallback_metadata:
+      slot_definitions:
+        swarm:
+          title: Swarm
+        slider:
+          title: Slider
+        requests:
+          title: Requests
+        comments:
+          title: Comments
+  4372a60a1777de18:
+    settings:
+      prop_field_definitions:
+        code:
+          required: true
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: NED-4261
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        status:
+          required: true
+          field_type: list_string
+          field_storage_settings:
+            allowed_values_function: canvas_load_allowed_values_for_component_prop
+          field_instance_settings: {  }
+          field_widget: options_select
+          default_value:
+            -
+              value: open
+          expression: ℹ︎list_string␟value
+          derived_schema_metadata: {  }
+        currentSlide:
+          required: false
+          field_type: integer
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: number
+          default_value:
+            -
+              value: 0
+          expression: ℹ︎integer␟value
+          derived_schema_metadata: {  }
+        pollMs:
+          required: false
+          field_type: integer
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: number
+          default_value:
+            -
+              value: 2000
+          expression: ℹ︎integer␟value
+          derived_schema_metadata: {  }
+    fallback_metadata:
+      slot_definitions:
+        swarm:
+          title: Swarm
+        slider:
+          title: Slider
+        requests:
+          title: Requests
+        comments:
+          title: Comments
+label: Room
+id: js.room
+provider: null
+source: js
+source_local_id: room

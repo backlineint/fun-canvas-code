@@ -1,0 +1,15 @@
+# Loaded on Upsun only, after web/sites/default/services.yml, so it replaces
+# the localhost-only CORS rules. Add the slide deck's origin here when it is
+# hosted on a different domain from the site, for example
+#   allowedOrigins: ['https://deck.example.com']
+# A deck served from the same origin as the site needs nothing.
+parameters:
+  cors.config:
+    enabled: true
+    allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Presenter-Key', 'X-Participant-Token']
+    allowedMethods: ['GET', 'POST', 'OPTIONS']
+    allowedOrigins: []
+    allowedOriginsPatterns: []
+    exposedHeaders: false
+    maxAge: false
+    supportsCredentials: false

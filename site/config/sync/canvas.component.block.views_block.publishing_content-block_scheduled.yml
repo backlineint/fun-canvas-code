@@ -1,0 +1,26 @@
+uuid: 1a409070-4a6b-4550-8954-1a77d92a281b
+langcode: en
+status: false
+dependencies:
+  config:
+    - views.view.publishing_content
+  module:
+    - views
+active_version: 3ddcc9429928c501
+versioned_properties:
+  active:
+    settings:
+      default_settings:
+        id: 'views_block:publishing_content-block_scheduled'
+        label: Scheduled
+        label_display: '0'
+        provider: views
+        views_label: ''
+        items_per_page: null
+    fallback_metadata:
+      slot_definitions: null
+label: Scheduled
+id: block.views_block.publishing_content-block_scheduled
+provider: views
+source: block
+source_local_id: 'views_block:publishing_content-block_scheduled'

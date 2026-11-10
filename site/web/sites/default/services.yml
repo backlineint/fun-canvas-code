@@ -1,0 +1,15 @@
+# Local development overrides. Drupal loads this file instead of default.services.yml.
+parameters:
+  # Lets the standalone prototype, the slide deck and Canvas Workbench (all on
+  # localhost dev ports) call JSON:API. Canvas pages served by Drupal itself are
+  # same-origin and need none of this. Drupal applies CORS site-wide, not per
+  # path, so production origins are a deploy-time decision.
+  cors.config:
+    enabled: true
+    allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Presenter-Key', 'X-Participant-Token']
+    allowedMethods: ['GET', 'POST', 'OPTIONS']
+    allowedOrigins: []
+    allowedOriginsPatterns: ['#^http://localhost:\d+$#', '#^http://127\.0\.0\.1:\d+$#']
+    exposedHeaders: false
+    maxAge: false
+    supportsCredentials: false
