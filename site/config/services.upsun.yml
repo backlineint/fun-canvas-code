@@ -9,7 +9,8 @@ parameters:
     allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Presenter-Key', 'X-Participant-Token']
     allowedMethods: ['GET', 'POST', 'OPTIONS']
     allowedOrigins: []
-    allowedOriginsPatterns: []
+    # A deck run locally (pnpm dev) against the live site.
+    allowedOriginsPatterns: ['#^http://localhost:\d+$#', '#^http://127\.0\.0\.1:\d+$#']
     exposedHeaders: false
     maxAge: false
     supportsCredentials: false
