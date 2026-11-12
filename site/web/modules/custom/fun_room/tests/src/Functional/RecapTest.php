@@ -175,6 +175,7 @@ final class RecapTest extends BrowserTestBase {
     $this->vote('Alice', 2, 60);
     $this->vote('Bob', 2, 40);
     $this->vote('Dev', 3, 100);
+    $this->people['Eve'] = $this->participant($this->room, 'Eve', 'token-for-eve-0123456789abcdef', 3);
     $this->vote('Eve', 4, 10);
 
     $recap = $this->recap();
@@ -188,8 +189,8 @@ final class RecapTest extends BrowserTestBase {
     $this->assertSame(5, $recap['voters']);
     // The median of all nine votes: 10 20 30 40 60 70 80 90 100, so 60.
     $this->assertSame(60, $recap['averageFun']);
-    $this->assertSame('high', $recap['tier']);
-    $this->assertSame('That was boatloads of fun', $recap['headline']);
+    $this->assertSame('mid', $recap['tier']);
+    $this->assertSame('That was a warm one', $recap['headline']);
   }
 
   public function testSmallRoomsRankSlidesOnSingleVotes(): void {
@@ -368,7 +369,8 @@ final class RecapTest extends BrowserTestBase {
     $this->vote('Stranger', 0, 99, $other);
     $this->vote('Stranger', 0, 99, $other);
     $this->vote('Alice', 0, 10);
-    $this->assertSame(0, count($this->recap()['timeline']));
+    // Only this room's vote is charted; the stranger's 99s stay in their own room.
+    $this->assertSame([10], array_column($this->recap()['timeline'], 'median'));
     $this->assertSame(4, $this->recap()['attendees']);
     $this->assertSame(1, $this->recap('OTHER-1')['attendees']);
   }
