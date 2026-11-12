@@ -7,6 +7,7 @@
 //   GET  {base}/api/fun/rooms/{code}/requests?ids={a,b,c}
 //   POST {base}/api/fun/rooms/{code}/requests   { kind, note? }   header X-Participant-Token
 //   POST {base}/api/fun/rooms/{code}/requests/{id}/cancel   header X-Participant-Token
+//   GET  {base}/api/fun/rooms/{code}/recap
 // These are plain fetch calls (not JSON:API). `base` is the site's address from
 // `useSiteContext().baseUrl`, which is the site itself on a Drupal page and the
 // connected site in Workbench. Keep every call to these endpoints in this module.
@@ -280,4 +281,67 @@ export async function cancelRequest(
     token,
   );
   return (await response.json()) as RoomRequest;
+}
+
+/** One slide in the recap: where it sat in the deck, what it was called, how the room rated it. */
+export type RecapSlide = {
+  slide: number;
+  title: string;
+  median: number;
+  votes: number;
+};
+
+/** A highlight card: a comment (with who said it), or the most asked-for request kind. */
+export type RecapHighlight =
+  | {
+      type: 'comment';
+      tag: string;
+      text: string;
+      name: string;
+      avatar: number;
+      slide: number;
+      title: string;
+    }
+  | { type: 'request'; tag: string; kind: RequestKind; count: number };
+
+/** The room's end-of-session recap. */
+export type RoomRecap = {
+  code: string;
+  status: 'open' | 'closed';
+  headline: string;
+  attendees: number;
+  voters: number;
+  durationSeconds: number | null;
+  /** The median of every rating, or null if nobody rated anything. */
+  averageFun: number | null;
+  tier: Tier | null;
+  peak: RecapSlide | null;
+  /** Slides with enough ratings, in slide order. */
+  timeline: RecapSlide[];
+  topSlides: RecapSlide[];
+  quietest: RecapSlide | null;
+  comments: {
+    count: number;
+    busiest: { slide: number; title: string; count: number } | null;
+  };
+  requests: {
+    total: number;
+    hat: number;
+    noise: number;
+    candy: number;
+    delivered: number;
+  };
+  highlights: RecapHighlight[];
+  updated: number;
+};
+
+export async function fetchRecap(
+  base: string,
+  code: string,
+): Promise<RoomRecap> {
+  const response = await fetch(endpoint(base, code, 'recap'), {
+    headers: { Accept: 'application/json' },
+  });
+  if (!response.ok) throw new Error(`recap failed: ${response.status}`);
+  return (await response.json()) as RoomRecap;
 }

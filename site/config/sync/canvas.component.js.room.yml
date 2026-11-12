@@ -6,9 +6,83 @@ dependencies:
     - canvas.js_component.room
   module:
     - options
-active_version: a34bb0e47a45541b
+active_version: 605cd5007784c6e4
 versioned_properties:
   active:
+    settings:
+      prop_field_definitions:
+        code:
+          required: true
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: NED-4261
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        status:
+          required: true
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: open
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        currentSlide:
+          required: false
+          field_type: integer
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: number
+          default_value:
+            -
+              value: 0
+          expression: ℹ︎integer␟value
+          derived_schema_metadata: {  }
+        slideTitle:
+          required: false
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: 'Live demo: the Swarm'
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        pollMs:
+          required: false
+          field_type: integer
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: number
+          default_value:
+            -
+              value: 2000
+          expression: ℹ︎integer␟value
+          derived_schema_metadata: {  }
+    fallback_metadata:
+      slot_definitions:
+        swarm:
+          title: Swarm
+        slider:
+          title: Slider
+        requests:
+          title: Requests
+        comments:
+          title: Comments
+        recap:
+          title: Recap
+          description: 'Shown in place of the swarm once the room has closed.'
+  a34bb0e47a45541b:
     settings:
       prop_field_definitions:
         code:

@@ -28,7 +28,8 @@
         "swarm": ["swarm"],
         "slider": ["slider"],
         "requests": ["requests"],
-        "comments": ["comments"]
+        "comments": ["comments"],
+        "recap": ["recap"]
       }
     },
     "swarm": {
@@ -60,6 +61,15 @@
     },
     "comments": {
       "type": "js.comments",
+      "props": {
+        "code": {
+          "sourceType": "entity-field",
+          "expression": "ℹ︎␜entity:node:room␝title␞␟value"
+        }
+      }
+    },
+    "recap": {
+      "type": "js.recap",
       "props": {
         "code": {
           "sourceType": "entity-field",

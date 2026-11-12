@@ -1,0 +1,22 @@
+uuid: 1a51905a-1dcc-4110-b198-2861508ce140
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_slide_log
+    - node.type.room
+  enforced:
+    module:
+      - fun_room
+id: node.room.field_slide_log
+field_name: field_slide_log
+entity_type: node
+bundle: room
+label: 'Slide log'
+description: 'JSON map of every slide the deck has reported (index to id, title and first time shown). Written by the slide endpoint; used by the recap. Not edited by hand.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

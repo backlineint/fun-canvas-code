@@ -1,14 +1,15 @@
-// Which part of the screen is shown full size. Four views:
+// Which part of the screen is shown full size. Five views:
 //   split    the slide beside the sidebar (the default)
 //   slide    the slide alone, the sidebar hidden (also the escape hatch for an unwanted comment)
 //   room     the room's swarm filling the screen
 //   activity the activity stream filling the screen
+//   recap    the room's end-of-session recap filling the screen (D; it is never opened by itself)
 // The view is written to <html data-view> and CSS (index.css) does the layout; the cards read
 // it through useDeckView to draw their bigger versions. Only "slide" is remembered across
-// reloads (the others are for a moment on stage); Esc returns from room or activity to split.
+// reloads (the others are for a moment on stage); Esc returns from room, activity or recap to split.
 
 const STORE = 'fun-o-meter:deck-sidebar';
-const VIEWS = ['split', 'slide', 'room', 'activity'];
+const VIEWS = ['split', 'slide', 'room', 'activity', 'recap'];
 const root = document.documentElement;
 
 let view = 'split';
@@ -67,11 +68,12 @@ export function initDeckView(revealDeck) {
   deck.addKeyBinding({ keyCode: 83, key: 'S', description: 'Slide full screen (hide the sidebar)' }, () => toggleView('slide'));
   deck.addKeyBinding({ keyCode: 82, key: 'R', description: 'The room full screen' }, () => toggleView('room'));
   deck.addKeyBinding({ keyCode: 67, key: 'C', description: 'The activity stream full screen' }, () => toggleView('activity'));
-  // Esc leaves the room and activity views. Capture phase, so Reveal's overview doesn't open too.
+  deck.addKeyBinding({ keyCode: 68, key: 'D', description: 'The room recap full screen' }, () => toggleView('recap'));
+  // Esc leaves the room, activity and recap views. Capture phase, so Reveal's overview doesn't open too.
   document.addEventListener(
     'keydown',
     (event) => {
-      if (event.key === 'Escape' && (view === 'room' || view === 'activity')) {
+      if (event.key === 'Escape' && (view === 'room' || view === 'activity' || view === 'recap')) {
         event.preventDefault();
         event.stopPropagation();
         setView('split');

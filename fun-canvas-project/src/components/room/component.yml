@@ -46,3 +46,6 @@ slots:
     title: Requests
   comments:
     title: Comments
+  recap:
+    title: Recap
+    description: Shown in place of the swarm once the room has closed.

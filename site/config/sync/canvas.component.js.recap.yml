@@ -1,0 +1,41 @@
+uuid: 48ba2f0a-3095-49a5-b414-2a6179419548
+langcode: en
+status: true
+dependencies:
+  config:
+    - canvas.js_component.recap
+active_version: e7f6eeb8e15d444b
+versioned_properties:
+  active:
+    settings:
+      prop_field_definitions:
+        code:
+          required: true
+          field_type: string
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: string_textfield
+          default_value:
+            -
+              value: NED-4261
+          expression: ℹ︎string␟value
+          derived_schema_metadata:
+            string_shape: {  }
+        pollMs:
+          required: false
+          field_type: integer
+          field_storage_settings: {  }
+          field_instance_settings: {  }
+          field_widget: number
+          default_value:
+            -
+              value: 30000
+          expression: ℹ︎integer␟value
+          derived_schema_metadata: {  }
+    fallback_metadata:
+      slot_definitions: {  }
+label: Recap
+id: js.recap
+provider: null
+source: js
+source_local_id: recap

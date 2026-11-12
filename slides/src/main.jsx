@@ -6,6 +6,7 @@ import Swarm from './components/Swarm.jsx';
 import RoomCode from './components/RoomCode.jsx';
 import RoomPulse from './components/RoomPulse.jsx';
 import ActivityStream from './components/ActivityStream.jsx';
+import Recap from './components/Recap.jsx';
 import { reportSlide } from './room.js';
 import { startMood } from './mood.js';
 import { startActivity } from './activity.js';
@@ -16,6 +17,7 @@ const components = {
   'room-code': RoomCode,
   'room-pulse': RoomPulse,
   'activity-stream': ActivityStream,
+  'room-recap': Recap,
 };
 
 document.querySelectorAll('[data-component]').forEach((el) => {
@@ -66,5 +68,5 @@ deck.on('slidechanged', (e) => report(e.currentSlide, e.indexh));
 
 deck.initialize();
 
-// The views (split, slide alone, room full screen, activity full screen), their keys and Esc.
+// The views (split, slide alone, room, activity and recap full screen), their keys and Esc.
 initDeckView(deck);

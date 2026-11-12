@@ -1,4 +1,5 @@
 import { roomCode } from '../room.js';
+import { setView } from '../deckView.js';
 import { useDeckView } from '../useDeckView.js';
 import { useRoomState } from '../useRoomState.js';
 import SwarmField from './SwarmField.jsx';
@@ -6,7 +7,7 @@ import ViewButton from './ViewButton.jsx';
 
 const LABELS = { low: 'Sleepy', mid: 'Warming up', high: 'Boatloads' };
 
-// The room at a glance, in the top third of the sidebar: a compact swarm with the
+// The room at a glance, in the top third of the sidebar (with a Recap button once the room closes): a compact swarm with the
 // median and mood. With the room view on (R, or the button) it fills the screen with a
 // big swarm. It reads the deck's one poll (mood.js), so it adds no requests.
 // To try a gauge ("the dial" in the design canvas) instead, replace <SwarmField>.
@@ -23,6 +24,16 @@ export default function RoomPulse() {
         <span>{roomCode}</span>
         <span className="flex items-center gap-3">
           {status}
+          {state?.status === 'closed' ? (
+            <button
+              type="button"
+              onClick={() => setView('recap')}
+              title="Show the room recap full screen (D)"
+              className="cursor-pointer rounded-full border-0 bg-sun px-3 py-1 font-bold text-ink motion-safe:animate-[pulse_1.2s_ease-in-out_3]"
+            >
+              Recap
+            </button>
+          ) : null}
           <ViewButton target="room" name="the room" keyName="R" />
         </span>
       </div>

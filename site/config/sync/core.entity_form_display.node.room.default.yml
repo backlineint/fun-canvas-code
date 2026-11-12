@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.room.field_current_slide
     - field.field.node.room.field_current_slide_id
     - field.field.node.room.field_current_slide_title
+    - field.field.node.room.field_slide_log
     - field.field.node.room.field_status
     - node.type.room
   module:
@@ -89,6 +90,7 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_slide_log: true
   promote: true
   publish_on: true
   publish_state: true

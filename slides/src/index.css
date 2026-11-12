@@ -139,21 +139,28 @@ html[data-mood='high'] {
  * hidden and that one card fills the screen.
  */
 html[data-view='room'] .deck-layout,
-html[data-view='activity'] .deck-layout {
+html[data-view='activity'] .deck-layout,
+html[data-view='recap'] .deck-layout {
   grid-template-columns: minmax(0, 1fr);
 }
 
 html[data-view='room'] .deck-layout > .reveal,
 html[data-view='activity'] .deck-layout > .reveal,
+html[data-view='recap'] .deck-layout > .reveal,
 html[data-view='room'] .sidebar-toggle,
 html[data-view='activity'] .sidebar-toggle,
+html[data-view='recap'] .sidebar-toggle,
 html[data-view='room'] [data-component='activity-stream'],
-html[data-view='activity'] [data-component='room-pulse'] {
+html[data-view='activity'] [data-component='room-pulse'],
+html[data-view='recap'] [data-component='activity-stream'],
+html[data-view='recap'] [data-component='room-pulse'],
+html:not([data-view='recap']) [data-component='room-recap'] {
   display: none;
 }
 
 html[data-view='room'] .deck-sidebar,
-html[data-view='activity'] .deck-sidebar {
+html[data-view='activity'] .deck-sidebar,
+html[data-view='recap'] .deck-sidebar {
   grid-template-rows: minmax(0, 1fr);
   padding: 24px;
 }

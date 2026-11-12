@@ -5,6 +5,7 @@ dependencies:
   config:
     - canvas.component.js.comments
     - canvas.component.js.join
+    - canvas.component.js.recap
     - canvas.component.js.requests
     - canvas.component.js.room
     - canvas.component.js.swarm
@@ -17,6 +18,7 @@ weight: 0
 items:
   - js.comments
   - js.join
+  - js.recap
   - js.requests
   - js.room
   - js.swarm

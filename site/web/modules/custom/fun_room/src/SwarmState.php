@@ -54,6 +54,24 @@ final class SwarmState {
   }
 
   /**
+   * The median of whole numbers (the mean of the middle two, rounded, for an even
+   * count), or NULL for none.
+   *
+   * @param int[] $values
+   *   The values, in any order.
+   */
+  public static function median(array $values): ?int {
+    if (!$values) {
+      return NULL;
+    }
+    sort($values);
+    $middle = intdiv(count($values), 2);
+    return count($values) % 2
+      ? $values[$middle]
+      : (int) round(($values[$middle - 1] + $values[$middle]) / 2);
+  }
+
+  /**
    * The state for a room, reused for CACHE_SECONDS.
    *
    * @return array<string, mixed>
@@ -100,14 +118,7 @@ final class SwarmState {
     }
     usort($dots, fn (array $a, array $b) => strcmp($a['id'], $b['id']));
 
-    $median = NULL;
-    if ($values) {
-      sort($values);
-      $middle = intdiv(count($values), 2);
-      $median = count($values) % 2
-        ? $values[$middle]
-        : (int) round(($values[$middle - 1] + $values[$middle]) / 2);
-    }
+    $median = self::median($values);
 
     return [
       'code' => $room->label(),

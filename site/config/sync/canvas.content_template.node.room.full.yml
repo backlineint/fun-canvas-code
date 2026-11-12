@@ -5,6 +5,7 @@ dependencies:
   config:
     - canvas.component.js.comments
     - canvas.component.js.fun-slider
+    - canvas.component.js.recap
     - canvas.component.js.requests
     - canvas.component.js.room
     - canvas.component.js.swarm
@@ -20,10 +21,20 @@ content_entity_type_id: node
 content_entity_type_bundle: room
 content_entity_type_view_mode: full
 component_tree:
-  '0:4f61b38f-c702-40c8-80a5-5e242af71b50':
-    uuid: 4f61b38f-c702-40c8-80a5-5e242af71b50
+  '0:comments:0:20994cbc-6a84-4fef-bd53-4d295ba93972':
+    parent_uuid: d0410d83-1b2b-4b88-a5a7-fa593facc8fd
+    slot: comments
+    uuid: 20994cbc-6a84-4fef-bd53-4d295ba93972
+    component_id: js.comments
+    component_version: 23378d4df3998a90
+    inputs:
+      code:
+        sourceType: entity-field
+        expression: 'ℹ︎␜entity:node:room␝title␞␟value'
+  '0:d0410d83-1b2b-4b88-a5a7-fa593facc8fd':
+    uuid: d0410d83-1b2b-4b88-a5a7-fa593facc8fd
     component_id: js.room
-    component_version: a34bb0e47a45541b
+    component_version: 605cd5007784c6e4
     inputs:
       code:
         sourceType: entity-field
@@ -37,40 +48,40 @@ component_tree:
       slideTitle:
         sourceType: entity-field
         expression: 'ℹ︎␜entity:node:room␝field_current_slide_title␞␟value'
-  '0:comments:0:6ec039cb-c520-4c76-93f1-46043e0833d2':
-    parent_uuid: 4f61b38f-c702-40c8-80a5-5e242af71b50
-    slot: comments
-    uuid: 6ec039cb-c520-4c76-93f1-46043e0833d2
-    component_id: js.comments
-    component_version: 23378d4df3998a90
+  '0:recap:0:24670642-1329-4393-ba3d-12926f80ca6e':
+    parent_uuid: d0410d83-1b2b-4b88-a5a7-fa593facc8fd
+    slot: recap
+    uuid: 24670642-1329-4393-ba3d-12926f80ca6e
+    component_id: js.recap
+    component_version: e7f6eeb8e15d444b
     inputs:
       code:
         sourceType: entity-field
         expression: 'ℹ︎␜entity:node:room␝title␞␟value'
-  '0:requests:0:fc427b4d-5b77-4455-aa97-67317aa3d137':
-    parent_uuid: 4f61b38f-c702-40c8-80a5-5e242af71b50
+  '0:requests:0:18b9a96e-3de0-4b66-83b1-5ebeb3640c56':
+    parent_uuid: d0410d83-1b2b-4b88-a5a7-fa593facc8fd
     slot: requests
-    uuid: fc427b4d-5b77-4455-aa97-67317aa3d137
+    uuid: 18b9a96e-3de0-4b66-83b1-5ebeb3640c56
     component_id: js.requests
     component_version: 23378d4df3998a90
     inputs:
       code:
         sourceType: entity-field
         expression: 'ℹ︎␜entity:node:room␝title␞␟value'
-  '0:slider:0:880f180d-b72b-4363-8f3e-14aaf792b67b':
-    parent_uuid: 4f61b38f-c702-40c8-80a5-5e242af71b50
+  '0:slider:0:289e2d4c-42a6-44d9-b861-d8446d91f888':
+    parent_uuid: d0410d83-1b2b-4b88-a5a7-fa593facc8fd
     slot: slider
-    uuid: 880f180d-b72b-4363-8f3e-14aaf792b67b
+    uuid: 289e2d4c-42a6-44d9-b861-d8446d91f888
     component_id: js.fun-slider
     component_version: f773ce5aae455da6
     inputs:
       code:
         sourceType: entity-field
         expression: 'ℹ︎␜entity:node:room␝title␞␟value'
-  '0:swarm:0:cbd54c4a-0edd-41fb-9295-ef6b44fcf1e8':
-    parent_uuid: 4f61b38f-c702-40c8-80a5-5e242af71b50
+  '0:swarm:0:09075763-6d65-4bba-98d8-251c1779943e':
+    parent_uuid: d0410d83-1b2b-4b88-a5a7-fa593facc8fd
     slot: swarm
-    uuid: cbd54c4a-0edd-41fb-9295-ef6b44fcf1e8
+    uuid: 09075763-6d65-4bba-98d8-251c1779943e
     component_id: js.swarm
     component_version: 804d40e22d25f562
     inputs:

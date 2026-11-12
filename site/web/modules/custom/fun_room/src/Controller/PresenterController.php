@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\fun_room\Controller;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\fun_room\PresenterKeyChecker;
+use Drupal\fun_room\SlideLog;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,6 +35,7 @@ final class PresenterController implements ContainerInjectionInterface {
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly PresenterKeyChecker $keyChecker,
+    private readonly TimeInterface $time,
   ) {}
 
   /**
@@ -42,6 +45,7 @@ final class PresenterController implements ContainerInjectionInterface {
     return new static(
       $container->get('entity_type.manager'),
       $container->get('fun_room.presenter_key'),
+      $container->get('datetime.time'),
     );
   }
 
@@ -86,7 +90,10 @@ final class PresenterController implements ContainerInjectionInterface {
     }
 
     // Closed rooms may still be updated; only joining is blocked when closed.
-    if ((int) $room->get('field_current_slide')->value !== $index
+    // The slide log keeps every slide shown, so the recap can name them.
+    $logged = SlideLog::record($room, $index, $id, $title, $this->time->getRequestTime());
+    if ($logged
+      || (int) $room->get('field_current_slide')->value !== $index
       || (string) $room->get('field_current_slide_id')->value !== $id
       || (string) $room->get('field_current_slide_title')->value !== $title) {
       $room->set('field_current_slide', $index);

@@ -94,8 +94,10 @@ the **slide** (the round button in the top corner of the slide area, or `S`) hid
 slide takes the whole width, and is remembered across reloads (it is also the escape hatch if a
 comment shouldn't be on screen); the **room** (the button on the room card, or `R`) fills the screen
 with a big median and swarm; the **activity stream** (the button on its card, or `C`) fills the screen
-with larger text. Press the same key or button again, or `Esc`, to go back to the split view. Room and
-activity views are not remembered across a reload. The arrow keys keep changing slides in any view.
+with larger text; the **recap** (`D`, or the Recap button that appears on the room card once the room is
+closed) fills the screen with the end-of-session summary from `GET /api/fun/rooms/{code}/recap`. It never opens
+by itself, and `D` also previews it on a room that is still open. Press the same key or button again, or `Esc`,
+to go back to the split view. Room, activity and recap views are not remembered across a reload. The arrow keys keep changing slides in any view.
 The current view is `<html data-view>` (`src/deckView.js`); `index.css` lays it out and the cards read
 it with `useDeckView` to draw their bigger versions. Requests and joins can use the
 same list: `activity.js` items are `{ kind, key, who, avatar, slide, ts, ... }` with a `key` unique

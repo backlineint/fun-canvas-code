@@ -73,8 +73,23 @@ brings them over. Do not `canvas push` to the live site as part of the normal fl
 2. Run `ddev drush cex -y` and commit the changed files in `site/config/sync`.
 3. `git push upsun main`.
 
+When you change a shared module under `fun-canvas-project/src/lib/` (as the recap did, with
+`fun-room-live`), its compiled file gets a new hash. The exported config names that file, so the live
+site's components break until the file exists there: also upload `canvas/assets` (see "Uploading the shared
+module files" below) or `canvas push` to the live site.
+
 Pushing straight to the live site (a Canvas OAuth client, its `CANVAS_*` values in
 `.env.local`, and the server's OAuth keys) is only a fallback if a component fails to import.
+
+### Uploading the shared module files
+
+The compiled shared modules live in `site/web/sites/default/files/canvas/assets` locally and are not in the
+exported config. Copy them to the live files mount with a folder that mirrors the path (no `--delete`):
+
+```bash
+mkdir -p /tmp/canvas-upload/canvas && cp -R site/web/sites/default/files/canvas/assets /tmp/canvas-upload/canvas/
+upsun mount:upload --mount web/sites/default/files --source /tmp/canvas-upload --app drupal
+```
 
 ## The slide deck
 

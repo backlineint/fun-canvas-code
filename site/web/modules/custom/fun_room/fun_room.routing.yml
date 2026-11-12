@@ -52,6 +52,15 @@ fun_room.ratings_list:
     # Public and read-only: ratings show only the name and avatar the attendee chose.
     _access: 'TRUE'
 
+fun_room.recap:
+  path: '/api/fun/rooms/{code}/recap'
+  defaults:
+    _controller: 'Drupal\fun_room\Controller\RecapController::recap'
+  methods: [GET]
+  requirements:
+    # Public and read-only: names and avatars only where comments already show them.
+    _access: 'TRUE'
+
 fun_room.requests_list:
   path: '/api/fun/rooms/{code}/requests'
   defaults:

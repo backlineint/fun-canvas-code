@@ -36,3 +36,7 @@ services:
   fun_room.request_feed:
     class: Drupal\fun_room\RequestFeed
     arguments: ['@entity_type.manager', '@cache.default', '@datetime.time']
+
+  fun_room.room_recap:
+    class: Drupal\fun_room\RoomRecap
+    arguments: ['@database', '@entity_type.manager', '@cache.default', '@datetime.time']

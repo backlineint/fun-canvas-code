@@ -11,6 +11,7 @@ dependencies:
     - field.storage.node.field_current_slide
     - field.storage.node.field_current_slide_id
     - field.storage.node.field_current_slide_title
+    - field.storage.node.field_slide_log
     - field.storage.node.field_status
     - node.type.room
 id: node.room.field_current_slide

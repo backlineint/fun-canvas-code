@@ -18,6 +18,7 @@ type RoomProps = {
   slider?: ReactNode;
   requests?: ReactNode;
   comments?: ReactNode;
+  recap?: ReactNode;
   className?: string;
 };
 
@@ -36,6 +37,7 @@ export default function Room({
   slider,
   requests,
   comments,
+  recap,
   className,
 }: RoomProps) {
   const client = useJsonApiClient();
@@ -56,6 +58,7 @@ export default function Room({
     slideTitle: data?.slideTitle ?? slideTitle,
   };
   const isOpen = view.status.toLowerCase() !== 'closed';
+  const showRecap = !isOpen && hasContent(recap);
 
   // Who this browser joined as. `joined` is undefined until the browser has been
   // asked, so nothing flashes on the first paint. Someone who arrives by a shared
@@ -143,8 +146,18 @@ export default function Room({
           </a>
         ) : null}
 
-        <Slot grow>{swarm}</Slot>
-        <Slot>{slider}</Slot>
+        {/* Once the room has closed the recap takes the swarm's place (if the page has
+            one) at its natural height, so the column scrolls instead of squeezing it, and
+            the slider (which can no longer be used) goes. Only the chosen element mounts,
+            so the recap fetches nothing while the talk is on. */}
+        {showRecap ? (
+          <Slot>{recap}</Slot>
+        ) : (
+          <>
+            <Slot grow>{swarm}</Slot>
+            <Slot>{slider}</Slot>
+          </>
+        )}
       </div>
 
       <div className="contents lg:flex lg:min-h-0 lg:w-[360px] lg:shrink-0 lg:flex-col lg:gap-4">
@@ -160,8 +173,12 @@ export default function Room({
 // cell is itself a grid so its content stretches to the cell's height (Canvas
 // wraps slot content in display: contents elements, so the content sits
 // directly in this cell's grid).
+function hasContent(node: ReactNode): boolean {
+  return Children.toArray(node).length > 0;
+}
+
 function Slot({ children, grow }: { children?: ReactNode; grow?: boolean }) {
-  if (Children.toArray(children).length === 0) return null;
+  if (!hasContent(children)) return null;
   return (
     <div
       className={cn(

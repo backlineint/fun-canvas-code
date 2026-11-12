@@ -111,3 +111,25 @@ function fun_room_update_10004(): void {
     $manager->installEntityType(\Drupal::entityTypeManager()->getDefinition('fun_request'));
   }
 }
+
+/**
+ * Adds the slide log field to rooms, for the end-of-session recap.
+ *
+ * Config in config/install only applies when the module is first installed, so
+ * existing sites get the new field here.
+ */
+function fun_room_update_10005(): void {
+  $source = new FileStorage(\Drupal::service('extension.list.module')->getPath('fun_room') . '/config/install');
+  $config_manager = \Drupal::service('config.manager');
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  // The storage first, then the instance that uses it.
+  foreach (['field.storage.node.field_slide_log', 'field.field.node.room.field_slide_log'] as $name) {
+    if (!\Drupal::configFactory()->get($name)->isNew()) {
+      continue;
+    }
+    $entity_type_manager->getStorage($config_manager->getEntityTypeIdByName($name))
+      ->createFromStorageRecord($source->read($name))
+      ->save();
+  }
+}

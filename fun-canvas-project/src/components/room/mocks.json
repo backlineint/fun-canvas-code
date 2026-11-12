@@ -51,6 +51,26 @@
         "code": "DEMO-1",
         "status": "closed",
         "currentSlide": 0
+      },
+      "slots": {
+        "swarm": ["swarm-placeholder"],
+        "recap": ["recap-placeholder"]
+      },
+      "elements": {
+        "swarm-placeholder": {
+          "type": "placeholder",
+          "props": {
+            "title": "Swarm",
+            "description": "Everyone in the room as a dot on a fun scale."
+          }
+        },
+        "recap-placeholder": {
+          "type": "placeholder",
+          "props": {
+            "title": "Recap",
+            "description": "Shown instead of the swarm once the room has closed."
+          }
+        }
       }
     }
   ]

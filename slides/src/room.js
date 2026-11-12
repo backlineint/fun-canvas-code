@@ -256,3 +256,52 @@ export async function deliverRequest(id) {
   });
   if (!res.ok) throw new Error(`deliver failed: ${res.status}`);
 }
+
+// The room's end-of-session recap (the same payload the room page shows). In stub mode a
+// sample, so the view can be designed without a site. After a 404 it waits a minute.
+const STUB_RECAP = {
+  code: 'NED-4261',
+  status: 'closed',
+  headline: 'That was boatloads of fun',
+  attendees: 37,
+  voters: 31,
+  durationSeconds: 45 * 60,
+  averageFun: 68,
+  tier: 'high',
+  peak: { slide: 4, title: 'Live demo: the Swarm', median: 91, votes: 29 },
+  timeline: [
+    { slide: 0, title: 'Welcome', median: 38, votes: 20 },
+    { slide: 1, title: 'Your first component', median: 60, votes: 24 },
+    { slide: 2, title: 'Props are just JSON', median: 66, votes: 26 },
+    { slide: 3, title: 'Prompting an agent', median: 78, votes: 27 },
+    { slide: 4, title: 'Live demo: the Swarm', median: 91, votes: 29 },
+    { slide: 5, title: 'Wrap-up', median: 57, votes: 25 },
+  ],
+  topSlides: [
+    { slide: 4, title: 'Live demo: the Swarm', median: 91, votes: 29 },
+    { slide: 3, title: 'Prompting an agent', median: 78, votes: 27 },
+    { slide: 2, title: 'Props are just JSON', median: 66, votes: 26 },
+    { slide: 1, title: 'Your first component', median: 60, votes: 24 },
+    { slide: 5, title: 'Wrap-up', median: 57, votes: 25 },
+  ],
+  quietest: { slide: 0, title: 'Welcome', median: 38, votes: 20 },
+  comments: { count: 54, busiest: { slide: 4, title: 'Live demo: the Swarm', count: 11 } },
+  requests: { total: 112, hat: 31, noise: 29, candy: 52, delivered: 98 },
+  highlights: [
+    { type: 'comment', tag: 'Most active slide', text: 'Wait, that runs in the browser?', name: 'Dana', avatar: 0, slide: 4, title: 'Live demo: the Swarm' },
+    { type: 'comment', tag: 'Last word', text: 'Please show the prompt again', name: 'Priya', avatar: 2, slide: 5, title: 'Wrap-up' },
+    { type: 'request', tag: 'Most asked for', kind: 'candy', count: 52 },
+  ],
+  updated: 0,
+};
+
+let recapRetryAt = 0;
+
+export async function getRecap() {
+  if (isStub) return { ...STUB_RECAP, code: ROOM_CODE, updated: Math.floor(Date.now() / 1000) };
+  if (Date.now() < recapRetryAt) throw new Error('recap endpoint unavailable');
+  const res = await fetch(`${API}/api/fun/rooms/${encodeURIComponent(ROOM_CODE)}/recap`);
+  if (res.status === 404) recapRetryAt = Date.now() + 60000;
+  if (!res.ok) throw new Error(`recap failed: ${res.status}`);
+  return res.json();
+}

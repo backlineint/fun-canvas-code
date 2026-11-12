@@ -293,6 +293,32 @@ slider appears once with the value where they stopped. Names go with values here
 are public by name on the deck and in this feed (the swarm itself stays anonymous). No
 token, uuid or participant id is returned.
 
+### Recap
+
+`GET /api/fun/rooms/{code}/recap` is the end-of-session summary, shown by the room page (the
+`recap` component, which replaces the swarm once the room is closed) and the deck (the recap
+view, `D`). Public and read-only. It is computed on read, so nothing happens when a room
+closes; an open room returns a recap too (with `"status": "open"`, so the presenter can rehearse).
+It is cached for 5 seconds while the room is open and 5 minutes once it is closed. Returns:
+`code`, `status`, `headline` (from the tier), `attendees`, `voters`, `durationSeconds`
+(first slide the deck reported to the last vote, comment or request; null if unknown),
+`averageFun` (the median of every rating, null if none) and `tier`, `peak`, `timeline` (slides in
+slide order), `topSlides` (best five), `quietest`, `comments {count, busiest}`, `requests {total,
+hat, noise, candy, delivered}` (cancelled ones excluded), `highlights` and `updated`. A slide is
+`{slide, title, median, votes}` (`slide` is zero-based).
+
+Ratings are one row per attendee per slide (the last value), so the timeline is **by slide**, not
+by minute. Every rated slide is charted. To be ranked (peak, top slides, quietest) a slide needs at least 2 ratings (`RoomRecap::MIN_VOTES`), except in rooms with fewer than 5 voters (`RoomRecap::SMALL_ROOM`), where any rated slide is ranked.
+Highlights are picked by rule, not by judging what was funny: a comment from the slide with the
+most comments, the final comment, and the most asked-for request kind. No token, uuid or
+participant id is returned; names and avatars are only the ones comments already show.
+
+Votes know only their slide's index, so slide titles come from the **slide log**: the
+`field_slide_log` JSON on the room, written by the slide endpoint each time the deck reports a
+slide (index, id, title and the first time it was shown; at most 200). A slide the deck never
+reported is named from a comment's slide title, else "Slide N". Rooms run before the log existed
+get "Slide N" labels. Reordering the deck mid-event would mislabel slides.
+
 ### Mood theming
 
 The server's `tier` (`low` below 35, `mid` below 65, else `high`, none with no votes)
@@ -311,8 +337,8 @@ Thresholds live only in `SwarmState`; the colors must keep dark ink readable (4.
 
 Rooms are ordinary content. In the admin sidebar use **Create > Room** to add
 one, or **Fun rooms** (the Content list filtered to rooms) to see them. Set
-**Status** to Closed to stop new joins; people already in the room are
-unaffected. **Fun participants** lists who joined, newest first. Deleting a room
+**Status** to Closed to stop new joins, ratings, comments and requests; the room page then shows
+the recap and the deck gets a Recap button. **Fun participants** lists who joined, newest first. Deleting a room
 does not delete its participants.
 
 From the command line (both accept any case; the code is stored uppercase):
