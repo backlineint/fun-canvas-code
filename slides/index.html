@@ -26,27 +26,66 @@
 
                     <section data-id="join" data-title="Join the room">
                         <h2>Join the room</h2>
-                        <p>Go to [JOIN URL] and enter the room code.</p>
+                        <p>
+                            Go to <b>canvas-demo.brianperry.dev</b> and enter
+                            the room code.
+                        </p>
                         <div data-component="room-code"></div>
                     </section>
 
-                    <section data-id="brian-slide" data-title="Brian Slide">
-                        <h2>Brian Slide</h2>
+                    <section
+                        data-id="brian-slide"
+                        data-title="Brian Intro Slide"
+                    >
+                        <h2>Brian Perry</h2>
+                        <div class="slide-columns">
+                            <ul class="slide-list">
+                                <li>Cranston's finest</li>
+                                <li>Live in Chicago suburbs</li>
+                                <li>Work for Actual AI</li>
+                                <li>Love Nintendo. Currently all remakes</li>
+                            </ul>
+                            <img
+                                class="slide-photo"
+                                src="./src/assets/brian.jpg"
+                                alt="Brian taking a selfie on a couch, beside two pillows printed with photos of cats"
+                            />
+                        </div>
                     </section>
 
                     <section
                         data-id="more-later-plug"
                         data-title="More Later Plug"
                     >
-                        <h2>More Later Plug</h2>
+                        <h2>morelater.app</h2>
+                        <img
+                            class="slide-image"
+                            src="./src/assets/more-later-landing.webp"
+                            alt="The More Later landing page: 'You saved it for a reason. Find what's still worth reading.' next to a phone showing the priority reading queue"
+                        />
+                    </section>
+
+                    <section
+                        data-id="more-later-plug"
+                        data-title="You're viewing Canvas code components"
+                    >
+                        <h2>
+                            If you joined the digital room, you're viewing a
+                            Canvas app.
+                        </h2>
+                        <p>I'm proud of you.</p>
                     </section>
 
                     <section data-id="goals" data-title="Goals">
-                        <h2>Goals</h2>
+                        <h2>Goals for this app</h2>
                         <ul class="slide-list">
-                            <li>Have as much fun as possible.</li>
                             <li>
-                                See how far we can push canvas code components.
+                                See how far we can push canvas code components
+                            </li>
+                            <li>Prioritize fun over best practices</li>
+                            <li>
+                                Understand how agents default to building with
+                                Canvas
                             </li>
                             <li>Seriously, how much fun can we have?</li>
                         </ul>
@@ -54,16 +93,38 @@
 
                     <section
                         data-id="blue-sky-brainstorming"
-                        data-title="Blue sky brainstorming with Claude design"
+                        data-title="Brainstorming with Claude design"
                     >
-                        <h2>Blue sky brainstorming with Claude design</h2>
+                        <h2>Claude Design brainstorming</h2>
+                        <img
+                            class="slide-image"
+                            src="./src/assets/brainstorm-concepts.png"
+                            alt="Four Fun-o-Meter concepts from Claude Design: the Dial, the Pump, the Reaction Storm and the Swarm"
+                        />
+                    </section>
+
+                    <section
+                        data-id="brainstorm-round-2"
+                        data-title="Round 2: the Swarm, built out into a full room experience"
+                    >
+                        <img
+                            class="slide-image"
+                            src="./src/assets/brainstorm-round-2.webp"
+                            alt="Claude Design round 2: the join tutorial, the attendee screen at low, mid and high room fun, the presenter screen and the room closed recap"
+                        />
                     </section>
 
                     <section
                         data-id="initial-prototype"
                         data-title="Build initial prototype - preact and vite"
                     >
-                        <h2>Build initial prototype - React and vite</h2>
+                        <h2>Built initial 'join room' prototype</h2>
+                        <p>TypeScript, React, Tailwind and Vite</p>
+                        <img
+                            class="slide-image"
+                            src="./src/assets/prototype-join-tour.png"
+                            alt="The prototype's join tutorial: Welcome to the Fun-o-Meter, with a swarm of dots, a Next button and a Skip the tour link"
+                        />
                     </section>
 
                     <section
@@ -71,65 +132,128 @@
                         data-title="Ask Claude to create a Drupal CMS site for me - it did a pretty good job!"
                     >
                         <h2>
-                            Ask Claude to create a Drupal CMS site for me - it
-                            did a pretty good job!
+                            I asked Claude to create a Drupal CMS site for me
                         </h2>
+                        <p>It did a pretty good job!</p>
                     </section>
 
                     <section
                         data-id="porting-join-component"
-                        data-title="Porting the join component - in browser code editor"
+                        data-title="Porting the join component"
                     >
-                        <h2>
-                            Porting the join component - in browser code editor
-                        </h2>
+                        <h2>Porting the 'Join' component to Canvas</h2>
+                    </section>
+
+                    <section
+                        data-id="in-browser-code-component"
+                        data-title="Start with In Browser Code Component"
+                    >
+                        <h2>Started with in-browser editor</h2>
+                        <img
+                            class="slide-image"
+                            src="./src/assets/in-browser-code-editor.webp"
+                            alt="Drupal Canvas's in-browser code editor with the Test Join component: the code on the left, the live preview of the join tour on the right"
+                        />
                     </section>
 
                     <section
                         data-id="in-browser-limitations"
                         data-title="In browser limitations"
                     >
-                        <h2>In browser limitations:</h2>
+                        <h2>In browser limitations</h2>
                         <ul class="slide-list">
+                            <li><b>Can</b> import other code components</li>
+                            <li><b>Can't</b> import local or 3rd party JS</li>
                             <li>
-                                Copy and paste code includes imports. Can get
-                                around this with more copy and paste.
+                                <b>Can</b> write global / local CSS in editor
                             </li>
-                            <li>
-                                Assets like fonts and stylesheets are missing.
-                                Adding global CSS in my code component works,
-                                but it should be app / theme level.
-                            </li>
+                            <li><b>Can't</b> include fonts or other CSS</li>
                         </ul>
+                        <p style="padding: 2rem">
+                            Plus, do you really want to copy and paste / use a
+                            web editor?
+                        </p>
                     </section>
+
+                    <!-- <section data-markdown>
+                        <textarea data-template>
+                        ## Slide 1
+                        A paragraph with some text and a [link](https://hakim.se).
+                        Another paras
+                        ---
+                        ## Slide 2
+                        ---
+                        ## Slide 3
+                      </textarea
+                        >
+                    </section> -->
 
                     <section
                         data-id="using-a-local-codebase"
                         data-title="Using a local codebase"
                     >
-                        <h2>Using a local codebase</h2>
+                        <h2>Converting to a local codebase</h2>
+                        <p>Scaffold outside of Drupal root:</p>
+                        <p><b>npx @drupal-canvas/create@latest</b></p>
+                        <p>Asks what frameworks and agents you use</p>
+                    </section>
+
+                    <section data-id="workbench" data-title="Workbench">
+                        <p>Workbench Add screenshot here</p>
                     </section>
 
                     <section
-                        data-id="npx-canvas-create"
-                        data-title="npx canvas create"
+                        data-id="scaffold-component"
+                        data-title="Scaffold a component"
                     >
-                        <p>npx canvas create</p>
+                        <h2>Next, scaffold a component</h2>
+                        <p><b>npx canvas scaffold</b></p>
                     </section>
 
                     <section
                         data-id="porting-the-prototype"
                         data-title="Porting the prototype"
                     >
-                        <h2>Porting the prototype</h2>
+                        <h2>Adjustments</h2>
+                        <ul class="slide-list">
+                            <li>Replace index.tsx with contents of join.tsx</li>
+                            <li>Adapt component.yml</li>
+                        </ul>
+                        <pre><code class="language-yaml" data-trim data-line-numbers><script type="text/template">
+name: Join
+machineName: join
+status: true
+required: []
+                          </script></code></pre>
                     </section>
 
                     <section
-                        data-id="handling-imports-and-dependencies"
-                        data-title="Handling imports and dependencies"
+                        data-id="handling-imports"
+                        data-title="Handling imports"
                     >
-                        <h2>Handling imports and dependencies</h2>
-                        <p>How we addressed The Mock API</p>
+                        <h2>Handling imports</h2>
+                        <ul class="slide-list">
+                            <li>
+                                Moved mock API to /src/lib in canvas project
+                            </li>
+                            <li>Canvas aliases @ to /src</li>
+                            <li>Join component can now import using</li>
+                        </ul>
+                        <pre><code class="language-jsx" data-trim data-line-numbers><script type="text/template">
+                          import { getRoom, join } from '@/lib/fun-room-api';
+                                                    </script></code></pre>
+                    </section>
+
+                    <section data-id="global-css" data-title="Global CSS">
+                        <h2>Global CSS</h2>
+                        <ul class="slide-list">
+                            <li>Canvas project has a /src/global.css</li>
+                            <li>
+                                Any global CSS in theme can impact your
+                                components
+                            </li>
+                            <li>Use sparingly</li>
+                        </ul>
                     </section>
 
                     <section
@@ -137,6 +261,39 @@
                         data-title="Handling web fonts"
                     >
                         <h2>Handling web fonts</h2>
+                        <ul class="slide-list">
+                            <li>Can use parent theme</li>
+                            <li>Can also import fonts in Canvas global CSS</li>
+                            <pre><code class="language-css" data-trim data-line-numbers><script type="text/template">
+/*
+ * Ensure your theme imports the font you're using in this file.
+ * Alternatively, you can load fonts purely in Code Components by importing a
+ * CSS file with the font declarations from a URL, i.e. a CDN. 
+ */
+/* @import url("https://rsms.me/inter/inter.css"); */
+
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+                                                        </script></code></pre>
+                        </ul>
+                    </section>
+
+                    <section data-id="canvas-push" data-title="Push components">
+                        <p>Canvas push</p>
+                    </section>
+
+                    <section
+                        data-id="place-component"
+                        data-title="Place component in canvas UI"
+                    >
+                        <p>Screenshot - place in canvas UI</p>
+                    </section>
+
+                    <section
+                        data-id="full-implementation-redirect"
+                        data-title="Full Implementation: Room Redirect"
+                    >
+                        <h2>Full Implementation: Room Redirect</h2>
                     </section>
 
                     <section

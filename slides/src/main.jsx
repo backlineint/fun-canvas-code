@@ -1,4 +1,7 @@
 import Reveal from 'reveal.js';
+import Markdown from 'reveal.js/plugin/markdown/markdown.esm.js';
+import Highlight from 'reveal.js/plugin/highlight/highlight.esm.js';
+import 'reveal.js/plugin/highlight/monokai.css';
 import 'reveal.js/dist/reveal.css';
 import { render } from 'preact';
 import './index.css';
@@ -61,6 +64,9 @@ const deck = new Reveal({
   transition: 'fade',
   embedded: true,
   keyboardCondition: null,
+  // Lets a <section data-markdown> be written as Markdown (https://revealjs.com/markdown/).
+  // Syntax highlighting for <pre><code class="language-..."> and fenced Markdown code.
+  plugins: [Markdown, Highlight],
 });
 
 deck.on('ready', (e) => report(e.currentSlide, e.indexh));

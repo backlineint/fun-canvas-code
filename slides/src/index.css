@@ -39,12 +39,100 @@
   font-size: 32px;
 }
 
+.reveal pre {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  font-size: 26px;
+  text-align: left;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.18);
+}
+
+/* Space above a code sample, unless it opens the slide. */
+.reveal pre:not(:first-child) {
+  margin-top: 40px;
+}
+
+.reveal pre code {
+  max-height: 560px;
+  padding: 24px 28px;
+  border-radius: 12px;
+}
+
+/* Back-to-back paragraphs read as separate lines, not one block. */
+.reveal p + p {
+  margin-top: 36px;
+}
+
+.reveal .slides > section:has(.slide-image) {
+  /* Reveal centres a section by its content; fill the slide instead so the image can
+     take whatever height the heading leaves. */
+  display: flex !important;
+  flex-direction: column;
+  height: 100% !important;
+  top: 0 !important;
+  padding-bottom: 16px;
+}
+
+/* A heading with a second line under it: pull the line up to the heading and leave the
+   room below it. */
+.reveal .slides > section:has(.slide-image) > h2:has(+ p) {
+  margin-bottom: 0;
+}
+
+.reveal .slides > section:has(.slide-image) > p {
+  margin: 4px 0 28px;
+}
+
+.reveal .slide-image {
+  flex: 1 1 0;
+  min-height: 0;
+  /* The height comes from the flex space; the width follows the picture's own shape,
+     so the rounded corners sit on the picture itself. */
+  width: auto;
+  max-width: 100%;
+  align-self: center;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.18);
+}
+
+.reveal .slide-columns {
+  display: grid;
+  grid-template-columns: 1fr 520px;
+  gap: 48px;
+  align-items: center;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.reveal .slide-columns .slide-list {
+  max-width: none;
+  margin: 0;
+}
+
+.reveal .slide-photo {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.18);
+}
+
 .reveal .slide-list {
   font-size: 38px;
   line-height: 1.35;
   text-align: left;
   margin: 0 auto;
   max-width: 1000px;
+  list-style: disc;
+  padding-left: 1.2em;
+}
+
+.reveal .slide-list li::marker {
+  color: var(--color-ink);
 }
 
 .reveal .slide-list li + li {
