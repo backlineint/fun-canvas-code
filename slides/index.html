@@ -199,7 +199,12 @@
                     </section>
 
                     <section data-id="workbench" data-title="Workbench">
-                        <p>Workbench Add screenshot here</p>
+                        <h2>Workbench</h2>
+                        <img
+                            class="slide-image"
+                            src="./src/assets/workbench.webp"
+                            alt="Canvas Workbench previewing the Join component: the third step of the quick tour, 'The app mirrors the room', beside a list of the project's components"
+                        />
                     </section>
 
                     <section
@@ -217,7 +222,9 @@
                         <h2>Adjustments</h2>
                         <ul class="slide-list">
                             <li>Replace index.tsx with contents of join.tsx</li>
-                            <li>Adapt component.yml</li>
+                            <li>
+                                Adapt component.yml (bare min for this case)
+                            </li>
                         </ul>
                         <pre><code class="language-yaml" data-trim data-line-numbers><script type="text/template">
 name: Join
@@ -279,24 +286,87 @@ required: []
                     </section>
 
                     <section data-id="canvas-push" data-title="Push components">
-                        <p>Canvas push</p>
+                        <h2>Pushing code components to Drupal</h2>
+                        <p>Warning: maybe not so fun</p>
+                        <ul class="slide-list">
+                            <li>
+                                Install and configure <b>canvas_oauth</b> Drupal
+                                module
+                            </li>
+                            <li>
+                                run <b>npx canvas push</b> in Canvas project
+                            </li>
+                        </ul>
                     </section>
 
                     <section
                         data-id="place-component"
                         data-title="Place component in canvas UI"
                     >
-                        <p>Screenshot - place in canvas UI</p>
+                        <h2>Place component on a page in Canvas</h2>
+                        <img
+                            class="slide-image"
+                            src="./src/assets/place-component.webp"
+                            alt="The Canvas page editor with the Join component placed on the Home page, showing the layers panel and the page settings"
+                        />
                     </section>
 
                     <section
-                        data-id="full-implementation-redirect"
-                        data-title="Full Implementation: Room Redirect"
+                        data-id="full-implementation"
+                        data-title="Full Implementation"
                     >
-                        <h2>Full Implementation: Room Redirect</h2>
+                        <h2>Digging into the full implementation</h2>
                     </section>
 
                     <section
+                        data-id="content-model"
+                        data-title="The content model"
+                    >
+                        <h2>The content model</h2>
+                        <svg class="content-model" viewBox="0 0 1200 600" role="img" aria-labelledby="cm-t cm-d" xmlns="http://www.w3.org/2000/svg">
+                        <title id="cm-t">The content model</title>
+                        <desc id="cm-d">A room has participants. Each participant makes votes, comments and requests.</desc>
+                        <defs><marker id="cm-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="cm-arrowhead"/></marker></defs>
+                        <line class="cm-link" x1="600" y1="235" x2="600" y2="182" marker-end="url(#cm-arrow)"/>
+                        <line class="cm-link" x1="215" y1="440" x2="420" y2="372" marker-end="url(#cm-arrow)"/>
+                        <line class="cm-link" x1="600" y1="440" x2="600" y2="372" marker-end="url(#cm-arrow)"/>
+                        <line class="cm-link" x1="985" y1="440" x2="780" y2="372" marker-end="url(#cm-arrow)"/>
+                        <text class="cm-note" x="616" y="214">many in one room</text>
+                        <text class="cm-note" x="616" y="414">each belongs to a participant</text>
+                        <rect class="cm-box cm-room" x="320" y="10" width="560" height="170" rx="18"/>
+                        <text class="cm-title" x="344" y="50">Room</text>
+                        <text class="cm-tag" x="856" y="48" text-anchor="end">node type</text>
+                        <text class="cm-line" x="344" y="88">code (the title) · status: open / closed</text>
+                        <text class="cm-line" x="344" y="118">current slide: index, id and title</text>
+                        <text class="cm-line" x="344" y="148">slide log: titles, for the recap</text>
+                        <rect class="cm-box cm-person" x="320" y="235" width="560" height="135" rx="18"/>
+                        <text class="cm-title" x="344" y="275">Participant</text>
+                        <text class="cm-line" x="344" y="313">name · avatar · token hash</text>
+                        <text class="cm-line" x="344" y="343">fun: dot position, 0–100</text>
+                        <rect class="cm-box cm-item" x="30" y="440" width="370" height="150" rx="18"/>
+                        <text class="cm-title" x="54" y="480">Vote</text>
+                        <text class="cm-line" x="54" y="518">slide · value, 0–100</text>
+                        <text class="cm-line" x="54" y="548">one per person per slide</text>
+                        <rect class="cm-box cm-item" x="415" y="440" width="370" height="150" rx="18"/>
+                        <text class="cm-title" x="439" y="480">Comment</text>
+                        <text class="cm-line" x="439" y="518">slide · slide title</text>
+                        <text class="cm-line" x="439" y="548">text, 280 characters</text>
+                        <rect class="cm-box cm-item" x="800" y="440" width="370" height="150" rx="18"/>
+                        <text class="cm-title" x="824" y="480">Request</text>
+                        <text class="cm-line" x="824" y="518">hat · noise · candy</text>
+                        <text class="cm-line" x="824" y="548">note · open / delivered / cancelled</text>
+                        <text class="cm-note" x="24" y="70">Votes, comments</text><text class="cm-note" x="24" y="98">and requests also</text><text class="cm-note" x="24" y="126">store their room</text>
+                        </svg>
+                    </section>
+
+<section data-id="joining-room" data-title="Joining a Room">
+                        <h2>Joining a Room</h2>
+                        <ul class="slide-list">
+                            <li>Created a room content type</li>
+                        </ul>
+                    </section>
+
+                                        <section
                         data-id="full-implementation-rooms"
                         data-title="Full Implementation: Rooms"
                     >
