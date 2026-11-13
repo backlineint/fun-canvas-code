@@ -21,7 +21,7 @@ final class JoinFloodSubscriber implements EventSubscriberInterface {
    * Allowed joins per IP in the window. Generous so a shared venue network is
    * not blocked, while a script hammering the endpoint is.
    */
-  public const LIMIT = 30;
+  public const LIMIT = 50;
 
   public const WINDOW = 300;
 

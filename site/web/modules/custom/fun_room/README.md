@@ -28,7 +28,7 @@ Canvas template.
   `join fun room` permission, granted to anonymous and authenticated users on
   install). Everything else, including reading participants, needs
   `administer fun_room`; creating or editing rooms is ordinary node access.
-- **Rate limit:** 30 joins per 5 minutes per IP, then HTTP 429.
+- **Rate limit:** 50 joins per 5 minutes per IP, then HTTP 429.
 - **On install** the module enables JSON:API writes (`jsonapi.settings:
   read_only: false`; core ships JSON:API read-only) and takes `room` out of
   Drupal CMS's editorial workflow, which would otherwise keep every new room an
