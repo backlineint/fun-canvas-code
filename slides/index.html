@@ -41,9 +41,9 @@
                         <div class="slide-columns">
                             <ul class="slide-list">
                                 <li>Cranston's finest</li>
-                                <li>Live in Chicago suburbs</li>
-                                <li>Work for Actual AI</li>
-                                <li>Love Nintendo. Currently all remakes</li>
+                                <li>Lives in Chicago suburbs</li>
+                                <li>Works for Actual AI</li>
+                                <li>Loves Nintendo. Currently all remakes</li>
                             </ul>
                             <img
                                 class="slide-photo"
@@ -323,50 +323,694 @@ required: []
                         data-title="The content model"
                     >
                         <h2>The content model</h2>
-                        <svg class="content-model" viewBox="0 0 1200 600" role="img" aria-labelledby="cm-t cm-d" xmlns="http://www.w3.org/2000/svg">
-                        <title id="cm-t">The content model</title>
-                        <desc id="cm-d">A room has participants. Each participant makes votes, comments and requests.</desc>
-                        <defs><marker id="cm-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="cm-arrowhead"/></marker></defs>
-                        <line class="cm-link" x1="600" y1="235" x2="600" y2="182" marker-end="url(#cm-arrow)"/>
-                        <line class="cm-link" x1="215" y1="440" x2="420" y2="372" marker-end="url(#cm-arrow)"/>
-                        <line class="cm-link" x1="600" y1="440" x2="600" y2="372" marker-end="url(#cm-arrow)"/>
-                        <line class="cm-link" x1="985" y1="440" x2="780" y2="372" marker-end="url(#cm-arrow)"/>
-                        <text class="cm-note" x="616" y="214">many in one room</text>
-                        <text class="cm-note" x="616" y="414">each belongs to a participant</text>
-                        <rect class="cm-box cm-room" x="320" y="10" width="560" height="170" rx="18"/>
-                        <text class="cm-title" x="344" y="50">Room</text>
-                        <text class="cm-tag" x="856" y="48" text-anchor="end">node type</text>
-                        <text class="cm-line" x="344" y="88">code (the title) · status: open / closed</text>
-                        <text class="cm-line" x="344" y="118">current slide: index, id and title</text>
-                        <text class="cm-line" x="344" y="148">slide log: titles, for the recap</text>
-                        <rect class="cm-box cm-person" x="320" y="235" width="560" height="135" rx="18"/>
-                        <text class="cm-title" x="344" y="275">Participant</text>
-                        <text class="cm-line" x="344" y="313">name · avatar · token hash</text>
-                        <text class="cm-line" x="344" y="343">fun: dot position, 0–100</text>
-                        <rect class="cm-box cm-item" x="30" y="440" width="370" height="150" rx="18"/>
-                        <text class="cm-title" x="54" y="480">Vote</text>
-                        <text class="cm-line" x="54" y="518">slide · value, 0–100</text>
-                        <text class="cm-line" x="54" y="548">one per person per slide</text>
-                        <rect class="cm-box cm-item" x="415" y="440" width="370" height="150" rx="18"/>
-                        <text class="cm-title" x="439" y="480">Comment</text>
-                        <text class="cm-line" x="439" y="518">slide · slide title</text>
-                        <text class="cm-line" x="439" y="548">text, 280 characters</text>
-                        <rect class="cm-box cm-item" x="800" y="440" width="370" height="150" rx="18"/>
-                        <text class="cm-title" x="824" y="480">Request</text>
-                        <text class="cm-line" x="824" y="518">hat · noise · candy</text>
-                        <text class="cm-line" x="824" y="548">note · open / delivered / cancelled</text>
-                        <text class="cm-note" x="24" y="70">Votes, comments</text><text class="cm-note" x="24" y="98">and requests also</text><text class="cm-note" x="24" y="126">store their room</text>
+                        <svg
+                            class="content-model"
+                            viewBox="0 0 1200 600"
+                            role="img"
+                            aria-labelledby="cm-t cm-d"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <title id="cm-t">The content model</title>
+                            <desc id="cm-d">
+                                A room has participants. Each participant makes
+                                votes, comments and requests.
+                            </desc>
+                            <defs>
+                                <marker
+                                    id="cm-arrow"
+                                    viewBox="0 0 10 10"
+                                    refX="9"
+                                    refY="5"
+                                    markerWidth="8"
+                                    markerHeight="8"
+                                    orient="auto-start-reverse"
+                                >
+                                    <path
+                                        d="M0 0 L10 5 L0 10 z"
+                                        class="cm-arrowhead"
+                                    />
+                                </marker>
+                            </defs>
+                            <line
+                                class="cm-link"
+                                x1="600"
+                                y1="235"
+                                x2="600"
+                                y2="182"
+                                marker-end="url(#cm-arrow)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="215"
+                                y1="440"
+                                x2="420"
+                                y2="372"
+                                marker-end="url(#cm-arrow)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="600"
+                                y1="440"
+                                x2="600"
+                                y2="372"
+                                marker-end="url(#cm-arrow)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="985"
+                                y1="440"
+                                x2="780"
+                                y2="372"
+                                marker-end="url(#cm-arrow)"
+                            />
+                            <text class="cm-note" x="616" y="214">
+                                many in one room
+                            </text>
+                            <text class="cm-note" x="616" y="414">
+                                each belongs to a participant
+                            </text>
+                            <rect
+                                class="cm-box cm-room"
+                                x="320"
+                                y="10"
+                                width="560"
+                                height="170"
+                                rx="18"
+                            />
+                            <text class="cm-title" x="344" y="50">Room</text>
+                            <text
+                                class="cm-tag"
+                                x="856"
+                                y="48"
+                                text-anchor="end"
+                            >
+                                node type
+                            </text>
+                            <text class="cm-line" x="344" y="88">
+                                code (the title) · status: open / closed
+                            </text>
+                            <text class="cm-line" x="344" y="118">
+                                current slide: index, id and title
+                            </text>
+                            <text class="cm-line" x="344" y="148">
+                                slide log: titles, for the recap
+                            </text>
+                            <rect
+                                class="cm-box cm-person"
+                                x="320"
+                                y="235"
+                                width="560"
+                                height="135"
+                                rx="18"
+                            />
+                            <text class="cm-title" x="344" y="275">
+                                Participant
+                            </text>
+                            <text class="cm-line" x="344" y="313">
+                                name · avatar · token hash
+                            </text>
+                            <text class="cm-line" x="344" y="343">
+                                fun: dot position, 0–100
+                            </text>
+                            <rect
+                                class="cm-box cm-item"
+                                x="30"
+                                y="440"
+                                width="370"
+                                height="150"
+                                rx="18"
+                            />
+                            <text class="cm-title" x="54" y="480">Vote</text>
+                            <text class="cm-line" x="54" y="518">
+                                slide · value, 0–100
+                            </text>
+                            <text class="cm-line" x="54" y="548">
+                                one per person per slide
+                            </text>
+                            <rect
+                                class="cm-box cm-item"
+                                x="415"
+                                y="440"
+                                width="370"
+                                height="150"
+                                rx="18"
+                            />
+                            <text class="cm-title" x="439" y="480">
+                                Comment
+                            </text>
+                            <text class="cm-line" x="439" y="518">
+                                slide · slide title
+                            </text>
+                            <text class="cm-line" x="439" y="548">
+                                text, 280 characters
+                            </text>
+                            <rect
+                                class="cm-box cm-item"
+                                x="800"
+                                y="440"
+                                width="370"
+                                height="150"
+                                rx="18"
+                            />
+                            <text class="cm-title" x="824" y="480">
+                                Request
+                            </text>
+                            <text class="cm-line" x="824" y="518">
+                                hat · noise · candy
+                            </text>
+                            <text class="cm-line" x="824" y="548">
+                                note · open / delivered / cancelled
+                            </text>
+                            <text class="cm-note" x="24" y="70">
+                                Votes, comments
+                            </text>
+                            <text class="cm-note" x="24" y="98">
+                                and requests also
+                            </text>
+                            <text class="cm-note" x="24" y="126">
+                                store their room
+                            </text>
                         </svg>
                     </section>
 
-<section data-id="joining-room" data-title="Joining a Room">
-                        <h2>Joining a Room</h2>
+                    <section
+                        data-id="component-model"
+                        data-title="The component model"
+                    >
+                        <h2>The component model</h2>
+                        <svg
+                            class="content-model"
+                            viewBox="0 0 1200 600"
+                            role="img"
+                            aria-labelledby="cm2-t cm2-d"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <title id="cm2-t">The component model</title>
+                            <desc id="cm2-d">
+                                The Room component holds five components in
+                                slots. Join and those five all use the shared
+                                modules, which reach Drupal through JSON:API and
+                                custom endpoints.
+                            </desc>
+                            <defs>
+                                <marker
+                                    id="cm-arrow-2"
+                                    viewBox="0 0 10 10"
+                                    refX="9"
+                                    refY="5"
+                                    markerWidth="8"
+                                    markerHeight="8"
+                                    orient="auto-start-reverse"
+                                >
+                                    <path
+                                        d="M0 0 L10 5 L0 10 z"
+                                        class="cm-arrowhead"
+                                    />
+                                </marker>
+                            </defs>
+                            <line
+                                class="cm-link"
+                                x1="373"
+                                y1="135"
+                                x2="373"
+                                y2="173"
+                                marker-end="url(#cm-arrow-2)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="554"
+                                y1="135"
+                                x2="554"
+                                y2="173"
+                                marker-end="url(#cm-arrow-2)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="735"
+                                y1="135"
+                                x2="735"
+                                y2="173"
+                                marker-end="url(#cm-arrow-2)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="916"
+                                y1="135"
+                                x2="916"
+                                y2="173"
+                                marker-end="url(#cm-arrow-2)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="1097"
+                                y1="135"
+                                x2="1097"
+                                y2="173"
+                                marker-end="url(#cm-arrow-2)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="373"
+                                y1="325"
+                                x2="373"
+                                y2="378"
+                                marker-end="url(#cm-arrow-2)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="554"
+                                y1="325"
+                                x2="554"
+                                y2="378"
+                                marker-end="url(#cm-arrow-2)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="735"
+                                y1="325"
+                                x2="735"
+                                y2="378"
+                                marker-end="url(#cm-arrow-2)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="916"
+                                y1="325"
+                                x2="916"
+                                y2="378"
+                                marker-end="url(#cm-arrow-2)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="1097"
+                                y1="325"
+                                x2="1097"
+                                y2="378"
+                                marker-end="url(#cm-arrow-2)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="135"
+                                y1="325"
+                                x2="135"
+                                y2="378"
+                                marker-end="url(#cm-arrow-2)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="300"
+                                y1="472"
+                                x2="300"
+                                y2="513"
+                                marker-end="url(#cm-arrow-2)"
+                            />
+                            <line
+                                class="cm-link"
+                                x1="900"
+                                y1="472"
+                                x2="900"
+                                y2="513"
+                                marker-end="url(#cm-arrow-2)"
+                            />
+                            <rect
+                                class="cm-box cm-room"
+                                x="20"
+                                y="10"
+                                width="230"
+                                height="315"
+                                rx="18"
+                            />
+                            <text class="cm-title" x="40" y="50">Join</text>
+                            <text
+                                class="cm-tag"
+                                x="230"
+                                y="48"
+                                text-anchor="end"
+                            >
+                                home page
+                            </text>
+                            <text class="cm-line" x="40" y="100">
+                                Enter a code,
+                            </text>
+                            <text class="cm-line" x="40" y="134">
+                                pick a name and
+                            </text>
+                            <text class="cm-line" x="40" y="168">
+                                avatar, then go
+                            </text>
+                            <text class="cm-line" x="40" y="202">
+                                to the room.
+                            </text>
+                            <rect
+                                class="cm-box cm-room"
+                                x="290"
+                                y="10"
+                                width="890"
+                                height="125"
+                                rx="18"
+                            />
+                            <text class="cm-title" x="310" y="50">Room</text>
+                            <text
+                                class="cm-tag"
+                                x="1160"
+                                y="48"
+                                text-anchor="end"
+                            >
+                                room page template
+                            </text>
+                            <text class="cm-line" x="310" y="88">
+                                polls the room: status and current slide
+                            </text>
+                            <text class="cm-line" x="310" y="118">
+                                shows the pieces below in its slots
+                            </text>
+                            <rect
+                                class="cm-box cm-item"
+                                x="290"
+                                y="175"
+                                width="166"
+                                height="150"
+                                rx="18"
+                            />
+                            <text class="cm-title cm-title-sm" x="310" y="215">
+                                Swarm
+                            </text>
+                            <text class="cm-line cm-sm" x="310" y="251">
+                                live dots,
+                            </text>
+                            <text class="cm-line cm-sm" x="310" y="277">
+                                median and
+                            </text>
+                            <text class="cm-line cm-sm" x="310" y="303">
+                                mood
+                            </text>
+                            <rect
+                                class="cm-box cm-item"
+                                x="471"
+                                y="175"
+                                width="166"
+                                height="150"
+                                rx="18"
+                            />
+                            <text class="cm-title cm-title-sm" x="491" y="215">
+                                Fun slider
+                            </text>
+                            <text class="cm-line cm-sm" x="491" y="251">
+                                your own
+                            </text>
+                            <text class="cm-line cm-sm" x="491" y="277">
+                                vote, 0–100
+                            </text>
+                            <rect
+                                class="cm-box cm-item"
+                                x="652"
+                                y="175"
+                                width="166"
+                                height="150"
+                                rx="18"
+                            />
+                            <text class="cm-title cm-title-sm" x="672" y="215">
+                                Requests
+                            </text>
+                            <text class="cm-line cm-sm" x="672" y="251">
+                                hat, noise
+                            </text>
+                            <text class="cm-line cm-sm" x="672" y="277">
+                                or candy
+                            </text>
+                            <rect
+                                class="cm-box cm-item"
+                                x="833"
+                                y="175"
+                                width="166"
+                                height="150"
+                                rx="18"
+                            />
+                            <text class="cm-title cm-title-sm" x="853" y="215">
+                                Comments
+                            </text>
+                            <text class="cm-line cm-sm" x="853" y="251">
+                                short notes
+                            </text>
+                            <text class="cm-line cm-sm" x="853" y="277">
+                                to the room
+                            </text>
+                            <rect
+                                class="cm-box cm-item"
+                                x="1014"
+                                y="175"
+                                width="166"
+                                height="150"
+                                rx="18"
+                            />
+                            <text class="cm-title cm-title-sm" x="1034" y="215">
+                                Recap
+                            </text>
+                            <text class="cm-line cm-sm" x="1034" y="251">
+                                summary of
+                            </text>
+                            <text class="cm-line cm-sm" x="1034" y="277">
+                                the session
+                            </text>
+                            <rect
+                                class="cm-box cm-person"
+                                x="20"
+                                y="380"
+                                width="1160"
+                                height="92"
+                                rx="18"
+                            />
+                            <text class="cm-title" x="40" y="420">
+                                Shared modules (@/lib)
+                            </text>
+                            <text class="cm-line" x="40" y="450">
+                                api · live · session · avatars · mood · confetti
+                            </text>
+                            <rect
+                                class="cm-box cm-plain"
+                                x="20"
+                                y="515"
+                                width="560"
+                                height="80"
+                                rx="18"
+                            />
+                            <text class="cm-title" x="40" y="555">
+                                Drupal JSON:API
+                            </text>
+                            <text class="cm-line" x="40" y="581">
+                                rooms and participants
+                            </text>
+                            <rect
+                                class="cm-box cm-plain"
+                                x="620"
+                                y="515"
+                                width="560"
+                                height="80"
+                                rx="18"
+                            />
+                            <text class="cm-title" x="640" y="555">
+                                Custom endpoints
+                            </text>
+                            <text class="cm-line" x="640" y="581">
+                                state · vote · comments · requests · recap
+                            </text>
+                        </svg>
+                    </section>
+
+                    <section
+                        data-id="room-full-display-mode"
+                        data-title="Room Full Display Mode"
+                    >
+                        <h2>Room Display</h2>
+                        <img
+                            class="slide-image"
+                            src="./src/assets/room-full-display-mode.webp"
+                            alt="The Canvas content template editor for a room in its full display mode: the Room component's slots listed in the layers panel, with the live room page previewed on the right"
+                        />
+                    </section>
+
+                    <section
+                        data-id="define-content-template-ui"
+                        data-title="Define Content Template in UI"
+                    >
+                        <h2>Define Content Template in UI</h2>
+                        <img
+                            class="slide-image"
+                            src="./src/assets/define-content-template-ui.webp"
+                            alt="The Canvas Templates panel listing content types, with the Room full content template selected and the room page previewed beside it"
+                        />
+                    </section>
+
+                    <section
+                        data-id="define-content-template-code"
+                        data-title="Define Content Template in Code"
+                    >
+                        <h2>Define Content Template in Code</h2>
+                        <p>
+                            /content-templates/node.room.full.json in Canvas
+                            project
+                        </p>
+                        <pre><code class="language-json" data-trim data-line-numbers><script type="text/template">
+                          {
+                            "label": "Room — Full content",
+                            "entityType": "node",
+                            "bundle": "room",
+                            "viewMode": "full",
+                            "elements": {
+                              "room": {
+                                "type": "js.room",
+                                "props": {
+                                  "code": {
+                                    "sourceType": "entity-field",
+                                    "expression": "ℹ︎␜entity:node:room␝title␞␟value"
+                                  },
+                                  "status": {
+                                    "sourceType": "entity-field",
+                                    "expression": "ℹ︎␜entity:node:room␝field_status␞␟label"
+                                  },
+                        </script></code></pre>
+                    </section>
+
+                    <section
+                        data-id="component-props"
+                        data-title="Props: live room data from the node"
+                    >
+                        <h2>Props: live room data from the node</h2>
+                        <p>
+                            Four of the Room component's props are bound to
+                            fields on the room node, so no one types them in.
+                        </p>
+                        <table class="slide-table">
+                            <thead>
+                                <tr>
+                                    <th>Prop</th>
+                                    <th>Bound to</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>code</code></td>
+                                    <td>the node title (the room code)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>status</code></td>
+                                    <td>
+                                        <code>field_status</code> (shown as its
+                                        label, "Open" or "Closed")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>currentSlide</code></td>
+                                    <td><code>field_current_slide</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>slideTitle</code></td>
+                                    <td>
+                                        <code>field_current_slide_title</code>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section
+                        data-id="component-slots"
+                        data-title="Slots: the Room component only does layout"
+                    >
+                        <h2>Slots: the Room component only does layout</h2>
                         <ul class="slide-list">
-                            <li>Created a room content type</li>
+                            <li>
+                                Five slots: <code>swarm</code>,
+                                <code>slider</code>, <code>requests</code>,
+                                <code>comments</code>, <code>recap</code>
+                            </li>
+                            <li>
+                                The template fills each with a child component
+                            </li>
+                            <li>
+                                Each child's <code>code</code> is bound to the
+                                node title
+                            </li>
                         </ul>
                     </section>
 
-                                        <section
+                    <section
+                        data-id="looking-up-room"
+                        data-title="Looking up a Room"
+                    >
+                        <h2>Looking up a Room</h2>
+                        <ul class="slide-list">
+                            <li>
+                                <code>submitCode</code> calls
+                                <code>getRoom</code> in
+                                <code>lib/fun-room-api.ts</code>
+                            </li>
+                            <li>
+                                A JSON:API query on the room content type,
+                                filtered by title (the room code)
+                            </li>
+                            <li>
+                                Drupal API Client available to Canvas out of the
+                                box
+                            </li>
+                            <li>
+                                Caching is off: a room can close at any time
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section data-id="get-room-code" data-title="getRoom">
+                        <pre
+                            class="code-sm"
+                        ><code class="language-typescript" data-trim><script type="text/template">
+export async function getRoom(
+  client: RoomClient | null,
+  code: string,
+): Promise<Room> {
+  const query = new URLSearchParams({
+    'filter[title]': code.trim().toUpperCase(),
+  });
+  const result = await requireClient(client).getCollection(ROOM_TYPE, {
+    queryString: query.toString(),
+    // A room can close at any time, so never serve a cached lookup.
+    disableCache: true,
+  });
+
+  const resources = Array.isArray(result)
+    ? result
+    : ((result as { data?: Resource[] } | null)?.data ?? []);
+  if (resources.length === 0) throw new Error('not_found');
+
+  const room = toRoom(resources[0] as Resource);
+  if (room.status === 'closed') throw new Error('closed');
+  return room;
+}
+                        </script></code></pre>
+                    </section>
+
+                    <section data-id="joining" data-title="Joining">
+                        <h2>Joining</h2>
+                        <ul class="slide-list">
+                            <li>
+                                The browser generates a random 24-byte hex
+                                token. The server stores only its SHA-256 hash
+                            </li>
+                            <li>
+                                Creates a participant through JSON:API, linked
+                                to the room
+                            </li>
+                            <li>
+                                <code>429</code>: "Too many people are joining
+                                from this network"
+                            </li>
+                            <li>
+                                Any status other than <code>201</code>: a
+                                generic failure
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section
                         data-id="full-implementation-rooms"
                         data-title="Full Implementation: Rooms"
                     >
