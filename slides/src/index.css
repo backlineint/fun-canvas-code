@@ -484,3 +484,11 @@ html[data-view='recap'] .deck-sidebar {
   max-height: 560px;
   padding: 18px 24px;
 }
+
+/* A one-line takeaway under a diagram. */
+.reveal p.slide-caption {
+  max-width: 1100px;
+  margin: 12px auto 0;
+  font-size: 26px;
+  line-height: 1.25;
+}

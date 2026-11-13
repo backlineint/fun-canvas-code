@@ -815,6 +815,11 @@ required: []
                                 state · vote · comments · requests · recap
                             </text>
                         </svg>
+                        <p class="slide-caption">
+                            JSON:API for plain entity reads and creates. Custom
+                            endpoints for live, computed and token-authorised
+                            data.
+                        </p>
                     </section>
 
                     <section
@@ -995,29 +1000,121 @@ export async function getRoom(
                                 The browser generates a random 24-byte hex
                                 token. The server stores only its SHA-256 hash
                             </li>
+                            <li>Participant token kept in local storage</li>
                             <li>
                                 Creates a participant through JSON:API, linked
                                 to the room
                             </li>
                             <li>
-                                Drupal APU Client can handle CRUD operations
+                                Drupal API Client can handle CRUD operations
+                            </li>
+                            <li>Redirects to room node path</li>
+                        </ul>
+                    </section>
+
+                    <section
+                        data-id="room-page-overview"
+                        data-title="The room page"
+                    >
+                        <h2>The room page</h2>
+                        <ul class="slide-list">
+                            <li>One content template renders every room</li>
+                            <li>
+                                Paints from the node's fields, then polls the
+                                room every 2 seconds
                             </li>
                             <li>
-                                <code>429</code>: "Too many people are joining
-                                from this network"
+                                Header: room code, open or closed, and the slide
+                                the deck is showing
                             </li>
                             <li>
-                                Any status other than <code>201</code>: a
-                                generic failure
+                                Joined? Your name and avatar. Not yet? A "Join
+                                this room" button
                             </li>
                         </ul>
                     </section>
 
                     <section
-                        data-id="full-implementation-rooms"
-                        data-title="Full Implementation: Rooms"
+                        data-id="room-page-live-and-closed"
+                        data-title="Live, then closed"
                     >
-                        <h2>Full Implementation: Rooms</h2>
+                        <h2>Live, then closed</h2>
+                        <ul class="slide-list">
+                            <li>
+                                Open: the swarm and slider, plus requests and
+                                comments. Each polls its own endpoint
+                            </li>
+                            <li>
+                                Closed: the recap replaces the swarm and slider
+                            </li>
+                            <li>One column on phones, two on wide screens</li>
+                            <li>An empty slot renders nothing</li>
+                        </ul>
+                    </section>
+
+                    <section data-id="deck-overview" data-title="The slide deck">
+                        <h2>The slide deck</h2>
+                        <ul class="slide-list">
+                            <li>Reveal.js, built with Vite</li>
+                            <li>
+                                The sidebar, swarm and recap are small Preact
+                                components, styled with Tailwind
+                            </li>
+                            <li>
+                                It runs beside a live sidebar of the room and
+                                scales to fit
+                            </li>
+                            <li>
+                                With no site configured, it uses a simulated
+                                room and works offline
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section
+                        data-id="deck-room-connection"
+                        data-title="Talking to the room"
+                    >
+                        <h2>Talking to the room</h2>
+                        <ul class="slide-list">
+                            <li>
+                                On every slide change the deck reports the
+                                slide's index, id and title
+                            </li>
+                            <li>
+                                A shared presenter key keeps anyone else from
+                                moving the room
+                            </li>
+                            <li>
+                                Only the latest slide is sent, and it retries if
+                                the site can't be reached
+                            </li>
+                            <li>
+                                The sidebar polls the room for the swarm, mood,
+                                comments and requests
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section
+                        data-id="deck-views"
+                        data-title="The deck follows the room"
+                    >
+                        <h2>The deck follows the room</h2>
+                        <ul class="slide-list">
+                            <li>
+                                The room's mood sets the background on every
+                                slide, with confetti when it hits high
+                            </li>
+                            <li>
+                                Keys fill the screen with one area:
+                                <code>S</code> slide, <code>R</code> room,
+                                <code>C</code> comments, <code>D</code> recap
+                            </li>
+                            <li>
+                                <code>Esc</code> returns to the split view
+                            </li>
+                        </ul>
                     </section>
 
                     <section data-id="deploying" data-title="Deploying">
@@ -1025,10 +1122,10 @@ export async function getRoom(
                         <p>Extra Canvas push step is awkward.</p>
                     </section>
 
-                    <section data-id="swarm" data-title="The live swarm">
+                    <!-- <section data-id="swarm" data-title="The live swarm">
                         <h2>How fun is this so far?</h2>
                         <div data-component="swarm"></div>
-                    </section>
+                    </section> -->
 
                     <section
                         data-id="closing-more-later-plug"
