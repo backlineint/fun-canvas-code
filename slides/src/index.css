@@ -506,3 +506,31 @@ html[data-view='recap'] .deck-sidebar {
   border-radius: 16px;
   box-shadow: 0 6px 24px rgb(0 0 0 / 0.18);
 }
+
+/* The title slide: the QR code and room code, so people can join before the talk starts. */
+.reveal .title-join-label {
+  margin-bottom: 20px;
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 800;
+}
+
+.reveal .title-join {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.reveal .title-join [data-component='room-code'] > div {
+  margin-top: 0;
+}
+
+.reveal .title-qr {
+  width: 220px;
+  height: 220px;
+  margin: 0;
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.18);
+}

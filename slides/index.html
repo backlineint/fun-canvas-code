@@ -22,6 +22,15 @@
                     >
                         <h1>Fun With Canvas Code Components</h1>
                         <p>Brian Perry · NEDCamp 2026</p>
+                        <div class="title-join-label">Join Room</div>
+                        <div class="title-join">
+                            <img
+                                class="title-qr"
+                                src="./src/assets/join-qr.svg"
+                                alt="QR code for the Fun-o-Meter site"
+                            />
+                            <div data-component="room-code"></div>
+                        </div>
                     </section>
 
                     <section data-id="join" data-title="Join the room">
@@ -111,7 +120,7 @@
 
                     <section
                         data-id="brainstorm-round-2"
-                        data-title="Round 2: the Swarm, built out into a full room experience"
+                        data-title="Designs for full room experience"
                     >
                         <img
                             class="slide-image"
@@ -122,7 +131,7 @@
 
                     <section
                         data-id="initial-prototype"
-                        data-title="Build initial prototype - preact and vite"
+                        data-title="Build initial initial-prototype"
                     >
                         <h2>Built initial 'join room' prototype</h2>
                         <p>TypeScript, React, Tailwind and Vite</p>
@@ -135,7 +144,7 @@
 
                     <section
                         data-id="drupal-cms-site"
-                        data-title="Ask Claude to create a Drupal CMS site for me - it did a pretty good job!"
+                        data-title="Asked Claude to create a Drupal CMS site"
                     >
                         <h2>
                             I asked Claude to create a Drupal CMS site for me
@@ -223,7 +232,7 @@
 
                     <section
                         data-id="porting-the-prototype"
-                        data-title="Porting the prototype"
+                        data-title="Adjustments"
                     >
                         <h2>Adjustments</h2>
                         <ul class="slide-list">
@@ -1092,6 +1101,32 @@ export async function getRoom(
                             <li>
                                 That works, but does not include compiled
                                 assets.
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section
+                        data-id="scaling-performance"
+                        data-title="Scaling for a live room"
+                    >
+                        <h2>Scaling for a live room</h2>
+                        <ul class="slide-list">
+                            <li>
+                                A load test: up to 48 simulated phones polling
+                                the live site
+                            </li>
+                            <li>
+                                First run: p95 of 4.8 seconds. The server was
+                                out of CPU
+                            </li>
+                            <li>
+                                Router cache for the polling endpoints, and a 2
+                                second cache on the room status
+                            </li>
+                            <li>A bigger container: 0.5 to 2 CPUs</li>
+                            <li>
+                                Now: 48 phones, 86 requests a second, p95 of 62
+                                milliseconds
                             </li>
                         </ul>
                     </section>
