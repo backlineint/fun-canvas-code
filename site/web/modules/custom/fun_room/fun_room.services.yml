@@ -5,6 +5,11 @@ services:
     tags:
       - { name: event_subscriber }
 
+  fun_room.room_poll_cache_subscriber:
+    class: Drupal\fun_room\EventSubscriber\RoomPollCacheSubscriber
+    tags:
+      - { name: event_subscriber }
+
   fun_room.vote_recorder:
     class: Drupal\fun_room\VoteRecorder
     arguments: ['@entity_type.manager', '@database', '@lock', '@datetime.time']

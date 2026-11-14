@@ -6,6 +6,9 @@
 //   room status (JSON:API)  every 2s     swarm state   every 2s
 //   comments                every 3s     requests      every 3s
 //   votes                   every 8-15s  a comment about every 90s, a request about every 2 min
+// Only some phones comment or ask (--commenters, default 30%; --askers, default 10%), as in a
+// real room. A phone that has asked polls its own requests by id, which a shared cache cannot
+// reuse, so a high --askers share is a harsher test.
 // (A poll waits for its response, then sleeps, like SWR's refreshInterval.)
 // With --deck it also polls like the deck's sidebar: state 1s, comments/ratings/requests 2s.
 //
@@ -33,6 +36,8 @@ const { values: opts } = parseArgs({
     minutes: { type: 'string', default: '3' },
     ramp: { type: 'string', default: '20' },
     deck: { type: 'boolean', default: false },
+    askers: { type: 'string', default: '0.1' },
+    commenters: { type: 'string', default: '0.3' },
     insecure: { type: 'boolean', default: false },
     'cleanup-help': { type: 'boolean', default: false },
     project: { type: 'string' },
@@ -65,6 +70,8 @@ function usage() {
   --minutes <n>     How long to run after everyone has joined (default 3)
   --ramp <seconds>  Spread the joins over this long (default 20)
   --deck            Also simulate the deck's sidebar polling
+  --askers <0-1>    Share of phones that ask for a hat, noise maker or candy (default 0.1)
+  --commenters <0-1> Share of phones that post comments (default 0.3)
   --insecure        Skip TLS verification (local DDEV only)
   --cleanup-help    Print the commands that delete the test room and its data
   --project <id>    Upsun project id, filled into the cleanup command`);
@@ -97,6 +104,9 @@ const ROOM = opts.room.trim().toUpperCase();
 const PHONES = Math.min(49, Math.max(1, Number(opts.phones)));
 const RUN_MS = Number(opts.minutes) * 60_000;
 const RAMP_MS = Number(opts.ramp) * 1000;
+const share = (value) => Math.min(1, Math.max(0, Number(value)));
+const ASKERS = Math.round(PHONES * share(opts.askers));
+const COMMENTERS = Math.round(PHONES * share(opts.commenters));
 const TIMEOUT_MS = 10_000;
 const api = (name) => `${BASE}/api/fun/rooms/${encodeURIComponent(ROOM)}/${name}`;
 
@@ -222,23 +232,32 @@ async function phone(index) {
       level = Math.max(0, Math.min(100, level + Math.round(rand(-25, 25))));
       return call('vote', api('vote'), { method: 'POST', headers: auth, body: JSON.stringify({ value: level }) });
     }),
-    every(90_000, () =>
-      call('post comment', api('comments'), {
-        method: 'POST',
-        headers: auth,
-        body: JSON.stringify({ text: `Load test comment from phone ${index + 1}` }),
-      }),
-    ),
-    every(120_000, async () => {
-      const kind = ['hat', 'noise', 'candy'][index % 3];
-      const r = await call('post request', api('requests'), {
-        method: 'POST',
-        headers: auth,
-        body: JSON.stringify({ kind, note: 'Load test' }),
-      });
-      const id = json(r.text)?.id;
-      if (id && !myRequests.includes(id)) myRequests.push(id);
-    }),
+    // The first phones ask, the last phones comment, so the two groups differ.
+    ...(index >= PHONES - COMMENTERS
+      ? [
+          every(90_000, () =>
+            call('post comment', api('comments'), {
+              method: 'POST',
+              headers: auth,
+              body: JSON.stringify({ text: `Load test comment from phone ${index + 1}` }),
+            }),
+          ),
+        ]
+      : []),
+    ...(index < ASKERS
+      ? [
+          every(120_000, async () => {
+            const kind = ['hat', 'noise', 'candy'][index % 3];
+            const r = await call('post request', api('requests'), {
+              method: 'POST',
+              headers: auth,
+              body: JSON.stringify({ kind, note: 'Load test' }),
+            });
+            const id = json(r.text)?.id;
+            if (id && !myRequests.includes(id)) myRequests.push(id);
+          }),
+        ]
+      : []),
   ]);
 }
 
@@ -258,7 +277,8 @@ const fmt = (n) => String(Math.round(n)).padStart(6);
 
 function report() {
   const elapsed = (performance.now() - t0) / 1000;
-  console.log(`\n=== ${PHONES} phones${opts.deck ? ' + deck' : ''} on ${BASE}, room ${ROOM} (${elapsed.toFixed(0)}s) ===\n`);
+  console.log(`\n=== ${PHONES} phones${opts.deck ? ' + deck' : ''} on ${BASE}, room ${ROOM} (${elapsed.toFixed(0)}s) ===`);
+  console.log(`${ASKERS} phones ask for things, ${COMMENTERS} post comments, all vote\n`);
   console.log('endpoint'.padEnd(18) + 'count'.padStart(7) + 'req/s'.padStart(7) + 'p50 ms'.padStart(8) + 'p95 ms'.padStart(8) + 'p99 ms'.padStart(8) + 'max ms'.padStart(8) + '  errors');
   let total = 0;
   let totalErrors = 0;
@@ -315,7 +335,7 @@ try {
   process.exit(1);
 }
 
-console.log(`Room ${ROOM} found. Joining ${PHONES} phones over ${opts.ramp}s, then running ${opts.minutes} min${opts.deck ? ' with the deck sidebar' : ''}. Ctrl-C stops early.`);
+console.log(`Room ${ROOM} found. Joining ${PHONES} phones over ${opts.ramp}s (${ASKERS} will ask for things, ${COMMENTERS} will comment), then running ${opts.minutes} min${opts.deck ? ' with the deck sidebar' : ''}. Ctrl-C stops early.`);
 t0 = performance.now();
 const workers = [...Array.from({ length: PHONES }, (_, i) => phone(i)), ...(opts.deck ? [deck()] : [])];
 
