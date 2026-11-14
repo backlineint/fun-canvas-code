@@ -88,6 +88,13 @@ routes:
     upstream: 'drupal:http'
     cache:
       enabled: false
+  # Also serve every other domain on the project. Once a custom domain is attached to
+  # production, `{default}` alone stops answering on the built-in platformsh.site address.
+  'https://{all}/':
+    type: upstream
+    upstream: 'drupal:http'
+    cache:
+      enabled: false
   'https://www.{default}/':
     type: redirect
     to: 'https://{default}/'
