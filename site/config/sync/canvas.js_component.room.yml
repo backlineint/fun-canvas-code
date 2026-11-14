@@ -95,8 +95,8 @@ js:
       className,
     }: RoomProps) {
       const client = useJsonApiClient();
-      const { mainEntity } = usePageContext();
-      const uuid = mainEntity?.uuid;
+      // The page context is null when the page has no Canvas context at all.
+      const uuid = usePageContext()?.mainEntity?.uuid;
 
       const { data, error } = useSWR(
         client && uuid && pollMs > 0 ? ['fun-room', uuid] : null,
@@ -266,21 +266,20 @@ js:
       recap,
       className
     }) {
-      var _a, _b, _c, _d;
+      var _a, _b, _c, _d, _e, _f;
       const client = useJsonApiClient();
-      const { mainEntity } = usePageContext();
-      const uuid = mainEntity == null ? void 0 : mainEntity.uuid;
+      const uuid = (_b = (_a = usePageContext()) == null ? void 0 : _a.mainEntity) == null ? void 0 : _b.uuid;
       const { data, error } = useSWR(
         client && uuid && pollMs > 0 ? ["fun-room", uuid] : null,
         () => fetchRoom(client, uuid),
         { refreshInterval: pollMs, dedupingInterval: 0 }
       );
       const view = {
-        code: (_a = data == null ? void 0 : data.code) != null ? _a : code,
-        status: (_b = data == null ? void 0 : data.status) != null ? _b : status,
-        currentSlide: (_c = data == null ? void 0 : data.currentSlide) != null ? _c : currentSlide,
+        code: (_c = data == null ? void 0 : data.code) != null ? _c : code,
+        status: (_d = data == null ? void 0 : data.status) != null ? _d : status,
+        currentSlide: (_e = data == null ? void 0 : data.currentSlide) != null ? _e : currentSlide,
         // Polled data is authoritative, so an empty polled title stays empty.
-        slideTitle: (_d = data == null ? void 0 : data.slideTitle) != null ? _d : slideTitle
+        slideTitle: (_f = data == null ? void 0 : data.slideTitle) != null ? _f : slideTitle
       };
       const isOpen = view.status.toLowerCase() !== "closed";
       const showRecap = !isOpen && hasContent(recap);

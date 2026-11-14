@@ -21,8 +21,8 @@ content_entity_type_id: node
 content_entity_type_bundle: room
 content_entity_type_view_mode: full
 component_tree:
-  '0:6f7b7308-8a8f-45ae-a17e-76d92ed01501':
-    uuid: 6f7b7308-8a8f-45ae-a17e-76d92ed01501
+  '0:31b4ae05-3713-4f6f-afb1-93ddd84c4b26':
+    uuid: 31b4ae05-3713-4f6f-afb1-93ddd84c4b26
     component_id: js.room
     component_version: 605cd5007784c6e4
     inputs:
@@ -38,50 +38,50 @@ component_tree:
       slideTitle:
         sourceType: entity-field
         expression: 'ℹ︎␜entity:node:room␝field_current_slide_title␞␟value'
-  '0:comments:0:e05cf599-669e-4bb0-85fc-ebe7fe1428a4':
-    parent_uuid: 6f7b7308-8a8f-45ae-a17e-76d92ed01501
+  '0:comments:0:4c46dcaf-9e15-431c-b037-512eee670ad6':
+    parent_uuid: 31b4ae05-3713-4f6f-afb1-93ddd84c4b26
     slot: comments
-    uuid: e05cf599-669e-4bb0-85fc-ebe7fe1428a4
+    uuid: 4c46dcaf-9e15-431c-b037-512eee670ad6
     component_id: js.comments
     component_version: 23378d4df3998a90
     inputs:
       code:
         sourceType: entity-field
         expression: 'ℹ︎␜entity:node:room␝title␞␟value'
-  '0:recap:0:d0d560b8-cce0-4127-bf54-a7a23addcd6f':
-    parent_uuid: 6f7b7308-8a8f-45ae-a17e-76d92ed01501
+  '0:recap:0:a4ae6498-7bd7-4093-a31e-43f2cb4b3b15':
+    parent_uuid: 31b4ae05-3713-4f6f-afb1-93ddd84c4b26
     slot: recap
-    uuid: d0d560b8-cce0-4127-bf54-a7a23addcd6f
+    uuid: a4ae6498-7bd7-4093-a31e-43f2cb4b3b15
     component_id: js.recap
     component_version: e7f6eeb8e15d444b
     inputs:
       code:
         sourceType: entity-field
         expression: 'ℹ︎␜entity:node:room␝title␞␟value'
-  '0:requests:0:66fe39a3-29fb-4bb3-8d82-e2cc39f8b9db':
-    parent_uuid: 6f7b7308-8a8f-45ae-a17e-76d92ed01501
+  '0:requests:0:739a613f-14aa-44d2-b8cd-0934901e88d5':
+    parent_uuid: 31b4ae05-3713-4f6f-afb1-93ddd84c4b26
     slot: requests
-    uuid: 66fe39a3-29fb-4bb3-8d82-e2cc39f8b9db
+    uuid: 739a613f-14aa-44d2-b8cd-0934901e88d5
     component_id: js.requests
     component_version: 23378d4df3998a90
     inputs:
       code:
         sourceType: entity-field
         expression: 'ℹ︎␜entity:node:room␝title␞␟value'
-  '0:slider:0:13fdfd62-c232-4fe8-9ef1-5e0827bcc013':
-    parent_uuid: 6f7b7308-8a8f-45ae-a17e-76d92ed01501
+  '0:slider:0:0a15df98-abbb-4b0a-9b60-80a31aa44e7e':
+    parent_uuid: 31b4ae05-3713-4f6f-afb1-93ddd84c4b26
     slot: slider
-    uuid: 13fdfd62-c232-4fe8-9ef1-5e0827bcc013
+    uuid: 0a15df98-abbb-4b0a-9b60-80a31aa44e7e
     component_id: js.fun-slider
     component_version: f773ce5aae455da6
     inputs:
       code:
         sourceType: entity-field
         expression: 'ℹ︎␜entity:node:room␝title␞␟value'
-  '0:swarm:0:7ae71297-9039-4ca9-a2d1-15a7896059a9':
-    parent_uuid: 6f7b7308-8a8f-45ae-a17e-76d92ed01501
+  '0:swarm:0:5101c336-76ff-49dc-bf98-8d7aeef0249e':
+    parent_uuid: 31b4ae05-3713-4f6f-afb1-93ddd84c4b26
     slot: swarm
-    uuid: 7ae71297-9039-4ca9-a2d1-15a7896059a9
+    uuid: 5101c336-76ff-49dc-bf98-8d7aeef0249e
     component_id: js.swarm
     component_version: 804d40e22d25f562
     inputs:

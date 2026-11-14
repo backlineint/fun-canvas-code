@@ -41,8 +41,8 @@ export default function Room({
   className,
 }: RoomProps) {
   const client = useJsonApiClient();
-  const { mainEntity } = usePageContext();
-  const uuid = mainEntity?.uuid;
+  // The page context is null when the page has no Canvas context at all.
+  const uuid = usePageContext()?.mainEntity?.uuid;
 
   const { data, error } = useSWR(
     client && uuid && pollMs > 0 ? ['fun-room', uuid] : null,
