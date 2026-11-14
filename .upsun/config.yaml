@@ -86,15 +86,23 @@ routes:
   'https://{default}/':
     type: upstream
     upstream: 'drupal:http'
+    # The router honours the Cache-Control headers Drupal sends: the room's polling
+    # endpoints (/api/fun/rooms/...) are public for 1 second, so a room full of phones
+    # asking for the same thing costs one PHP request a second. Pages for logged-in users
+    # are private and never cached. Only session cookies split the cache.
     cache:
-      enabled: false
+      enabled: true
+      default_ttl: 0
+      cookies: ['/^SS?ESS/']
   # Also serve every other domain on the project. Once a custom domain is attached to
   # production, `{default}` alone stops answering on the built-in platformsh.site address.
   'https://{all}/':
     type: upstream
     upstream: 'drupal:http'
     cache:
-      enabled: false
+      enabled: true
+      default_ttl: 0
+      cookies: ['/^SS?ESS/']
   'https://www.{default}/':
     type: redirect
     to: 'https://{default}/'
