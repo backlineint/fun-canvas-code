@@ -1,0 +1,59 @@
+uuid: 4503a8c3-aed1-4724-962f-e5c3d5772121
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.page.field_content
+    - field.field.node.page.field_description
+    - field.field.node.page.field_featured_image
+    - field.field.node.page.field_seo_analysis
+    - field.field.node.page.field_seo_description
+    - field.field.node.page.field_seo_image
+    - field.field.node.page.field_seo_title
+    - field.field.node.page.field_tags
+    - node.type.page
+  module:
+    - layout_builder
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+_core:
+  default_config_hash: m5TVphivuUKUTafuWtG4H0vvzpy_AhQbaNhEUlCZrsA
+id: node.page.full
+targetEntityType: node
+bundle: page
+mode: full
+content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_content:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+  field_featured_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: hero
+      link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  field_description: true
+  field_seo_analysis: true
+  field_seo_description: true
+  field_seo_image: true
+  field_seo_title: true
+  field_tags: true
+  links: true
