@@ -35,8 +35,8 @@ function KindIcon({ kind }: { kind: RequestKind }) {
   return (
     <svg
       viewBox="0 0 48 48"
-      width="48"
-      height="48"
+      width="40"
+      height="40"
       fill="none"
       stroke="#17163a"
       strokeWidth="2.5"
@@ -166,14 +166,14 @@ export default function Requests({
   return (
     <section
       className={cn(
-        'flex flex-col gap-3 rounded-3xl bg-white p-5 text-ink',
+        'flex flex-col gap-2 rounded-3xl bg-white p-4 text-ink',
         className,
       )}
     >
       <h2 className="m-0 font-display text-xl font-extrabold">Requests</h2>
 
-      <div className="flex flex-col gap-1">
-        <label htmlFor={`note-${code}`} className="text-sm font-bold">
+      <div className="flex flex-col">
+        <label htmlFor={`note-${code}`} className="sr-only">
           Where are you sitting? (optional)
         </label>
         <input
@@ -186,8 +186,8 @@ export default function Requests({
             setNote(event.target.value);
             saveRequestNote(code, event.target.value);
           }}
-          placeholder="Back left, by the aisle"
-          className="min-h-11 w-full rounded-2xl border-2 border-ink/30 bg-white px-3 text-base text-ink focus:border-ink focus:outline-none disabled:cursor-not-allowed disabled:bg-ink/5"
+          placeholder="Where are you sitting? (optional)"
+          className="min-h-11 w-full rounded-2xl border-2 border-ink/30 bg-white px-3 text-base text-ink placeholder:text-ink/60 focus:border-ink focus:outline-none disabled:cursor-not-allowed disabled:bg-ink/5"
         />
       </div>
 
@@ -197,7 +197,7 @@ export default function Requests({
           const open = request?.status === 'open';
           const delivered = request?.status === 'delivered';
           const tile =
-            'flex min-h-32 w-full flex-col items-center justify-center gap-1 rounded-2xl bg-ink/5 px-1 py-3 text-center text-ink';
+            'flex min-h-24 w-full flex-col items-center justify-center gap-1 rounded-2xl bg-ink/5 px-1 py-2 text-center text-ink';
           const state = open
             ? 'On its way'
             : busy[kind]
@@ -237,7 +237,7 @@ export default function Requests({
       </ul>
 
       {/* Takes no room (not even the gap above it) until there is a message to show. */}
-      <p role="status" className="m-0 text-sm font-bold empty:-mt-3">
+      <p role="status" className="m-0 text-sm font-bold empty:-mt-2">
         {problem === 'closed' ? (
           'This room has closed.'
         ) : problem === 'lost' ? (

@@ -47,6 +47,7 @@ export default function Comments({
   const [pending, setPending] = useState<Pending[]>([]);
   const [mine, setMine] = useState<number[]>([]);
   const [text, setText] = useState('');
+  const [focused, setFocused] = useState(false);
   const [sending, setSending] = useState(false);
   const [problem, setProblem] = useState<Problem>(null);
   const [notice, setNotice] = useState('');
@@ -137,48 +138,56 @@ export default function Comments({
 
   const ready = joined !== undefined;
   const shown = [...comments].reverse();
+  // One line until they start writing, so the list gets the room.
+  const expanded = focused || text !== '';
 
   return (
     <section
       className={cn(
-        'flex h-full min-h-80 flex-col gap-3 rounded-3xl bg-white p-5 text-ink lg:min-h-0',
+        'flex h-full min-h-80 flex-col gap-2 rounded-3xl bg-white p-4 text-ink lg:min-h-0',
         className,
       )}
     >
       <h2 className="m-0 font-display text-xl font-extrabold">Comments</h2>
 
-      <form onSubmit={onSubmit} className="flex flex-col gap-2">
-        <label htmlFor={`comment-${code}`} className="text-sm font-bold">
+      <form onSubmit={onSubmit} className="flex flex-col gap-1">
+        <label htmlFor={`comment-${code}`} className="sr-only">
           Say something to the room
         </label>
-        <textarea
-          id={`comment-${code}`}
-          value={text}
-          onChange={(event) => setText(event.target.value)}
-          onKeyDown={onKeyDown}
-          disabled={disabled}
-          rows={2}
-          aria-describedby={`comment-help-${code}`}
-          className="min-h-16 w-full resize-none rounded-2xl border-2 border-ink/30 bg-white p-3 text-base text-ink focus:border-ink focus:outline-none disabled:cursor-not-allowed disabled:bg-ink/5"
-        />
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-start gap-2">
+          <textarea
+            id={`comment-${code}`}
+            value={text}
+            onChange={(event) => setText(event.target.value)}
+            onKeyDown={onKeyDown}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            disabled={disabled}
+            rows={expanded ? 3 : 1}
+            placeholder="Say something to the room"
+            aria-describedby={expanded ? `comment-help-${code}` : undefined}
+            className="min-h-11 min-w-0 flex-1 resize-none rounded-2xl border-2 border-ink/30 bg-white px-3 py-2 text-base text-ink placeholder:text-ink/60 focus:border-ink focus:outline-none disabled:cursor-not-allowed disabled:bg-ink/5"
+          />
+          <button
+            type="submit"
+            disabled={!canSend}
+            className="min-h-11 shrink-0 rounded-full bg-ink px-5 text-base font-bold text-white disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Send
+          </button>
+        </div>
+        {expanded ? (
           <span
             id={`comment-help-${code}`}
             className={cn('text-sm font-bold', tooLong && 'text-[#b00020]')}
           >
             {typed} / {MAX_LENGTH}
           </span>
-          <button
-            type="submit"
-            disabled={!canSend}
-            className="min-h-11 rounded-full bg-ink px-6 text-base font-bold text-white disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            Send
-          </button>
-        </div>
+        ) : null}
       </form>
 
-      <p role="status" className="m-0 min-h-5 text-sm font-bold">
+      {/* Takes no room (not even the gap above it) until there is a message to show. */}
+      <p role="status" className="m-0 text-sm font-bold empty:-mt-2">
         {problem === 'closed' ? (
           'This room has closed.'
         ) : problem === 'lost' ? (

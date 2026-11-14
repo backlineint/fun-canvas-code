@@ -59,8 +59,8 @@ js:
       return (
         <svg
           viewBox="0 0 48 48"
-          width="48"
-          height="48"
+          width="40"
+          height="40"
           fill="none"
           stroke="#17163a"
           strokeWidth="2.5"
@@ -190,14 +190,14 @@ js:
       return (
         <section
           className={cn(
-            'flex flex-col gap-3 rounded-3xl bg-white p-5 text-ink',
+            'flex flex-col gap-2 rounded-3xl bg-white p-4 text-ink',
             className,
           )}
         >
           <h2 className="m-0 font-display text-xl font-extrabold">Requests</h2>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor={`note-${code}`} className="text-sm font-bold">
+          <div className="flex flex-col">
+            <label htmlFor={`note-${code}`} className="sr-only">
               Where are you sitting? (optional)
             </label>
             <input
@@ -210,8 +210,8 @@ js:
                 setNote(event.target.value);
                 saveRequestNote(code, event.target.value);
               }}
-              placeholder="Back left, by the aisle"
-              className="min-h-11 w-full rounded-2xl border-2 border-ink/30 bg-white px-3 text-base text-ink focus:border-ink focus:outline-none disabled:cursor-not-allowed disabled:bg-ink/5"
+              placeholder="Where are you sitting? (optional)"
+              className="min-h-11 w-full rounded-2xl border-2 border-ink/30 bg-white px-3 text-base text-ink placeholder:text-ink/60 focus:border-ink focus:outline-none disabled:cursor-not-allowed disabled:bg-ink/5"
             />
           </div>
 
@@ -221,7 +221,7 @@ js:
               const open = request?.status === 'open';
               const delivered = request?.status === 'delivered';
               const tile =
-                'flex min-h-32 w-full flex-col items-center justify-center gap-1 rounded-2xl bg-ink/5 px-1 py-3 text-center text-ink';
+                'flex min-h-24 w-full flex-col items-center justify-center gap-1 rounded-2xl bg-ink/5 px-1 py-2 text-center text-ink';
               const state = open
                 ? 'On its way'
                 : busy[kind]
@@ -261,7 +261,7 @@ js:
           </ul>
 
           {/* Takes no room (not even the gap above it) until there is a message to show. */}
-          <p role="status" className="m-0 text-sm font-bold empty:-mt-3">
+          <p role="status" className="m-0 text-sm font-bold empty:-mt-2">
             {problem === 'closed' ? (
               'This room has closed.'
             ) : problem === 'lost' ? (
@@ -347,8 +347,8 @@ js:
         "svg",
         {
           viewBox: "0 0 48 48",
-          width: "48",
-          height: "48",
+          width: "40",
+          height: "40",
           fill: "none",
           stroke: "#17163a",
           strokeWidth: "2.5",
@@ -450,13 +450,13 @@ js:
         "section",
         {
           className: cn(
-            "flex flex-col gap-3 rounded-3xl bg-white p-5 text-ink",
+            "flex flex-col gap-2 rounded-3xl bg-white p-4 text-ink",
             className
           ),
           children: [
             /* @__PURE__ */ jsx("h2", { className: "m-0 font-display text-xl font-extrabold", children: "Requests" }),
-            /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-1", children: [
-              /* @__PURE__ */ jsx("label", { htmlFor: `note-${code}`, className: "text-sm font-bold", children: "Where are you sitting? (optional)" }),
+            /* @__PURE__ */ jsxs("div", { className: "flex flex-col", children: [
+              /* @__PURE__ */ jsx("label", { htmlFor: `note-${code}`, className: "sr-only", children: "Where are you sitting? (optional)" }),
               /* @__PURE__ */ jsx(
                 "input",
                 {
@@ -469,8 +469,8 @@ js:
                     setNote(event.target.value);
                     saveRequestNote(code, event.target.value);
                   },
-                  placeholder: "Back left, by the aisle",
-                  className: "min-h-11 w-full rounded-2xl border-2 border-ink/30 bg-white px-3 text-base text-ink focus:border-ink focus:outline-none disabled:cursor-not-allowed disabled:bg-ink/5"
+                  placeholder: "Where are you sitting? (optional)",
+                  className: "min-h-11 w-full rounded-2xl border-2 border-ink/30 bg-white px-3 text-base text-ink placeholder:text-ink/60 focus:border-ink focus:outline-none disabled:cursor-not-allowed disabled:bg-ink/5"
                 }
               )
             ] }),
@@ -478,7 +478,7 @@ js:
               const request = latest(kind);
               const open = (request == null ? void 0 : request.status) === "open";
               const delivered = (request == null ? void 0 : request.status) === "delivered";
-              const tile = "flex min-h-32 w-full flex-col items-center justify-center gap-1 rounded-2xl bg-ink/5 px-1 py-3 text-center text-ink";
+              const tile = "flex min-h-24 w-full flex-col items-center justify-center gap-1 rounded-2xl bg-ink/5 px-1 py-2 text-center text-ink";
               const state = open ? "On its way" : busy[kind] ? "Asking..." : delivered ? "Delivered ✓" : "";
               return /* @__PURE__ */ jsx("li", { className: "flex", children: open ? /* @__PURE__ */ jsxs("div", { className: tile, children: [
                 /* @__PURE__ */ jsx(KindIcon, { kind }),
@@ -503,7 +503,7 @@ js:
                 }
               ) }, kind);
             }) }),
-            /* @__PURE__ */ jsx("p", { role: "status", className: "m-0 text-sm font-bold empty:-mt-3", children: problem === "closed" ? "This room has closed." : problem === "lost" ? /* @__PURE__ */ jsxs(Fragment, { children: [
+            /* @__PURE__ */ jsx("p", { role: "status", className: "m-0 text-sm font-bold empty:-mt-2", children: problem === "closed" ? "This room has closed." : problem === "lost" ? /* @__PURE__ */ jsxs(Fragment, { children: [
               "We lost track of you.",
               " ",
               /* @__PURE__ */ jsx(
