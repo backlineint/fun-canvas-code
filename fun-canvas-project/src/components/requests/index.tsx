@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import {
-  cancelRequest,
   fetchRequests,
   REQUEST_KINDS,
   RequestError,
@@ -73,7 +72,7 @@ function KindIcon({ kind }: { kind: RequestKind }) {
 
 // Ask a volunteer for a party hat, a noise maker or candy, with an optional note about
 // where you are sitting. A request stays "on its way" until a volunteer marks it
-// delivered on the deck (or you cancel it); after that you can ask again. This browser
+// delivered on the deck; after that you can ask again. This browser
 // follows only its own requests, by the ids it remembered.
 export default function Requests({
   code,
@@ -162,19 +161,6 @@ export default function Requests({
     }
   }
 
-  async function cancel(request: RoomRequest) {
-    if (!me || busy[request.kind]) return;
-    setBusy((current) => ({ ...current, [request.kind]: true }));
-    setNotice('');
-    try {
-      merge([await cancelRequest(base, code, me.token, request.id)]);
-    } catch (e) {
-      fail(e);
-    } finally {
-      setBusy((current) => ({ ...current, [request.kind]: false }));
-    }
-  }
-
   const ready = joined !== undefined;
 
   return (
@@ -218,7 +204,7 @@ export default function Requests({
               ? 'Asking...'
               : delivered
                 ? 'Delivered ✓'
-                : 'Tap to ask';
+                : '';
           return (
             <li key={kind} className="flex">
               {open ? (
@@ -226,15 +212,6 @@ export default function Requests({
                   <KindIcon kind={kind} />
                   <span className="text-base font-bold">{label}</span>
                   <span className="text-sm font-medium">{state}</span>
-                  <button
-                    type="button"
-                    onClick={() => request && void cancel(request)}
-                    disabled={disabled || busy[kind]}
-                    aria-label={`Cancel the request for ${what}`}
-                    className="mt-1 min-h-11 rounded-full border-2 border-ink bg-white px-4 text-sm font-bold text-ink disabled:cursor-not-allowed disabled:opacity-40"
-                  >
-                    Cancel
-                  </button>
                 </div>
               ) : (
                 <button
@@ -249,12 +226,9 @@ export default function Requests({
                 >
                   <KindIcon kind={kind} />
                   <span className="text-base font-bold">{label}</span>
-                  <span className="text-sm font-medium">
-                    {state}
-                    {delivered ? (
-                      <span className="block">Ask again</span>
-                    ) : null}
-                  </span>
+                  {state ? (
+                    <span className="text-sm font-medium">{state}</span>
+                  ) : null}
                 </button>
               )}
             </li>
@@ -262,7 +236,8 @@ export default function Requests({
         })}
       </ul>
 
-      <p role="status" className="m-0 min-h-5 text-sm font-bold">
+      {/* Takes no room (not even the gap above it) until there is a message to show. */}
+      <p role="status" className="m-0 text-sm font-bold empty:-mt-3">
         {problem === 'closed' ? (
           'This room has closed.'
         ) : problem === 'lost' ? (

@@ -24,7 +24,6 @@ js:
   original: |
     import { useEffect, useState } from 'react';
     import {
-      cancelRequest,
       fetchRequests,
       REQUEST_KINDS,
       RequestError,
@@ -97,7 +96,7 @@ js:
 
     // Ask a volunteer for a party hat, a noise maker or candy, with an optional note about
     // where you are sitting. A request stays "on its way" until a volunteer marks it
-    // delivered on the deck (or you cancel it); after that you can ask again. This browser
+    // delivered on the deck; after that you can ask again. This browser
     // follows only its own requests, by the ids it remembered.
     export default function Requests({
       code,
@@ -186,19 +185,6 @@ js:
         }
       }
 
-      async function cancel(request: RoomRequest) {
-        if (!me || busy[request.kind]) return;
-        setBusy((current) => ({ ...current, [request.kind]: true }));
-        setNotice('');
-        try {
-          merge([await cancelRequest(base, code, me.token, request.id)]);
-        } catch (e) {
-          fail(e);
-        } finally {
-          setBusy((current) => ({ ...current, [request.kind]: false }));
-        }
-      }
-
       const ready = joined !== undefined;
 
       return (
@@ -242,7 +228,7 @@ js:
                   ? 'Asking...'
                   : delivered
                     ? 'Delivered ✓'
-                    : 'Tap to ask';
+                    : '';
               return (
                 <li key={kind} className="flex">
                   {open ? (
@@ -250,15 +236,6 @@ js:
                       <KindIcon kind={kind} />
                       <span className="text-base font-bold">{label}</span>
                       <span className="text-sm font-medium">{state}</span>
-                      <button
-                        type="button"
-                        onClick={() => request && void cancel(request)}
-                        disabled={disabled || busy[kind]}
-                        aria-label={`Cancel the request for ${what}`}
-                        className="mt-1 min-h-11 rounded-full border-2 border-ink bg-white px-4 text-sm font-bold text-ink disabled:cursor-not-allowed disabled:opacity-40"
-                      >
-                        Cancel
-                      </button>
                     </div>
                   ) : (
                     <button
@@ -273,12 +250,9 @@ js:
                     >
                       <KindIcon kind={kind} />
                       <span className="text-base font-bold">{label}</span>
-                      <span className="text-sm font-medium">
-                        {state}
-                        {delivered ? (
-                          <span className="block">Ask again</span>
-                        ) : null}
-                      </span>
+                      {state ? (
+                        <span className="text-sm font-medium">{state}</span>
+                      ) : null}
                     </button>
                   )}
                 </li>
@@ -286,7 +260,8 @@ js:
             })}
           </ul>
 
-          <p role="status" className="m-0 min-h-5 text-sm font-bold">
+          {/* Takes no room (not even the gap above it) until there is a message to show. */}
+          <p role="status" className="m-0 text-sm font-bold empty:-mt-3">
             {problem === 'closed' ? (
               'This room has closed.'
             ) : problem === 'lost' ? (
@@ -361,7 +336,7 @@ js:
     };
     import { jsxs, jsx, Fragment } from "react/jsx-runtime";
     import { useState, useEffect } from "react";
-    import { fetchRequests, REQUEST_KINDS, sendRequest, cancelRequest, RequestError } from "@/lib/fun-room-live";
+    import { fetchRequests, REQUEST_KINDS, sendRequest, RequestError } from "@/lib/fun-room-live";
     import { useJoined, readMyRequests, readRequestNote, saveRequestNote, rememberRequest, clearJoined } from "@/lib/fun-room-session";
     import { cn } from "drupal-canvas";
     import { useSiteContext } from "drupal-canvas/react";
@@ -470,20 +445,6 @@ js:
           }
         });
       }
-      function cancel(request) {
-        return __async(this, null, function* () {
-          if (!me || busy[request.kind]) return;
-          setBusy((current) => __spreadProps(__spreadValues({}, current), { [request.kind]: true }));
-          setNotice("");
-          try {
-            merge([yield cancelRequest(base, code, me.token, request.id)]);
-          } catch (e) {
-            fail(e);
-          } finally {
-            setBusy((current) => __spreadProps(__spreadValues({}, current), { [request.kind]: false }));
-          }
-        });
-      }
       const ready = joined !== void 0;
       return /* @__PURE__ */ jsxs(
         "section",
@@ -518,22 +479,11 @@ js:
               const open = (request == null ? void 0 : request.status) === "open";
               const delivered = (request == null ? void 0 : request.status) === "delivered";
               const tile = "flex min-h-32 w-full flex-col items-center justify-center gap-1 rounded-2xl bg-ink/5 px-1 py-3 text-center text-ink";
-              const state = open ? "On its way" : busy[kind] ? "Asking..." : delivered ? "Delivered ✓" : "Tap to ask";
+              const state = open ? "On its way" : busy[kind] ? "Asking..." : delivered ? "Delivered ✓" : "";
               return /* @__PURE__ */ jsx("li", { className: "flex", children: open ? /* @__PURE__ */ jsxs("div", { className: tile, children: [
                 /* @__PURE__ */ jsx(KindIcon, { kind }),
                 /* @__PURE__ */ jsx("span", { className: "text-base font-bold", children: label }),
-                /* @__PURE__ */ jsx("span", { className: "text-sm font-medium", children: state }),
-                /* @__PURE__ */ jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: () => request && void cancel(request),
-                    disabled: disabled || busy[kind],
-                    "aria-label": `Cancel the request for ${what}`,
-                    className: "mt-1 min-h-11 rounded-full border-2 border-ink bg-white px-4 text-sm font-bold text-ink disabled:cursor-not-allowed disabled:opacity-40",
-                    children: "Cancel"
-                  }
-                )
+                /* @__PURE__ */ jsx("span", { className: "text-sm font-medium", children: state })
               ] }) : /* @__PURE__ */ jsxs(
                 "button",
                 {
@@ -548,15 +498,12 @@ js:
                   children: [
                     /* @__PURE__ */ jsx(KindIcon, { kind }),
                     /* @__PURE__ */ jsx("span", { className: "text-base font-bold", children: label }),
-                    /* @__PURE__ */ jsxs("span", { className: "text-sm font-medium", children: [
-                      state,
-                      delivered ? /* @__PURE__ */ jsx("span", { className: "block", children: "Ask again" }) : null
-                    ] })
+                    state ? /* @__PURE__ */ jsx("span", { className: "text-sm font-medium", children: state }) : null
                   ]
                 }
               ) }, kind);
             }) }),
-            /* @__PURE__ */ jsx("p", { role: "status", className: "m-0 min-h-5 text-sm font-bold", children: problem === "closed" ? "This room has closed." : problem === "lost" ? /* @__PURE__ */ jsxs(Fragment, { children: [
+            /* @__PURE__ */ jsx("p", { role: "status", className: "m-0 text-sm font-bold empty:-mt-3", children: problem === "closed" ? "This room has closed." : problem === "lost" ? /* @__PURE__ */ jsxs(Fragment, { children: [
               "We lost track of you.",
               " ",
               /* @__PURE__ */ jsx(
