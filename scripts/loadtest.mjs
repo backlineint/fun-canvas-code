@@ -331,7 +331,17 @@ process.on('SIGINT', () => {
 try {
   roomUuid = await lookupRoom();
 } catch (error) {
-  console.error(error.message);
+  const cause = error?.cause?.code ?? error?.cause?.message;
+  console.error(cause ? `${error.message} (${cause})` : error.message);
+  if (error.message === 'fetch failed') {
+    console.error(
+      `\nCould not reach ${BASE}. This is the network between this computer and the site, not the room.\n` +
+        'Check it first with:  curl -sI ' + BASE + '/ | head -1\n' +
+        'On a firewalled network, connect to a phone hotspot and try again.' +
+        (cause === 'UND_ERR_CONNECT_TIMEOUT' ? ' (A connect timeout often means a firewall is stalling the connection.)' : '') +
+        (/CERT|SELF_SIGNED|UNABLE_TO_VERIFY/.test(String(cause)) ? ' (A certificate error often means a firewall is re-signing HTTPS traffic.)' : ''),
+    );
+  }
   process.exit(1);
 }
 
