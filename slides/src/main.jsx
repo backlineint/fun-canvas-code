@@ -10,6 +10,7 @@ import RoomCode from './components/RoomCode.jsx';
 import RoomPulse from './components/RoomPulse.jsx';
 import ActivityStream from './components/ActivityStream.jsx';
 import Recap from './components/Recap.jsx';
+import JoinCorner from './components/JoinCorner.jsx';
 import { reportSlide } from './room.js';
 import { startMood } from './mood.js';
 import { startActivity } from './activity.js';
@@ -21,6 +22,7 @@ const components = {
   'room-pulse': RoomPulse,
   'activity-stream': ActivityStream,
   'room-recap': Recap,
+  'join-corner': JoinCorner,
 };
 
 document.querySelectorAll('[data-component]').forEach((el) => {
@@ -69,8 +71,25 @@ const deck = new Reveal({
   plugins: [Markdown, Highlight],
 });
 
-deck.on('ready', (e) => report(e.currentSlide, e.indexh));
-deck.on('slidechanged', (e) => report(e.currentSlide, e.indexh));
+// The join reminder (QR code and room code) sits in the corner of every slide after the join
+// slide. It lives outside the scaled slides, so it is scaled to match them.
+const corner = document.querySelector('.join-corner');
+let joinIndex = Infinity;
+function updateCorner(indexh) {
+  corner.hidden = !(indexh > joinIndex);
+}
+
+deck.on('ready', (e) => {
+  joinIndex = deck.getSlides().findIndex((slide) => slide.dataset.id === 'join');
+  corner.style.setProperty('--deck-scale', String(deck.getScale()));
+  updateCorner(e.indexh);
+  report(e.currentSlide, e.indexh);
+});
+deck.on('resize', (e) => corner.style.setProperty('--deck-scale', String(e.scale)));
+deck.on('slidechanged', (e) => {
+  updateCorner(e.indexh);
+  report(e.currentSlide, e.indexh);
+});
 
 deck.initialize();
 
