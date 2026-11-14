@@ -26,11 +26,17 @@
 
                     <section data-id="join" data-title="Join the room">
                         <h2>Join the room</h2>
-                        <p>
-                            Go to <b>canvas-demo.brianperry.dev</b> and enter
-                            the room code.
-                        </p>
-                        <div data-component="room-code"></div>
+                        <div class="slide-columns slide-columns-qr">
+                            <div>
+                                <p>Scan the QR code and enter the room code.</p>
+                                <div data-component="room-code"></div>
+                            </div>
+                            <img
+                                class="slide-qr"
+                                src="./src/assets/join-qr.svg"
+                                alt="QR code for the Fun-o-Meter site"
+                            />
+                        </div>
                     </section>
 
                     <section

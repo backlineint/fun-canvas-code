@@ -492,3 +492,17 @@ html[data-view='recap'] .deck-sidebar {
   font-size: 26px;
   line-height: 1.25;
 }
+
+/* The join slide: instructions on the left, the QR code on the right. */
+.reveal .slide-columns.slide-columns-qr {
+  grid-template-columns: 1fr 380px;
+}
+
+.reveal .slide-qr {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.18);
+}
